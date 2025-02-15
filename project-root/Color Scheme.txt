@@ -1,0 +1,6 @@
+Top navigation bar color: #222
+Body Background:#0a0909
+Body Text color:rgb(255, 255, 255)
+
+
+Im thinking a grey, black and blue color scheme with the text being mostly white and maybe some gray 

@@ -1,0 +1,1 @@
+Make sure to give the top navigation bar the Library button and remove the login and sign up buttons
