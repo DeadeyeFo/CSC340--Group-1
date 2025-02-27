@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>	
+		<!-- BootStrap 5 Call -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Press+Start+2P&display=swap" rel="stylesheet">
+		<!-- Tab Title -->
+		<title> System Managment Panel </title>
+        <style>
+            /* Logo styling */
+            .logo {
+                font-family: "Anton SC", serif;
+                color: white;
+                font-size: 46px;
+                font-weight: 400;
+            }
+            body {
+                height: 100vh;
+                display: flex;
+                
+            }
+            .bg-sidebar {
+                background-color: #343a40 !important}
+            .sidebar {
+                width: 250px;
+                height: 100vh;
+                background-color: #343a40;
+                color: white;
+                padding: 15px;
+                position: fixed;
+            }
+            .sidebar a {
+                color: white;
+                text-decoration: none;
+                display: block;
+                padding: 10px;
+                border-radius: 5px;
+                margin: 5px 0;
+            }
+            .sidebar a:hover {
+                background-color: #495057;
+            }
+            .main-content {
+                margin-left: 250px;
+                padding: 0;
+                flex-grow: 1;
+                
+            }
+            @media (max-width: 768px) {
+                .sidebar {
+                    width: 100px;
+                    text-align: center;
+                }
+                .sidebar a {
+                    font-size: 14px;
+                    padding: 8px;
+                }
+                .main-content {
+                    margin-left: 100px;
+                }
+            }
+        </style>
+    </head>									
+    <body>
+		<!-- BootStrap 5 Call -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <div class="sidebar">
+            <h4 class="mb-4 text-center .logo">System Admin</h4>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="users.html">Users</a>
+            <a href="settings.html">Settings</a>
+            <a href="reports.html">Reports</a>
+            <a href="logout.html">Logout</a>
+        </div>
+
+        <div class="main-content">
+            <div class="container-fluid text-center fs-1 bg-sidebar text-light">
+                <!-- Page Title -->
+                <h1 class="logo">AniWatch</h1>
+        </div>
+</body>
+</html>
