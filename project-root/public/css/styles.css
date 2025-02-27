@@ -36,6 +36,11 @@ body {
     font-weight: 400;
 }
 
+.logo-link {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Inherit color from parent */
+}
+
 /* Navigation links */
 .nav-links {
     display: flex;
@@ -162,3 +167,4 @@ body {
     color: white; /* Ensure text is visible */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow to text for better readability */
 }
+
