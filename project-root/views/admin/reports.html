@@ -58,6 +58,29 @@
             flex-grow: 1;
         }
 
+        /* Header Styling */
+        .header {
+            padding: 20px;
+            background-color: #343a40;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Button Group Styling */
+        .btn-group {
+            margin-top: 20px;
+        }
+
+        /* Placeholder System Controller */
+        .system-controller {
+            text-align: right;
+            font-size: 18px;
+            color: #bbb;
+            padding: 10px;
+        }
+
         /* Responsive Sidebar */
         @media (max-width: 768px) {
             .sidebar {
@@ -85,7 +108,7 @@
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <h4 class="mb-4 text-center ">System Admin</h4>
+        <h4 class="mb-4 text-center">System Admin</h4>
         <a href="sysadmin-panel.html">Dashboard</a>
         <a href="users.html">Users</a>
         <a href="contentFiltering.html">Content Filter</a>
@@ -98,6 +121,28 @@
     <div class="main-content">
         <div class="container-fluid text-center fs-1 bg-sidebar text-light py-3">
             <h1 class="logo">AniWatch</h1>
+        </div>
+
+        <!-- Server Info Section -->
+        <div class="header">
+            <div class="server-time">
+                <p>Server Time: <strong>2025-03-01 10:15</strong></p> <!-- Placeholder for server time -->
+            </div>
+            <div class="system-controller">
+                <p>Server Status: <strong>Online</strong></p> <!-- Placeholder for system controller -->
+            </div>
+        </div>
+
+        <!-- Button Actions -->
+        <div class="container d-flex justify-content-center align-items-center text-center btn-group a">
+            <button class="btn btn-warning mx-2">Reset Server</button>
+            <button class="btn btn-danger mx-2">Shutdown Server</button>
+        </div>
+
+        <div class="container mt-4" style="background-color: black; color: white; padding: 20px; font-family: 'Courier New', monospace; height: 600px; overflow-y: auto;">
+            <p>System Console Output:</p>
+            <p>Server Starting...</p>
+            <p>Server Status set to ONLINE</p>
         </div>
     </div>
 
