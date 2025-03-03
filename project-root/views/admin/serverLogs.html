@@ -27,9 +27,9 @@
             padding: 5px;
             border: 1px solid #333;
             margin-bottom: 5px;
-            width: 85%;  /* Set width to 85% */
-            box-sizing: border-box; /* Ensure padding is included in width */
-            margin: 0 auto;  /* Center the list item */
+            width: 85%;  
+            box-sizing: border-box; 
+            margin: 0 auto; 
         }
 
         .left-align, .right-align {
@@ -46,13 +46,13 @@
             display: flex;
             justify-content: flex-end;
         }
-        /* Layout Styling */
+       
         body {
             height: 100vh;
             display: flex;
         }
 
-        /* Sidebar Styling */
+        
         .sidebar {
             width: 250px;
             height: 100vh;
@@ -75,14 +75,14 @@
             background-color: #444;
         }
 
-        /* Main Content */
+    
         .main-content {
             margin-left: 250px;
             padding: 0;
             flex-grow: 1;
         }
 
-        /* Responsive Sidebar */
+        
         @media (max-width: 768px) {
             .sidebar {
                 width: 100px;
@@ -99,29 +99,14 @@
             }
         }
 
-        /* Background for Header */
         .bg-sidebar {
             background-color: #222 !important;
         }
 
-        /* Console Window Styling */
-        .console-window {
-            background-color: #1e1e1e;
-            border: 1px solid #333;
-            padding: 10px;
-            margin: 20px 15px;
-            width: calc(100% - 30px);
-            height: 300px;
-            overflow-y: scroll;
-            white-space: pre-wrap;
-            color: #abb2bf;
-            font-family: monospace;
-        }
     </style>
 </head>
 
 <body>
-    <!-- Sidebar -->
     <div class="sidebar">
         <h4 class="mb-4 text-center">System Admin</h4>
         <a href="sysadmin-panel.html">Dashboard</a>
@@ -132,14 +117,12 @@
         <a href="login.html">Logout</a>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
-        <!-- Header Section -->
         <div class="container-fluid text-center fs-1 bg-sidebar text-light py-3">
             <h1 class="logo">AniWatch</h1>
         </div>
 
-        <!-- Input Label -->
+        
         <h4 class="mb-4 mt-5 text-center">Admin Audit Log </h4>
         <div class="d-flex justify-content-center mt-4">
             <div class="w-50 position-relative">
@@ -152,6 +135,7 @@
             </div>
         </div>
 
+        <!--Placeholder Entries-->
         <ul>
             <li class="list-item" style="border: 1px solid lightgrey;">
                 <div class="left-align">John Doe</div>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>	
@@ -14,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Press+Start+2P&display=swap" rel="stylesheet">
 
     <style>
-        /* Logo Styling */
+        
         .logo {
             font-family: "Anton SC", serif;
             color: white;
@@ -22,13 +23,13 @@
             font-weight: 400;
         }
 
-        /* Layout Styling */
+        
         body {
             height: 100vh;
             display: flex;
         }
 
-        /* Sidebar Styling */
+        
         .sidebar {
             width: 250px;
             height: 100vh;
@@ -51,14 +52,56 @@
             background-color: #444;
         }
 
-        /* Main Content */
+        
         .main-content {
             margin-left: 250px;
             padding: 0;
             flex-grow: 1;
         }
 
-        /* Responsive Sidebar */
+       
+        .warning-box {
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+       
+        .image-grid {
+        margin-top: 20px;
+    }
+
+    .image-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .image-item {
+        width: 250px; 
+        height: 250px; 
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    .image-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; 
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .image-item:hover img {
+        transform: scale(1.1);
+    }
+
+    
+    .image-text {
+        text-align: center;
+        margin-top: 8px;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
         @media (max-width: 768px) {
             .sidebar {
                 width: 100px;
@@ -75,7 +118,6 @@
             }
         }
 
-        /* Background for Header */
         .bg-sidebar {
             background-color: #222 !important;
         }
@@ -83,9 +125,9 @@
 </head>
 
 <body>
-    <!-- Sidebar -->
+    
     <div class="sidebar">
-        <h4 class="mb-4 text-center ">System Admin</h4>
+        <h4 class="mb-4 text-center">System Admin</h4>
         <a href="sysadmin-panel.html">Dashboard</a>
         <a href="users.html">Users</a>
         <a href="contentFiltering.html">Content Filter</a>
@@ -94,10 +136,63 @@
         <a href="login.html">Logout</a>
     </div>
 
-    <!-- Main Content -->
+    
     <div class="main-content">
         <div class="container-fluid text-center fs-1 bg-sidebar text-light py-3">
             <h1 class="logo">AniWatch</h1>
+        </div>
+
+        
+        <div class="container warning-box">
+            <div class="alert alert-danger text-center" role="alert">
+                <strong>WARNING:</strong> Unauthorized access to this system is prohibited. All activities are monitored and logged. If you are not an authorized user, please leave immediately.
+            </div>
+        </div>
+
+        
+        <div class="container image-grid">
+            <div class="row g-2">  
+                <div class="col-md-6 col-6">
+                    <div class="image-wrapper">
+                        <a href="users.html">
+                            <div class="image-item">
+                                <img src="../images/userimage.jpg" alt="Users">
+                            </div>
+                        </a>
+                        <div class="image-text">Users</div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-6">
+                    <div class="image-wrapper">
+                        <a href="contentFiltering.html">
+                            <div class="image-item">
+                                <img src="../images/iconimage.png" alt="Content Filter">
+                            </div>
+                        </a>
+                        <div class="image-text">Content Filter</div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-6">
+                    <div class="image-wrapper">
+                        <a href="reports.html">
+                            <div class="image-item">
+                                <img src="../images/consoleimage.png" alt="System Reports">
+                            </div>
+                        </a>
+                        <div class="image-text">System Reports</div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-6">
+                    <div class="image-wrapper">
+                        <a href="serverLogs.html">
+                            <div class="image-item">
+                                <img src="../images/logsimage.png" alt="Server Logs">
+                            </div>
+                        </a>
+                        <div class="image-text">Server Logs</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
