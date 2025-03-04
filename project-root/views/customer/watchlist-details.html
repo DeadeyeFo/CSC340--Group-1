@@ -28,56 +28,29 @@
         <h1 class="logo">AniWatch</h1>
         <div class="nav-links">
             <a href="../home.html">Home</a>
-            <a href="browse.html">Watchlists</a>
+            <a href="watchlist.html">Watchlists</a> <!-- Updated to match watchlist.html filename -->
             <a href="library.html">Library</a>
-            <a href="#">Profile</a>
+            <a href="customerProfile.html">Profile</a> <!-- Updated to match your naming -->
         </div>
     </div>
 
     <!-- Main Content -->
-    <div class="container my-5">
-        <h2 class="mb-4">Best Anime for Beginners</h2>
-        <div class="d-flex align-items-center mb-4">
-            <a href="provider-profile.html?user=user1">
-                <img src="https://via.placeholder.com/40" alt="Provider Icon" class="provider-icon">
-            </a>
-            <p class="mb-0">By: <a href="provider-profile.html?user=user1" class="text-light">User1</a></p>
-        </div>
-
-        <!-- Provider Description -->
-        <div class="mb-4">
-            <h5>Description</h5>
-            <p>This list is perfect for anyone new to anime! It includes a mix of action-packed adventures, heartwarming stories, and beginner-friendly classics that’ll get you hooked on the genre.</p>
-        </div>
-
-        <!-- Anime List -->
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card bg-secondary text-light">
-                    <img src="https://via.placeholder.com/300x200?text=Attack+on+Titan" alt="Anime" class="anime-card-img">
-                    <div class="card-body">
-                        <h5 class="card-title">Attack on Titan</h5>
-                        <p class="card-text">Epic battles and a gripping story about humanity’s fight for survival.</p>
-                    </div>
-                </div>
+    <div class="content">
+        <div class="container my-5">
+            <h2 class="mb-4" id="watchlist-title">Watchlist Details</h2>
+            <div class="d-flex align-items-center mb-4" id="provider-info">
+                <!-- Provider info will be populated dynamically -->
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card bg-secondary text-light">
-                    <img src="https://via.placeholder.com/300x200?text=My+Hero+Academia" alt="Anime" class="anime-card-img">
-                    <div class="card-body">
-                        <h5 class="card-title">My Hero Academia</h5>
-                        <p class="card-text">A fun superhero journey with inspiring characters.</p>
-                    </div>
-                </div>
+
+            <!-- Provider Description -->
+            <div class="mb-4" id="description-section">
+                <h5>Description</h5>
+                <p id="watchlist-description"></p>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card bg-secondary text-light">
-                    <img src="https://via.placeholder.com/300x200?text=Spirited+Away" alt="Anime" class="anime-card-img">
-                    <div class="card-body">
-                        <h5 class="card-title">Spirited Away</h5>
-                        <p class="card-text">A magical adventure with stunning visuals.</p>
-                    </div>
-                </div>
+
+            <!-- Anime List -->
+            <div class="row" id="anime-list">
+                <!-- Anime cards will be populated dynamically -->
             </div>
         </div>
     </div>
@@ -89,5 +62,91 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Dynamic Content Script -->
+    <script>
+        // Sample watchlist data
+        const watchlists = {
+            1: {
+                title: "Best Anime for Beginners",
+                provider: "User1",
+                description: "This list is perfect for anyone new to anime! It includes a mix of action-packed adventures, heartwarming stories, and beginner-friendly classics that’ll get you hooked on the genre.",
+                anime: [
+                    { title: "Attack on Titan", image: "https://via.placeholder.com/300x200?text=Attack+on+Titan", description: "Epic battles and a gripping story about humanity’s fight for survival." },
+                    { title: "My Hero Academia", image: "https://via.placeholder.com/300x200?text=My+Hero+Academia", description: "A fun superhero journey with inspiring characters." },
+                    { title: "Spirited Away", image: "https://via.placeholder.com/300x200?text=Spirited+Away", description: "A magical adventure with stunning visuals." }
+                ]
+            },
+            2: {
+                title: "Top 10 Psychological Thrillers",
+                provider: "User2",
+                description: "Mind-bending anime that keep you guessing till the end. Perfect for fans of suspense and psychological depth.",
+                anime: [
+                    { title: "Death Note", image: "https://via.placeholder.com/300x200?text=Death+Note", description: "A battle of wits between a genius and a supernatural notebook." },
+                    { title: "Erased", image: "https://via.placeholder.com/300x200?text=Erased", description: "A time-travel mystery with emotional stakes." },
+                    { title: "Psycho-Pass", image: "https://via.placeholder.com/300x200?text=Psycho-Pass", description: "A dystopian future where crime is predicted." }
+                ]
+            },
+            3: {
+                title: "Must-Watch Sports Anime",
+                provider: "User3",
+                description: "High-energy series to get your adrenaline pumping! These sports anime showcase teamwork, rivalry, and passion.",
+                anime: [
+                    { title: "Haikyuu!!", image: "https://via.placeholder.com/300x200?text=Haikyuu", description: "A volleyball journey full of teamwork and excitement." },
+                    { title: "Kuroko's Basketball", image: "https://via.placeholder.com/300x200?text=Kuroko's+Basketball", description: "Fast-paced basketball with extraordinary skills." },
+                    { title: "Yuri!!! on Ice", image: "https://via.placeholder.com/300x200?text=Yuri+on+Ice", description: "A beautifully animated figure skating drama." }
+                ]
+            }
+        };
+
+        // Get watchlist ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const watchlistId = urlParams.get('id');
+
+        // Elements to update
+        const titleElement = document.getElementById('watchlist-title');
+        const providerInfoElement = document.getElementById('provider-info');
+        const descriptionElement = document.getElementById('watchlist-description');
+        const animeListElement = document.getElementById('anime-list');
+
+        // Populate content based on watchlist ID
+        if (watchlistId && watchlists[watchlistId]) {
+            const watchlist = watchlists[watchlistId];
+
+            // Update title
+            titleElement.textContent = watchlist.title;
+
+            // Update provider info
+            providerInfoElement.innerHTML = `
+                <a href="provider-profile.html?user=${watchlist.provider.toLowerCase()}">
+                    <img src="https://via.placeholder.com/40" alt="Provider Icon" class="provider-icon">
+                </a>
+                <p class="mb-0">By: <a href="provider-profile.html?user=${watchlist.provider.toLowerCase()}" class="text-light">${watchlist.provider}</a></p>
+            `;
+
+            // Update description
+            descriptionElement.textContent = watchlist.description;
+
+            // Populate anime list
+            watchlist.anime.forEach(anime => {
+                const animeCard = `
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-secondary text-light">
+                            <img src="${anime.image}" alt="${anime.title}" class="anime-card-img">
+                            <div class="card-body">
+                                <h5 class="card-title">${anime.title}</h5>
+                                <p class="card-text">${anime.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                animeListElement.innerHTML += animeCard;
+            });
+        } else {
+            titleElement.textContent = "Watchlist Not Found";
+            providerInfoElement.innerHTML = "<p class='mb-0'>No provider available</p>";
+            descriptionElement.textContent = "Sorry, this watchlist could not be found.";
+            animeListElement.innerHTML = "<p class='text-center'>No anime to display.</p>";
+        }
+    </script>
 </body>
 </html>
