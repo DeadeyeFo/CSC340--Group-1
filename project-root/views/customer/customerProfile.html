@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AniWatch - My Profile</title>
+    <link rel="stylesheet" href="../../public/css/profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-light">
+    <!-- Top Navigation Bar -->
+    <div class="topnav">
+        <h1 class="logo">AniWatch</h1>
+        <div class="nav-links">
+            <a href="../home.html">Home</a>
+            <a href="../customer/watchlist.html">Watchlists</a>
+            <a href="../customer/library.html">Library</a>
+            <a href="customerProfile.html">Profile</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="container my-5">
+            <!-- Profile Header -->
+            <div class="text-center mb-5">
+                <img src="https://naruto-official.com/common/ogp/NTOS_OG-main.png" alt="Profile Picture" class="profile-img">
+                <h2>Customer1</h2>
+                <p class="text-muted">@customername</p>
+                <button class="btn settings-btn" data-bs-toggle="modal" data-bs-target="#settingsModal">Profile Settings</button>
+                <a href="../../index.html" class="btn settings-btn">Logout</a>
+            </div>
+
+            <!-- Bio -->
+            <div class="mb-5">
+                <h5>Bio</h5>
+                <p>Hi, I’m CustomerName! I love exploring new anime and saving the best watchlists here on AniWatch. Always on the hunt for action and slice-of-life series!</p>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="row mb-5">
+                <div class="col-md-4 mb-3">
+                    <div class="stats-box">
+                        <h6>Watchlists Saved</h6>
+                        <p class="fs-4">12</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stats-box">
+                        <h6>Reviews Written</h6>
+                        <p class="fs-4">8</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stats-box">
+                        <h6>Days Active</h6>
+                        <p class="fs-4">45</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recently Viewed Watchlists -->
+            <div class="mb-5">
+                <h5>Recently Viewed Watchlists</h5>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="recent-watchlist">
+                            <h6><a href="../customer/watchlist-details.html?id=1" class="text-light">Best Anime for Beginners</a></h6>
+                            <p>Viewed: 2 days ago</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="recent-watchlist">
+                            <h6><a href="../customer/watchlist-details.html?id=2" class="text-light">Top 10 Psychological Thrillers</a></h6>
+                            <p>Viewed: 5 days ago</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsModalLabel">Profile Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" value="customername">
+                        </div>
+                        <div class="mb-3">
+                            <label for="bio" class="form-label">Bio</label>
+                            <textarea class="form-control" id="bio" rows="3">Hi, I’m CustomerName! I love exploring new anime...</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="profilePic" class="form-label">Profile Picture</label>
+                            <input type="file" class="form-control" id="profilePic">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-3">
+        <p>© 2025 AniWatch</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

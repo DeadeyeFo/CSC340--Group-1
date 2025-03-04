@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>	
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Tab Title -->
+    <title>System Management Panel</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> 
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <style>
+        /* Logo Styling */
+        .logo {
+            font-family: "Anton SC", serif;
+            color: white;
+            font-size: 46px;
+            font-weight: 400;
+        }
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            border: 1px solid #333;
+            margin-bottom: 5px;
+            width: 85%;  
+            box-sizing: border-box; 
+            margin: 0 auto; 
+        }
+
+        .left-align, .right-align {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .left-align {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .right-align {
+            display: flex;
+            justify-content: flex-end;
+        }
+       
+        body {
+            height: 100vh;
+            display: flex;
+        }
+
+        
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #222;
+            color: white;
+            padding: 15px;
+            position: fixed;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        .sidebar a:hover {
+            background-color: #444;
+        }
+
+    
+        .main-content {
+            margin-left: 250px;
+            padding: 0;
+            flex-grow: 1;
+        }
+
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100px;
+                text-align: center;
+            }
+
+            .sidebar a {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            .main-content {
+                margin-left: 100px;
+            }
+        }
+
+        .bg-sidebar {
+            background-color: #222 !important;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <h4 class="mb-4 text-center">System Admin</h4>
+        <a href="sysadmin-panel.html">Dashboard</a>
+        <a href="users.html">Users</a>
+        <a href="contentFiltering.html">Content Filter</a>
+        <a href="reports.html">System Reports</a>
+        <a href="serverLogs.html">Server Logs</a>
+        <a href="login.html">Logout</a>
+    </div>
+
+    <div class="main-content">
+        <div class="container-fluid text-center fs-1 bg-sidebar text-light py-3">
+            <h1 class="logo">AniWatch</h1>
+        </div>
+
+        
+        <h4 class="mb-4 mt-5 text-center">Admin Audit Log </h4>
+        <div class="d-flex justify-content-center mt-4">
+            <div class="w-50 position-relative">
+                <input type="text" class="form-control" placeholder="Search..." data-bs-toggle="dropdown">
+                <ul class="dropdown-menu w-100">
+                    <li><a class="dropdown-item" href="#">Abel Moran</a></li>
+                    <li><a class="dropdown-item" href="#">Issac Mami</a></li>
+                    <li><a class="dropdown-item" href="#">Joshua Wusu</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!--Placeholder Entries-->
+        <ul>
+            <li class="list-item" style="border: 1px solid lightgrey;">
+                <div class="left-align">John Doe</div>
+                <div class="center-align" style="text-align: center;">Logged in</div>
+                <div class="right-align">2025-03-01 10:15</div>
+            </li>
+            <li class="list-item" style="border: 1px solid lightgrey;">
+                <div class="left-align">Jane Smith</div>
+                <div class="center-align" style="text-align: center;">Edited profile</div>
+                <div class="right-align">2025-03-01 11:20</div>
+            </li>
+            <li class="list-item" style="border: 1px solid lightgrey;">
+                <div class="left-align">Abel Moran</div>
+                <div class="center-align" style="text-align: center;">Banned user</div>
+                <div class="right-align">2025-03-01 12:05</div>
+            </li>
+            <li class="list-item" style="border: 1px solid lightgrey;">
+                <div class="left-align">Foday Mami</div>
+                <div class="center-align" style="text-align: center;">Updated settings</div>
+                <div class="right-align">2025-03-01 13:30</div>
+            </li>
+            <li class="list-item" style="border: 1px solid lightgrey;">
+                <div class="left-align">Joshua Wusu</div>
+                <div class="center-align" style="text-align: center;">Added content</div>
+                <div class="right-align">2025-03-01 14:45</div>
+            </li>
+            <li class="list-item" style="border: 1px solid lightgrey;">
+                <div class="left-align">Jimmothy Jimson</div>
+                <div class="center-align" style="text-align: center;">Logged out</div>
+                <div class="right-align">2025-03-01 15:00</div>
+            </li>
+            <li class="list-item" style="border: 1px solid lightgrey;">
+                <div class="left-align">Winnie Poo</div>
+                <div class="center-align" style="text-align: center;">Submitted report</div>
+                <div class="right-align">2025-03-01 16:10</div>
+            </li>
+            <li class="list-item" style="border: 1px solid lightgrey;">
+                <div class="left-align">Donald Duck</div>
+                <div class="center-align" style="text-align: center;">Changed password</div>
+                <div class="right-align">2025-03-01 17:25</div>
+            </li>
+            <li class="list-item" style="border: 1px solid lightgrey;">
+                <div class="left-align">Duckson Duck</div>
+                <div class="center-align" style="text-align: center;">Removed comment</div>
+                <div class="right-align">2025-03-01 18:00</div>
+            </li>
+            <li class="list-item" style="border: 1px solid lightgrey;">
+                <div class="left-align">Mickey Mouse</div>
+                <div class="center-align" style="text-align: center;">Updated profile picture</div>
+                <div class="right-align">2025-03-01 19:10</div>
+            </li>
+            <li class="list-item" style="border: 1px solid lightgrey;">
+                <div class="left-align">Goofy Goof</div>
+                <div class="center-align" style="text-align: center;">Logged in</div>
+                <div class="right-align">2025-03-01 20:05</div>
+            </li>
+            <li class="list-item" style="border: 1px solid lightgrey;">
+                <div class="left-align">Pluto Pup</div>
+                <div class="center-align" style="text-align: center;">Edited settings</div>
+                <div class="right-align">2025-03-01 21:40</div>
+            </li>
+            <li class="list-item" style="border: 1px solid lightgrey;">
+                <div class="left-align">Donald Duck</div>
+                <div class="center-align" style="text-align: center;">Added content</div>
+                <div class="right-align">2025-03-01 22:15</div>
+            </li>
+            <li class="list-item" style="border: 1px solid lightgrey;">
+                <div class="left-align">Daisy Duck</div>
+                <div class="center-align" style="text-align: center;">Removed comment</div>
+                <div class="right-align">2025-03-01 23:00</div>
+            </li>
+        </ul> 
+        
+    </div>
+
+    <!-- Bootstrap Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

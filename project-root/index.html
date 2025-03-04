@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +8,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Press+Start+2P&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Swiper JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
-
 <body class="bg-dark text-light">
     <!-- Top Navigation Bar -->
     <div class="topnav">
-        <h1 class="logo">AniWatch</h1>
+        <a href="index.html" class="logo-link">
+            <h1 class="logo">AniWatch</h1>
+        </a>
         <div class="nav-links">
             <a href="index.html">Home</a>
-            <a href="views/customer/browse.html">Watchlists</a>
+            <a href="index-watchlist.html">Watchlists</a>
             <a href="#" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up</a>
             <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
         </div>
@@ -29,104 +31,170 @@
         <div class="hero-section text-center py-5">
             <h1 class="display-4">Discover and track your favorite anime and manga!</h1>
         </div>
-
-        <!-- Anime Data Section -->
-<div class="container">
-    <h2 class="text-center my-5">New Winter Anime</h2>
-    <div class="row" id="anime-list">
-        <!-- Placeholder for dynamic anime data -->
-        <div class="col-md-4 mb-4">
-            <div class="card bg-secondary text-light">
-                <img src="https://via.placeholder.com/300x400" class="card-img-top" alt="Anime Image">
-                <div class="card-body">
-                    <h5 class="card-title">Anime Title 1</h5>
-                    <p class="card-text">Some quick description about the anime.</p>
-                </div>
-            </div>
-        </div>
-        <!-- Repeat for more placeholders -->
-                 <!-- Placeholder for dynamic anime data -->
-        <div class="col-md-4 mb-4">
-            <div class="card bg-secondary text-light">
-                <img src="https://via.placeholder.com/300x400" class="card-img-top" alt="Anime Image">
-                <div class="card-body">
-                    <h5 class="card-title">Anime Title 2</h5>
-                    <p class="card-text">Some quick description about the anime.</p>
-                </div>
-            </div>
-        </div>
-        <!-- Repeat for more placeholders -->
-                 <!-- Placeholder for dynamic anime data -->
-        <div class="col-md-4 mb-4">
-            <div class="card bg-secondary text-light">
-                <img src="https://via.placeholder.com/300x400" class="card-img-top" alt="Anime Image">
-                <div class="card-body">
-                    <h5 class="card-title">Anime Title 3</h5>
-                    <p class="card-text">Some quick description about the anime.</p>
-                </div>
-            </div>
-        </div>
-        <!-- Repeat for more placeholders -->
-    </div>
-</div>
-
-    <!-- Mini Welcome Header -->
-    <div class="hero-section text-center py-5">
-        <h2>Welcome to AniWatch</h2>
-        <p>Find the Anime Watchlist that fits what you want!</p>
     </div>
 
-        <!-- Random Anime Lists Section -->
-<div class="container">
-    <h2 class="text-center my-5">Random Anime Lists</h2>
-    <div class="row" id="random-lists">
-        <!-- Placeholder for random anime lists -->
-        <div class="col-md-4 mb-4">
-            <div class="card bg-secondary text-light">
-                <div class="card-body">
-                    <h5 class="card-title">User's Watchlist 1</h5>
-                    <p class="card-text">A curated list of anime by a user.</p>
-                    <a href="#" class="btn btn-primary">View List</a>
+    <!-- Anime Data Section -->
+    <div class="container">
+        <h2 class="text-center my-5">Popular Winter Anime</h2>
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="pics/Solo-Leveling.jpg" class="card-img-top" alt="Anime Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Solo Leveling</h5>
+                            <p class="card-text">Alternate Title: Ore dake Level Up na Ken</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="pics/The-Apothecary-Diaries.jpg" class="card-img-top" alt="Anime Image">
+                        <div class="card-body">
+                            <h5 class="card-title">The Apothecary Diaries</h5>
+                            <p class="card-text">Alternate Title: Kusuriya no Hitorigoto</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="pics/One-Piece.jpg" class="card-img-top" alt="Anime Image">
+                        <div class="card-body">
+                            <h5 class="card-title">One Piece</h5>
+                            <p class="card-text">Alternate Title: One Piece</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="pics/ReZero.jpg" class="card-img-top" alt="Anime Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Re:ZERO - Starting Life in Another World</h5>
+                            <p class="card-text">Alternate Title: Re:Zero kara Hajimeru Isekai Seikatsu</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="pics/Orb.jpg" class="card-img-top" alt="Anime Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Orb: On the Movements of the Earth</h5>
+                            <p class="card-text">Alternate Title: Chi. Chikyuu no Undou ni Tsuite</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="pics/Shangri-La-Frontier.jpg" class="card-img-top" alt="Anime Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Shangri-La Frontier</h5>
+                            <p class="card-text">Alternate Title: Shangri-La Frontier: Kusoge Hunter, Kamige ni Idoman to su</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="pics/Dr.Stone.jpg" class="card-img-top" alt="Anime Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Dr. Stone</h5>
+                            <p class="card-text">Alternate Title: Dr. Stone: Science Future</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- Repeat for more placeholders -->
-    </div>
-</div>
+        <div class="swiper-button-next btn"></div>
+        <div class="swiper-button-prev btn"></div>
 
+        <!-- Mini Welcome Header -->
+        <div class="hero-section text-center py-5">
+            <h2>Welcome to AniWatch</h2>
+            <p>Find the Anime Watchlist that fits what you want!</p>
+        </div>
 
-    <!-- Signup Modal -->
-    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content bg-dark text-light">
-                <div class="modal-header">
-                    <h5 class="modal-title text-primary" id="signupModalLabel">Sign Up</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+        <!-- Curated Anime Lists Section -->
+        <div class="container">
+            <h2 class="text-center my-5">User's Watchlists</h2>
+            <div class="swiper mySwiper2">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide col-md-4 mb-4">
+                        <div class="random-anime-card bg-secondary text-light">
+                            <div class="random-anime-card-body">
+                                <img src="pics/DeadeyeFo.png" alt="Profile Image" class="profile-image">
+                                <h5 class="random-anime-card-title">DeadeyeFo's Watchlist</h5>
+                                <p class="random-anime-card-text">A curated list of anime by a user.</p>
+                                <a href="index-wlist1.html" class="btn btn-primary">View List</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide col-md-4 mb-4">
+                        <div class="random-anime-card bg-secondary text-light">
+                            <div class="random-anime-card-body">
+                                <img src="pics/Abel.png" alt="Profile Image" class="profile-image">
+                                <h5 class="random-anime-card-title">Abel's Watchlist</h5>
+                                <p class="random-anime-card-text">A curated list of anime by a user.</p>
+                                <a href="index-wlist2.html" class="btn btn-primary">View List</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide col-md-4 mb-4">
+                        <div class="random-anime-card bg-secondary text-light">
+                            <div class="random-anime-card-body">
+                                <img src="pics/Primordial.png" alt="Profile Image" class="profile-image">
+                                <h5 class="random-anime-card-title">Primordial's Watchlist</h5>
+                                <p class="random-anime-card-text">A curated list of anime by a user.</p>
+                                <a href="index-wlist3.html" class="btn btn-primary">View List</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide col-md-4 mb-4">
+                        <div class="random-anime-card bg-secondary text-light">
+                            <div class="random-anime-card-body">
+                                <img src="pics/Shangri-La-Frontier.jpg" alt="Profile Image" class="profile-image">
+                                <h5 class="random-anime-card-title">User's Watchlist 4</h5>
+                                <p class="random-anime-card-text">A curated list of anime by a user.</p>
+                                <a href="index-wlist4.html" class="btn btn-primary">View List</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="username" class="form-label text-white">Username</label>
-                            <input type="text" class="form-control bg-dark text-light border-primary" id="username"
-                                required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label text-white">Email address</label>
-                            <input type="email" class="form-control bg-dark text-light border-primary" id="email"
-                                required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label text-white">Password</label>
-                            <input type="password" class="form-control bg-dark text-light border-primary" id="password"
-                                required>
-                        </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Signup Modal -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary" id="signupModalLabel">Sign Up</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="username" class="form-label text-white">Username</label>
+                        <input type="text" class="form-control bg-dark text-light border-primary" id="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label text-white">Email address</label>
+                        <input type="email" class="form-control bg-dark text-light border-primary" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label text-white">Password</label>
+                        <input type="password" class="form-control bg-dark text-light border-primary" id="password" required>
+                    </div>
+                    <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary w-100">Create Account</button>
-                    </form>
-                </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="forgotpassword.html" class="text-primary">Sign up for a Provider account to create watchlist.</a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -134,42 +202,62 @@
             <div class="modal-content bg-dark text-light">
                 <div class="modal-header">
                     <h5 class="modal-title text-primary" id="loginModalLabel">Login to AniWatch</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form>
                         <div class="mb-3">
                             <label for="loginEmail" class="form-label text-white">Email address</label>
-                            <input type="email" class="form-control bg-dark text-light border-primary" id="loginEmail"
-                                required>
+                            <input type="email" class="form-control bg-dark text-light border-primary" id="loginEmail" required>
                         </div>
                         <div class="mb-3">
                             <label for="loginPassword" class="form-label text-white">Password</label>
-                            <input type="password" class="form-control bg-dark text-light border-primary"
-                                id="loginPassword" required>
+                            <input type="password" class="form-control bg-dark text-light border-primary" id="loginPassword" required>
                         </div>
+                        <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary w-100">Login</button>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="views/home.html" class="btn btn-secondary w-50">Bypass (Demo)</a>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="views/admin/login.html" class="btn btn-secondary w-50">Sysadmin (Demo)</a>
+                        </div>
                         <div class="text-center mt-3">
                             <a href="forgotpassword.html" class="text-primary">Forgot Password?</a>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <p class="text-light">Don't have an account? <a href="#" data-bs-toggle="modal"
-                            data-bs-target="#signupModal" class="text-primary">Sign Up</a></p>
+                    <p class="text-light">Don't have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#signupModal" class="text-primary">Sign Up</a></p>
                 </div>
             </div>
         </div>
     </div>
 
-<footer class="text-center py-3">
-    <p>&copy; 2025 AniWatch</p>
-</footer>
+    <footer class="footer-section">
+        <div class="social-links">
+            <a href="https://discord.com/" target="_blank">
+                <img src="pics/discord-logo.png" alt="Discord">
+            </a>
+            <a href="https://www.instagram.com/" target="_blank">
+                <img src="pics/instagram-logo.png" alt="Instagram">
+            </a>
+            <a href="https://www.reddit.com/" target="_blank">
+                <img src="pics/reddit-logo.jpeg" alt="Reddit">
+            </a>
+            <a href="https://twitter.com/" target="_blank">
+                <img src="pics/x-logo.jpeg" alt="Twitter">
+            </a>
+        </div>
+        <p>© 2025 AniWatch</p>
+    </footer>
 
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="public/js/main.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/script.js"></script>
 </body>
-
 </html>

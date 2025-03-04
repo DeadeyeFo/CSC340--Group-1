@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2f0ca81a-6487-4c9c-96c2-9bcc8bf63f46" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/project-root/Popular-Winter-Anime/One-Piece.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-root/Popular-Winter-Anime/Solo-Leveling.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-root/Popular-Winter-Anime/The-Apothecary-Diaries.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-root/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/project-root/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-root/public/css/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/project-root/public/css/profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-root/public/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/project-root/public/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-root/public/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-root/public/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-root/views/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/project-root/views/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-root/views/provider/create-service.html" beforeDir="false" afterPath="$PROJECT_DIR$/project-root/views/provider/create-service.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-root/views/provider/manage-profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/project-root/views/provider/manage-profile.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Joshua-Wusu&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/DeadeyeFo/CSC340--Group-1",
+    "accountId": "cd2740d7-fe18-4459-b74c-8f813d8b3d62"
+  }
+}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2tEIYRim1jx1c6ZitH4fMn4EHTV" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "provider",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/joshw/Downloads/sp25-crud-api-jpa-main/sp25-crud-api-jpa-main"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2f0ca81a-6487-4c9c-96c2-9bcc8bf63f46" name="Changes" comment="" />
+      <created>1739910855549</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1739910855549</updated>
+    </task>
+    <servers />
+  </component>
+</project>
