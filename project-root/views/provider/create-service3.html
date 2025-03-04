@@ -1,188 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AniWatch</title>
-
-    <link rel="stylesheet" href="../../public/css/profile.css">
+    <title>AniWatch - Primordial's Watchlist</title>
+    <link rel="stylesheet" href="../../public/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Press+Start+2P&display=swap" rel="stylesheet">
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .provider-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+            border: 2px solid #007bff;
+        }
+        .anime-card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 0.375rem;
+            border-top-right-radius: 0.375rem;
+        }
+    </style>
 </head>
-
 <body class="bg-dark text-light">
-<!-- Top Navigation Bar -->
-<div class="topnav">
-    <a href="../home.html" class="logo-link">
-        <h1 class="logo">AniWatch</h1>
-    </a>
-    <div class="nav-links">
-        <a href="manage-profile3.html">Profile</a>
-        <a href="../../views/customer/browse.html">Watchlists</a>
-        <a href="../../index.html">Logout</a>
-    </div>
-</div>
-
-<div class="watchlist-profile-section">
-    <div class="watchlist-profile-pic">
-        <img src="../../pics/Primordial.png" alt="watchlistProfile Picture">
-    </div>
-
-    <div class="watchlist-profile-container">
-        <h3 class="watchlist-profile-name">Primordial</h3>
-        <p class="watchlist-profile-info">Short Bio</p>
-        <a href="" class="btn btn-primary">Follow</a>
-    </div>
-</div>
-
-
-
-
-
-
-<div class="watchlist-container">
-    <div class="watchlist-title">
-        <h2>Watch List</h2>
-    </div>
-    <div class="watchlist-grid">
-        <!-- Item 1 -->
-        <div class="watch-item">
-            <div class="card bg-secondary text-light">
-                <img src="../../pics/Monster.jpg" class="card-img-top" alt="Anime Image">
-                <div class="card-body">
-                    <h5 class="card-title">Monster</h5>
-                </div>
-            </div>
-        </div>
-
-        <!-- Item 2 -->
-        <div class="watch-item">
-            <div class="card bg-secondary text-light">
-                <img src="../../pics/Tensura.jpg" class="card-img-top" alt="Anime Image">
-                <div class="card-body">
-                    <h5 class="card-title">That Time I Got Reincarnated as a Slime</h5>
-                </div>
-            </div>
-        </div>
-
-        <!-- Item 3 -->
-        <div class="watch-item">
-            <div class="card bg-secondary text-light">
-                <img src="../../pics/One-punch-man.jpg" class="card-img-top" alt="Anime Image">
-                <div class="card-body">
-                    <h5 class="card-title">One Punch Man</h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="watch-item">
-            <div class="card bg-secondary text-light">
-                <img src="../../pics/Demon-Slayer.jpg" class="card-img-top" alt="Anime Image">
-                <div class="card-body">
-                    <h5 class="card-title">Demon Slayer</h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="watch-item">
-            <div class="card bg-secondary text-light">
-                <img src="../../pics/Miss-Kobayashi.jpg" class="card-img-top" alt="Anime Image">
-                <div class="card-body">
-                    <h5 class="card-title">Miss Kobayashi's Dragon Maid</h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="watch-item">
-            <div class="card bg-secondary text-light">
-                <img src="../../pics/Delicious-dungeon.jpg" class="card-img-top" alt="Anime Image">
-                <div class="card-body">
-                    <h5 class="card-title">Delicious Dungeon</h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="watch-item">
-            <div class="card bg-secondary text-light">
-                <img src="../../pics/Made-in-abyss.jpg" class="card-img-top" alt="Anime Image">
-                <div class="card-body">
-                    <h5 class="card-title">Made in Abyss</h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="watch-item">
-            <div class="card bg-secondary text-light">
-                <img src="../../pics/Danmachi.jpg" class="card-img-top" alt="Anime Image">
-                <div class="card-body">
-                    <h5 class="card-title">Is It Wrong to Try to Pick Up Girls in a Dungeon?</h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="watch-item">
-            <div class="card bg-secondary text-light">
-                <img src="../../pics/Mob-psycho-100.jpg" class="card-img-top" alt="Anime Image">
-                <div class="card-body">
-                    <h5 class="card-title">Mob Psycho 100</h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="watch-item">
-            <div class="card bg-secondary text-light">
-                <img src="../../pics/Mushoku%20Tensei.jpg" class="card-img-top" alt="Anime Image">
-                <div class="card-body">
-                    <h5 class="card-title">Mushoku Tensei: Jobless Reincarnation</h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="watch-item">
-            <div class="card bg-secondary text-light">
-                <img src="../../pics/Fire-force.jpg" class="card-img-top" alt="Anime Image">
-                <div class="card-body">
-                    <h5 class="card-title">Fire Force</h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="watch-item">
-            <div class="card bg-secondary text-light">
-                <img src="../../pics/86.jpg" class="card-img-top" alt="Anime Image">
-                <div class="card-body">
-                    <h5 class="card-title">86: Eighty Six</h5>
-                </div>
-            </div>
-        </div>
-
-        <!-- Add More Items Here -->
-    </div>
-</div>
-
-
-<footer class="footer-section">
-    <div class="social-links">
-        <a href="https://discord.com/" target="_blank">
-            <img src="../../pics/discord-logo.png" alt="Discord">
+    <!-- Top Navigation Bar -->
+    <div class="topnav">
+        <a href="../home.html" class="logo-link">
+            <h1 class="logo">AniWatch</h1>
         </a>
-        <a href="https://www.instagram.com/" target="_blank">
-            <img src="../../pics/instagram-logo.png" alt="Instagram">
-        </a>
-        <a href="https://www.reddit.com/" target="_blank">
-            <img src="../../pics/reddit-logo.jpeg" alt="Reddit">
-        </a>
-        <a href="https://twitter.com/" target="_blank">
-            <img src="../../pics/x-logo.jpeg" alt="Twitter">
-        </a>
+        <div class="nav-links">
+            <a href="../home.html">Home</a>
+            <a href="../../views/customer/watchlist.html">Watchlists</a>
+            <a href="../../index.html">Logout</a>
+        </div>
     </div>
-    <p>&copy; 2025 AniWatch</p>
-</footer>
 
+    <!-- Main Content -->
+    <div class="content">
+        <div class="container my-5">
+            <h2 class="mb-4">Primordial's Diverse Watchlist</h2>
+            <div class="d-flex align-items-center mb-4">
+                <a href="../customer/primodial.html">
+                    <img src="../../pics/Primordial.png" alt="Provider Icon" class="provider-icon">
+                </a>
+                <p class="mb-0">By: <a href="../customer/primodial.html" class="text-light">Primordial</a></p>
+            </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/script.js"></script>
+            <!-- Watchlist Description -->
+            <div class="mb-4">
+                <h5>Description</h5>
+                <p>A varied selection of anime ranging from psychological thrillers to lighthearted adventures and everything in between.</p>
+            </div>
+
+            <!-- Anime List -->
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="../../pics/Monster.jpg" class="anime-card-img" alt="Monster">
+                        <div class="card-body">
+                            <h5 class="card-title">Monster</h5>
+                            <p class="card-text">A doctor’s descent into a psychological nightmare.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="../../pics/Tensura.jpg" class="anime-card-img" alt="That Time I Got Reincarnated as a Slime">
+                        <div class="card-body">
+                            <h5 class="card-title">That Time I Got Reincarnated as a Slime</h5>
+                            <p class="card-text">A man reborn as a slime builds a new world.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="../../pics/One-punch-man.jpg" class="anime-card-img" alt="One Punch Man">
+                        <div class="card-body">
+                            <h5 class="card-title">One Punch Man</h5>
+                            <p class="card-text">A hero who ends fights with one punch.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="../../pics/Demon-Slayer.jpg" class="anime-card-img" alt="Demon Slayer">
+                        <div class="card-body">
+                            <h5 class="card-title">Demon Slayer</h5>
+                            <p class="card-text">A breathtaking tale of sibling bonds and demon hunting.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="../../pics/Miss-Kobayashi.jpg" class="anime-card-img" alt="Miss Kobayashi's Dragon Maid">
+                        <div class="card-body">
+                            <h5 class="card-title">Miss Kobayashi's Dragon Maid</h5>
+                            <p class="card-text">A heartwarming story of dragons and daily life.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="../../pics/Delicious-dungeon.jpg" class="anime-card-img" alt="Delicious Dungeon">
+                        <div class="card-body">
+                            <h5 class="card-title">Delicious Dungeon</h5>
+                            <p class="card-text">Adventurers cook monsters to survive.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="../../pics/Made-in-abyss.jpg" class="anime-card-img" alt="Made in Abyss">
+                        <div class="card-body">
+                            <h5 class="card-title">Made in Abyss</h5>
+                            <p class="card-text">A haunting descent into a cursed abyss.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="../../pics/Danmachi.jpg" class="anime-card-img" alt="Is It Wrong to Try to Pick Up Girls in a Dungeon?">
+                        <div class="card-body">
+                            <h5 class="card-title">Is It Wrong to Try to Pick Up Girls in a Dungeon?</h5>
+                            <p class="card-text">Dungeon adventures and divine encounters.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="../../pics/Mob-psycho-100.jpg" class="anime-card-img" alt="Mob Psycho 100">
+                        <div class="card-body">
+                            <h5 class="card-title">Mob Psycho 100</h5>
+                            <p class="card-text">A psychic boy’s journey of self-control.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="../../pics/Mushoku%20Tensei.jpg" class="anime-card-img" alt="Mushoku Tensei: Jobless Reincarnation">
+                        <div class="card-body">
+                            <h5 class="card-title">Mushoku Tensei: Jobless Reincarnation</h5>
+                            <p class="card-text">A second chance at life in a fantasy world.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="../../pics/Fire-force.jpg" class="anime-card-img" alt="Fire Force">
+                        <div class="card-body">
+                            <h5 class="card-title">Fire Force</h5>
+                            <p class="card-text">Firefighters battle supernatural flames.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-secondary text-light">
+                        <img src="../../pics/86.jpg" class="anime-card-img" alt="86: Eighty Six">
+                        <div class="card-body">
+                            <h5 class="card-title">86: Eighty Six</h5>
+                            <p class="card-text">A war seen through the eyes of the oppressed.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-3">
+        <p>© 2025 AniWatch</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
