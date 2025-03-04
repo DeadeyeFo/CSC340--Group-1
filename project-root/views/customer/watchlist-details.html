@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AniWatch - Watchlist Details</title>
+    <link rel="stylesheet" href="../../public/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .provider-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        .anime-card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="bg-dark text-light">
+    <!-- Top Navigation Bar -->
+    <div class="topnav">
+        <h1 class="logo">AniWatch</h1>
+        <div class="nav-links">
+            <a href="../home.html">Home</a>
+            <a href="browse.html">Watchlists</a>
+            <a href="library.html">Library</a>
+            <a href="#">Profile</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <h2 class="mb-4">Best Anime for Beginners</h2>
+        <div class="d-flex align-items-center mb-4">
+            <a href="provider-profile.html?user=user1">
+                <img src="https://via.placeholder.com/40" alt="Provider Icon" class="provider-icon">
+            </a>
+            <p class="mb-0">By: <a href="provider-profile.html?user=user1" class="text-light">User1</a></p>
+        </div>
+
+        <!-- Provider Description -->
+        <div class="mb-4">
+            <h5>Description</h5>
+            <p>This list is perfect for anyone new to anime! It includes a mix of action-packed adventures, heartwarming stories, and beginner-friendly classics that’ll get you hooked on the genre.</p>
+        </div>
+
+        <!-- Anime List -->
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card bg-secondary text-light">
+                    <img src="https://via.placeholder.com/300x200?text=Attack+on+Titan" alt="Anime" class="anime-card-img">
+                    <div class="card-body">
+                        <h5 class="card-title">Attack on Titan</h5>
+                        <p class="card-text">Epic battles and a gripping story about humanity’s fight for survival.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card bg-secondary text-light">
+                    <img src="https://via.placeholder.com/300x200?text=My+Hero+Academia" alt="Anime" class="anime-card-img">
+                    <div class="card-body">
+                        <h5 class="card-title">My Hero Academia</h5>
+                        <p class="card-text">A fun superhero journey with inspiring characters.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card bg-secondary text-light">
+                    <img src="https://via.placeholder.com/300x200?text=Spirited+Away" alt="Anime" class="anime-card-img">
+                    <div class="card-body">
+                        <h5 class="card-title">Spirited Away</h5>
+                        <p class="card-text">A magical adventure with stunning visuals.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-3">
+        <p>© 2025 AniWatch</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
