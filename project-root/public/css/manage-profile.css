@@ -1,0 +1,513 @@
+/* Reset default margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    color: white; /* Changed to white for better contrast */
+    line-height: 1.6;
+    background-color: #0a0909; /* Dark background */
+    font-family: Arial, sans-serif;
+    margin-top: 0;
+}
+
+/* Style for the top navigation bar */
+.topnav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #222; /* Dark background */
+    padding: 10px 20px;
+    position: fixed; /* Keeps it at the top when scrolling */
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Logo styling */
+.logo {
+    font-family: "Anton SC", serif;
+    color: white;
+    font-size: 28px;
+    font-weight: 400;
+}
+
+.logo-link {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Inherit color from parent */
+}
+
+/* Navigation links */
+.nav-links {
+    display: flex;
+}
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 18px;
+        transition: background 0.3s;
+    }
+
+        /* Hover effect */
+        .nav-links a:hover {
+            background-color: #555;
+            border-radius: 5px;
+        }
+
+/* Push page content down to avoid overlap with fixed navbar */
+.content {
+    padding-top: 80px; /* Adjusted to account for navbar height */
+}
+
+/* Anime Card Styling */
+.card {
+    border: none;
+    background-color: #222; /* Dark background for cards */
+    color: white;
+    transition: transform 0.3s;
+    align-content: center;
+    margin: 10px;
+}
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+.card-img-top {
+    border-bottom: 1px solid #444; /* Subtle border for the image */
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #ccc; /* Slightly lighter text for descriptions */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Modal Styling */
+.modal-content {
+    background: linear-gradient(to bottom, #222, #1a1a1a);
+    color: white;
+    border: 1px solid #444;
+    border-radius: 10px;
+}
+
+.modal-header {
+    border-bottom: 1px solid #555;
+    background-color: #222;
+}
+
+.modal-footer {
+    border-top: 1px solid #555;
+    background-color: #222;
+}
+
+.btn-close {
+    filter: invert(1);
+}
+
+.form-control {
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 5px;
+}
+
+    .form-control:focus {
+        background-color: #444;
+        color: white;
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+/* Button Styling */
+.btn-primary {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border: none;
+}
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #0056b3, #003d82);
+    }
+
+/* Text Styling */
+.text-primary {
+    color: #007bff !important; /* Bootstrap primary color for links */
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Margin and Padding Utilities */
+.my-5 {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+/* Profile-specific styling */
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border: 3px solid #007bff; /* Blue border for variety */
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+    .profile-img:hover {
+        transform: scale(1.1);
+        border-color: #0056b3; /* Darker blue on hover */
+    }
+
+.verified-button {
+    background-color: #007bff; /* Blue background color */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px; /* Slightly rounded corners */
+    cursor: pointer; /* Indicate it's clickable */
+    font-size: 14px;
+    align-items: center; /* Vertically align icon and text */
+}
+
+.check-icon {
+    margin-right: 5px; /* Add space between icon and text */
+}
+
+.settings-btn {
+    background: linear-gradient(135deg, #007bff, #0056b3); /* Gradient for variety */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 25px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+    .settings-btn:hover {
+        background: linear-gradient(135deg, #0056b3, #003d82);
+        transform: translateY(-2px);
+    }
+
+/* Stats Box */
+.stats-box {
+    background: linear-gradient(to bottom, #333, #222); /* Subtle gradient */
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+    .stats-box:hover {
+        transform: translateY(-5px);
+    }
+
+    .stats-box h6 {
+        color: #ccc; /* Matches card-text in styles.css */
+        font-size: 1rem;
+    }
+
+    .stats-box p {
+        color: #007bff; /* Blue for emphasis */
+        font-size: 1.75rem;
+        margin: 0;
+    }
+
+/* Main stats container */
+.stats-container {
+    width: 60%;
+    margin: auto;
+    padding: 10px;
+    margin-bottom: -60px;
+}
+
+/* Section Title */
+.stats-title {
+    font-size: 24px;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 5px;
+    padding-top: 0px;
+}
+
+/* Anime profile stats section*/
+body {
+    background-color: #0a0909;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Main stats container */
+.stats-container {
+    width: 60%;
+    margin: auto;
+    padding: 10px;
+    margin-bottom: -60px;
+}
+
+/* Section Title */
+.stats-title {
+    font-size: 24px;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 5px;
+    padding-top: 0px;
+}
+
+/* Stats Box */
+.stats-box {
+    background-color: #111111;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 20px;
+}
+
+/* Header with Links */
+.stats-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 5px solid #333;
+    padding-bottom: 5px;
+}
+
+    .stats-header a {
+        color: #4a90e2;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+        .stats-header a:hover {
+            text-decoration: underline;
+        }
+
+/* Details Section */
+.stats-details {
+    padding: 10px 0;
+}
+
+/* Progress Bar */
+.progress-bar {
+    background-color: #333;
+    height: 5px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* Stats List */
+.stats-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 10px 0;
+}
+
+    .stats-list span:nth-child(even) { /* Targets every even span (the numbers) */
+        margin-left: 300px; /* Adjust this value to control the spacing */
+    }
+
+    .stats-list span:nth-child(odd) { /* Targets every even span (the numbers) */
+        margin-left: 30px; /* Adjust this value to control the spacing */
+    }
+
+/* Colored Circles */
+.circle {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.green {
+    background-color: #28a745;
+}
+
+.blue {
+    background-color: #007bff;
+}
+
+.yellow {
+    background-color: #ffc107;
+}
+
+.red {
+    background-color: #dc3545;
+}
+
+.gray {
+    background-color: #6c757d;
+}
+
+.profile-image {
+    width: 50px; /* Adjust size as needed */
+    height: 50px;
+    border-radius: 50%; /* Make it circular */
+    object-fit: cover; /* Maintain aspect ratio and cover 60the area */
+    float: left; /* Position it to the left */
+    margin-right: 10px; /* Add some space to the right */
+}
+
+/*Random/users watchlist card styling*/
+.random-anime-card {
+    border: none;
+    background-color: #222; /* Dark background for cards */
+    color: white;
+    transition: transform 0.3s;
+    align-content: center;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+    .random-anime-card:hover {
+        transform: scale(1.05);
+    }
+
+.random-anime-card-img-top {
+    border-bottom: 1px solid #444; /* Subtle border for the image */
+}
+
+.random-anime-card-body {
+    padding: 1rem;
+}
+
+.random-anime-card-title {
+    border: 0.5px solid #444; /* White border, 2px thick */
+    border-radius: 5px;
+    padding: 5px; /* Optional: Add padding to create space between text and border */
+    text-align: center;
+    margin-bottom: 10px;
+    max-width: 100%;
+    font-size: 1.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* Keeps text on one line */
+}
+
+.random-anime-card-text {
+    display: flex;
+    font-size: 1rem;
+    color: #ccc; /* Slightly lighter text for descriptions */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 100px;
+}
+
+.rating {
+    display: flex;
+    margin-right: 100px;
+}
+
+.btn-group .btn {
+    margin-left: 60px;
+}
+
+.bio-bubble {
+    background-image: linear-gradient(to bottom, rgba(64, 64, 64, 0.7), rgba(5, 5, 5, 0.5)); /* Transparent gray to transparent dark gray */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px;
+    margin-bottom: 20px; /* Add spacing below */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+    transition: transform 0.3s;
+}
+
+    .bio-bubble:hover {
+        transform: scale(1.005);
+    }
+
+.bio-content {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+
+.watchlist-bubble {
+    background-color: #222; /* Example background color */
+    border-radius: 20px; /* Adjust the value for desired roundness */
+    padding: 30px; /* Add padding to create space within the bubble */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Add a subtle shadow for depth */
+    margin-top: 80px;
+    margin-bottom: -80px; /* Add spacing below the bubble */
+    transition: transform 0.3s;
+}
+
+    .watchlist-bubble:hover {
+        transform: scale(1.005);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.3); /* Increase shadow on hover */
+    }
+
+.watchlist-thumbnail {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-top-left-radius: 0.375rem;
+    border-top-right-radius: 0.375rem;
+}
+
+.profile-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(100px);
+    z-index: -1;
+}
+
+/*footer stuff*/
+.footer-section {
+    text-align: center;
+    margin-top: 100px;
+    border-top: 1px solid #ccc; /* Add a line above the footer */
+    padding-top: 20px;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px; /* Add some space between the links and the copyright text */
+    margin-top: 10px;
+}
+
+    .social-links a {
+        display: inline-block;
+        margin: 0 10px; /* Add spacing between the icons */
+        transition: transform 0.2s ease;
+    }
+
+        .social-links a:hover {
+            transform: scale(1.2); /* Increase the size on hover */
+        }
+
+    .social-links img {
+        width: 40px; /* Adjust the size of the icons as needed */
+        height: 40px;
+        border-radius: 50%; /* Make the images circular */
+    }
