@@ -1,10 +1,21 @@
 package com.aniwatch.api.animecard;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @RestController
@@ -13,6 +24,52 @@ public class animecardController {
 
     @Autowired
     private animecardService animecardService;
+
+    /**
+     * Get a list of anime cards from a RESTful web API.
+     * Endpoint: http://localhost:8080/anime/jikan
+     *
+     * @return a list of anime cards.
+     */
+    @GetMapping("/jikan")
+    public Object getAnimecards(){
+
+    
+    //Cosuming a restful web api
+            try{
+            //CONSUMING A RESTFUL WEB API
+            String url = "https://api.jikan.moe/v4/anime?limit=10&sfw=true";
+
+            RestTemplate restTemplate = new RestTemplate();
+            ObjectMapper mapper = new ObjectMapper();
+
+            String result = restTemplate.getForObject(url, String.class);        
+            JsonNode root = mapper.readTree(result);
+
+            List<animecard> animecard = new ArrayList<animecard>();
+
+            int count = 0;
+            for (JsonNode node : root.path("data")) {
+                if (count >= 10) break;
+                animecard animeCard = new animecard();
+                animeCard.setCardId(node.path("mal_id").asInt());
+                animeCard.setName(node.path("title_english").asText());
+                animeCard.setImageUrl(node.path("images").path("jpg").path("image_url").asText());
+                animeCard.setDescription(node.path("synopsis").path("name").asText());
+                // animeCard.setAltName(node.path("title_japanese").asText());
+                
+                animecard.add(animeCard);
+                count++;
+            }
+            return animecard;
+        } catch (JsonProcessingException e) {
+            // Handle the exception here (e.g., log it, return an error response, etc.)
+            Logger.getLogger(animecardController.class.getName()).log(Level.SEVERE, null, e);
+            return new ResponseEntity<>("Error processing JSON data", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // return new ResponseEntity<>(animecardService.getAllAnimeCards(), HttpStatus.OK);
+    }
 
     /**
      * Get a list of all anime cards in the database.
