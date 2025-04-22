@@ -1,6 +1,9 @@
 package com.aniwatch.aniwatch.anime;
 
 import com.aniwatch.aniwatch.user.UserService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,32 +24,24 @@ public class AnimeController {
 
     @GetMapping
     public String browseAnime(Model model) {
-        // To eventually check for sample data
-        animeService.initializeSampleData();
+        // 1) Fetch & save API results
+        List<Anime> animeList = animeService.fetchAndSaveTopAnime();
+        model.addAttribute("animeList", animeList);
 
-        // Get all anime
-        model.addAttribute("animeList", animeService.getAllAnime());
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAuthenticated = authentication != null &&
-                authentication.isAuthenticated() &&
-                !authentication.getName().equals("anonymousUser");
-
-        model.addAttribute("isAuthenticated", isAuthenticated);
-
-        if (isAuthenticated) {
-            String username = authentication.getName();
+        // 2) Your existing auth & userService logic...
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAuth = auth != null && auth.isAuthenticated()
+                         && !"anonymousUser".equals(auth.getName());
+        model.addAttribute("isAuthenticated", isAuth);
+        if (isAuth) {
+            String username = auth.getName();
             model.addAttribute("username", username);
-
             boolean isProvider = userService.isProvider(username);
             model.addAttribute("isProvider", isProvider);
-
             if (isProvider) {
-                Long providerId = userService.getProviderId(username);
-                model.addAttribute("providerId", providerId);
+                model.addAttribute("providerId", userService.getProviderId(username));
             }
         }
-
         return "browse-anime";
     }
 }
