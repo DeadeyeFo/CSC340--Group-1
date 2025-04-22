@@ -18,6 +18,42 @@ public class animecardService {
      */
     public List<animecard> getAllAnimeCards() {
         return animecardRepository.findAll();
+            //Cosuming a restful web api
+        //     try{
+        //         //CONSUMING A RESTFUL WEB API
+        //         String url = "https://api.jikan.moe/v4/anime?limit=10&sfw=true";
+    
+        //         RestTemplate restTemplate = new RestTemplate();
+        //         ObjectMapper mapper = new ObjectMapper();
+    
+        //         String result = restTemplate.getForObject(url, String.class);        
+        //         JsonNode root = mapper.readTree(result);
+    
+        //         List<animecard> animecard = new ArrayList<animecard>();
+    
+        //         int count = 0;
+        //         for (JsonNode node : root.path("data")) {
+        //             if (count >= 10) break;
+        //             animecard animeCard = new animecard();
+        //             animeCard.setCardId(node.path("mal_id").asInt());
+        //             animeCard.setName(node.path("title_english").asText());
+        //             animeCard.setImageUrl(node.path("images").path("jpg").path("image_url").asText());
+        //             animeCard.setDescription(node.path("synopsis").path("name").asText());
+        //             // animeCard.setAltName(node.path("title_japanese").asText());
+                    
+        //             animecard.add(animeCard);
+        //             count++;
+        //         }
+        //         return animecard;
+        //     } catch (JsonProcessingException e) {
+        //         // Handle the exception here (e.g., log it, return an error response, etc.)
+        //         Logger.getLogger(animecardController.class.getName()).log(Level.SEVERE, null, e);
+        //         return null;
+        //         //return new ResponseEntity<>("Error processing JSON data", HttpStatus.INTERNAL_SERVER_ERROR);
+        //     }
+        
+        //    // return animecardRepository.findAll();
+        // }
     }
 
     /**
@@ -61,7 +97,7 @@ public class animecardService {
         animecard existing = getAnimeCardById(id);
         existing.setName(animeCard.getName());
         existing.setDescription(animeCard.getDescription());
-        existing.setImageUrl(animeCard.getImageUrl());
+        // existing.setImageUrl[](animeCard.getImageUrl());
 
         return animecardRepository.save(existing);
     }
