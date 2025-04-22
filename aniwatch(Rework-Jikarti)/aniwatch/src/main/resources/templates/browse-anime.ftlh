@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AniWatch - Browse Anime</title>
 
   <!-- Stylesheets -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -100,41 +102,41 @@
     }
 
     .dropdown {
-                  position: relative;
-                  display: inline-block;
-                  margin-bottom: 11px;
-                }
+      position: relative;
+      display: inline-block;
+      margin-bottom: 11px;
+    }
 
-                .dropdown-menu {
-                  display: none;
-                  position: absolute;
-                  background-color: #222!important;
-                  min-width: 160px;
-                  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                  z-index: 1;
-                  border-radius: 8px;
-                  margin-top: 4px!important;
-                  margin-right: -84px!important;
-                }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      background-color: #222 !important;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      border-radius: 8px;
+      margin-top: 4px !important;
+      margin-right: -84px !important;
+    }
 
-                .dropdown:hover .dropdown-menu {
-                  display: block;
-                }
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
 
-                .dropdown-menu a {
-                  color: white;
-                  padding: 12px 16px;
-                  text-decoration: none;
-                  display: block;
-                }
+    .dropdown-menu a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
 
-                .dropdown-menu a:hover {
-                  background-color: #495057;
-                }
+    .dropdown-menu a:hover {
+      background-color: #495057;
+    }
 
-                .fa-user {
-                margin-top: 14.5px;
-                }
+    .fa-user {
+      margin-top: 14.5px;
+    }
 
     /* Content Styles */
     .content {
@@ -412,6 +414,7 @@
         opacity: 0;
         transform: translateY(20px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -464,148 +467,153 @@
 <body>
   <#import "/fragments/auth-modals.ftlh" as auth>
 
-  <!-- Top Navigation Bar -->
-  <div class="topnav">
-    <a href="/home" class="logo-link">
-      <h1 class="logo">AniWatch</h1>
-    </a>
-    <div class="nav-links">
-      <#if isAuthenticated?? && isAuthenticated>
-        <div class="dropdown">
-          <a href="#" class="dropbtn">
-            <i class="fas fa-user"></i> ${username!}
-          </a>
-          <div class="dropdown-menu">
-            <#if isProvider?? && isProvider>
-              <a href="/provider-profile/${providerId!}">My Profile</a>
-              <a href="/watchlists/new">Create Watchlist</a>
-            <#else>
-              <a href="/user-profile/${userId!}">My Profile</a>
-            </#if>
-            <a href="/logout">Logout</a>
+    <!-- Top Navigation Bar -->
+    <div class="topnav">
+      <a href="/home" class="logo-link">
+        <h1 class="logo">AniWatch</h1>
+      </a>
+      <div class="nav-links">
+        <#if isAuthenticated?? && isAuthenticated>
+          <div class="dropdown">
+            <a href="#" class="dropbtn">
+              <i class="fas fa-user"></i> ${username!}
+            </a>
+            <div class="dropdown-menu">
+              <#if isProvider?? && isProvider>
+                <a href="/provider-profile/${providerId!}">My Profile</a>
+                <a href="/watchlists/new">Create Watchlist</a>
+                <#else>
+                  <a href="/user-profile/${userId!}">My Profile</a>
+              </#if>
+              <a href="/logout">Logout</a>
+            </div>
           </div>
-        </div>
-      <#else>
-        <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
-      </#if>
-      <a href="/watchlists/watchlist-list">Watchlist library</a>
+          <#else>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+        </#if>
+        <a href="/watchlists/watchlist-list">Watchlist library</a>
+      </div>
     </div>
-  </div>
 
-  <!-- Main Content -->
-  <div class="content">
-    <div class="container">
-      <div class="page-header">
-        <h2>Browse Anime</h2>
-        <p>Discover anime to add to your watchlists</p>
-      </div>
+    <!-- Main Content -->
+    <div class="content">
+      <div class="container">
+        <div class="page-header">
+          <h2>Browse Anime</h2>
+          <p>Discover anime to add to your watchlists</p>
+        </div>
 
-      <!-- Search Bar -->
-      <div class="search-bar">
-        <input type="text" id="searchInput" class="form-control" placeholder="Search anime by title, genre, or studio..." />
-      </div>
+        <!-- Search Bar -->
+        <div class="search-bar">
+          <input type="text" id="searchInput" class="form-control"
+            placeholder="Search anime by title, genre, or studio..." />
+        </div>
 
-      <!-- Anime Suggestions Section -->
-      <div class="section-heading">
-        <h2>Your Anime Suggestions</h2>
-      </div>
+        <!-- Anime Suggestions Section -->
+        <div class="section-heading">
+          <h2>Your Anime Suggestions</h2>
+        </div>
 
-      <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-          <#if animeList?has_content>
-            <#list animeList as anime>
-              <div class="swiper-slide">
-                <div class="anime-card">
-                  <img src="${anime.imageUrl}" alt="${anime.title}" />
-                  <div class="card-body">
-                    <h5 class="card-title">${anime.title}</h5>
-                    <p class="card-text">Alternate Title: ${anime.alternateTitle}</p>
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper">
+            <#if animeList?has_content>
+              <#list animeList as anime>
+                <div class="swiper-slide">
+                  <div class="anime-card">
+                    <img src="${anime.imageUrl!'/pics/default-anime.jpg'}" srcset="
+    ${anime.imageUrl!''}   1x,
+    ${anime.imageUrl?replace('.jpg','@2x.jpg')!''} 2x
+  " alt="${anime.title!}" loading="lazy" />
+                    <div class="card-body">
+                      <h5 class="card-title">${anime.title}</h5>
+                      <p class="card-text">Alternate Title: ${anime.alternateTitle}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </#list>
-          <#else>
-            <div class="col-12 text-center">
-              <p>No anime available at the moment.</p>
-            </div>
-          </#if>
+              </#list>
+              <#else>
+                <div class="col-12 text-center">
+                  <p>No anime available at the moment.</p>
+                </div>
+            </#if>
+          </div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
         </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-      </div>
 
-      <!-- Genres Section -->
-      <div class="genres-section">
-        <div class="section-heading">
-          <h2>Explore by Genre</h2>
-        </div>
-        <div class="genres-grid">
-          <a href="#"><span>></span>Action</a>
-          <a href="#"><span>></span>Adventure</a>
-          <a href="#"><span>></span>Avant Garde</a>
-          <a href="#"><span>></span>Award Winning</a>
-          <a href="#"><span>></span>Boys Love</a>
-          <a href="#"><span>></span>Comedy</a>
-          <a href="#"><span>></span>Drama</a>
-          <a href="#"><span>></span>Fantasy</a>
-          <a href="#"><span>></span>Girls Love</a>
-          <a href="#"><span>></span>Gourmet</a>
-          <a href="#"><span>></span>Horror</a>
-          <a href="#"><span>></span>Mystery</a>
-          <a href="#"><span>></span>Romance</a>
-          <a href="#"><span>></span>Sci-Fi</a>
-          <a href="#"><span>></span>Slice of Life</a>
-          <a href="#"><span>></span>Sports</a>
-          <a href="#"><span>></span>Supernatural</a>
-          <a href="#"><span>></span>Suspense</a>
-          <a href="#"><span>></span>Isekai</a>
-          <a href="#"><span>></span>Place-holder</a>
+        <!-- Genres Section -->
+        <div class="genres-section">
+          <div class="section-heading">
+            <h2>Explore by Genre</h2>
+          </div>
+          <div class="genres-grid">
+            <a href="#"><span>></span>Action</a>
+            <a href="#"><span>></span>Adventure</a>
+            <a href="#"><span>></span>Avant Garde</a>
+            <a href="#"><span>></span>Award Winning</a>
+            <a href="#"><span>></span>Boys Love</a>
+            <a href="#"><span>></span>Comedy</a>
+            <a href="#"><span>></span>Drama</a>
+            <a href="#"><span>></span>Fantasy</a>
+            <a href="#"><span>></span>Girls Love</a>
+            <a href="#"><span>></span>Gourmet</a>
+            <a href="#"><span>></span>Horror</a>
+            <a href="#"><span>></span>Mystery</a>
+            <a href="#"><span>></span>Romance</a>
+            <a href="#"><span>></span>Sci-Fi</a>
+            <a href="#"><span>></span>Slice of Life</a>
+            <a href="#"><span>></span>Sports</a>
+            <a href="#"><span>></span>Supernatural</a>
+            <a href="#"><span>></span>Suspense</a>
+            <a href="#"><span>></span>Isekai</a>
+            <a href="#"><span>></span>Place-holder</a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Footer -->
-  <footer class="footer-section">
-    <div class="container">
-      <div class="social-links">
-        <a href="https://discord.com/" target="_blank">
-          <img src="/pics/discord-logo.png" alt="Discord" />
-        </a>
-        <a href="https://www.instagram.com/" target="_blank">
-          <img src="/pics/instagram-logo.png" alt="Instagram" />
-        </a>
-        <a href="https://www.reddit.com/" target="_blank">
-          <img src="/pics/reddit-logo.jpeg" alt="Reddit" />
-        </a>
-        <a href="https://twitter.com/" target="_blank">
-          <img src="/pics/x-logo.jpeg" alt="Twitter" />
-        </a>
+    <!-- Footer -->
+    <footer class="footer-section">
+      <div class="container">
+        <div class="social-links">
+          <a href="https://discord.com/" target="_blank">
+            <img src="/pics/discord-logo.png" alt="Discord" />
+          </a>
+          <a href="https://www.instagram.com/" target="_blank">
+            <img src="/pics/instagram-logo.png" alt="Instagram" />
+          </a>
+          <a href="https://www.reddit.com/" target="_blank">
+            <img src="/pics/reddit-logo.jpeg" alt="Reddit" />
+          </a>
+          <a href="https://twitter.com/" target="_blank">
+            <img src="/pics/x-logo.jpeg" alt="Twitter" />
+          </a>
+        </div>
+        <p>&copy; 2025 AniWatch</p>
       </div>
-      <p>&copy; 2025 AniWatch</p>
-    </div>
-  </footer>
+    </footer>
 
-  <!-- Auth Modals -->
-  <@auth.authModals/>
+    <!-- Auth Modals -->
+    <@auth.authModals />
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <script src="/js/main.js"></script>
-  <script src="/js/login-registration.js"></script>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/login-registration.js"></script>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Search functionality
-      const searchInput = document.getElementById('searchInput');
-      if (searchInput) {
-        searchInput.addEventListener('input', function() {
-          // Add search functionality here
-          // This would typically filter anime cards based on search input
-        });
-      }
-    });
-  </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+          searchInput.addEventListener('input', function () {
+            // Add search functionality here
+            // This would typically filter anime cards based on search input
+          });
+        }
+      });
+    </script>
 </body>
+
 </html>

@@ -10,6 +10,9 @@ public class Anime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "mal_id", unique = true, nullable = false)
+    private Long externalId;             // the Jikan mal_id
+
     @Column(nullable = false)
     private String title;
 
@@ -48,4 +51,8 @@ public class Anime {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+    
+        // getters & setters
+        public Long getExternalId() { return externalId; }
+        public void setExternalId(Long externalId) { this.externalId = externalId; }
 }

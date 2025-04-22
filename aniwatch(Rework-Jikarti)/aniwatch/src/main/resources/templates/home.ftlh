@@ -99,41 +99,41 @@
     }
 
     .dropdown {
-              position: relative;
-              display: inline-block;
-              margin-bottom: 11px;
-            }
+      position: relative;
+      display: inline-block;
+      margin-bottom: 11px;
+    }
 
-            .dropdown-menu {
-              display: none;
-              position: absolute;
-              background-color: #222!important;
-              min-width: 160px;
-              box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-              z-index: 1;
-              border-radius: 8px;
-              margin-top: 4px!important;
-              margin-right: -84px!important;
-            }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      background-color: #222 !important;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      border-radius: 8px;
+      margin-top: 4px !important;
+      margin-right: -84px !important;
+    }
 
-            .dropdown:hover .dropdown-menu {
-              display: block;
-            }
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
 
-            .dropdown-menu a {
-              color: white;
-              padding: 12px 16px;
-              text-decoration: none;
-              display: block;
-            }
+    .dropdown-menu a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
 
-            .dropdown-menu a:hover {
-              background-color: #495057;
-            }
+    .dropdown-menu a:hover {
+      background-color: #495057;
+    }
 
-            .fa-user {
-            margin-top: 14.5px;
-            }
+    .fa-user {
+      margin-top: 14.5px;
+    }
 
     /* Content Styles */
     .content {
@@ -212,55 +212,55 @@
 
     /* Cards */
     .anime-card {
-          background: linear-gradient(135deg, rgba(44, 62, 80, 0.7) 0%, rgba(52, 73, 94, 0.7) 100%);
-          border-radius: 12px;
-          overflow: hidden;
-          transition: all 0.3s ease;
-          height: 100%;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-          margin-bottom: 20px;
-        }
+      background: linear-gradient(135deg, rgba(44, 62, 80, 0.7) 0%, rgba(52, 73, 94, 0.7) 100%);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      height: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+    }
 
-        .anime-card:hover {
-          transform: translateY(-10px);
-          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-          border-color: rgba(52, 152, 219, 0.3);
-        }
+    .anime-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      border-color: rgba(52, 152, 219, 0.3);
+    }
 
-        .anime-card img {
-          width: 100%;
-          height: 350px;
-          object-fit: cover;
-          transition: all 0.5s;
-        }
+    .anime-card img {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      transition: all 0.5s;
+    }
 
-        .anime-card:hover img {
-          transform: scale(1.05);
-        }
+    .anime-card:hover img {
+      transform: scale(1.05);
+    }
 
-        .anime-card .card-body {
-          padding: 20px;
-          background: rgba(26, 30, 37, 0.9);
-        }
+    .anime-card .card-body {
+      padding: 20px;
+      background: rgba(26, 30, 37, 0.9);
+    }
 
-        .anime-card .card-title {
-          font-size: 18px;
-          font-weight: 600;
-          margin-bottom: 8px;
-          color: var(--text-light);
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
+    .anime-card .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-light);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
-        .anime-card .card-text {
-          font-size: 14px;
-          color: var(--text-muted);
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
+    .anime-card .card-text {
+      font-size: 14px;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
     /* Watchlist Card */
     .watchlist-card {
@@ -303,15 +303,15 @@
     }
 
     .provider-info a {
-          color: var(--text-light);
-          text-decoration: none;
-          font-weight: 600;
-          transition: all 0.3s;
-        }
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
 
-        .provider-info a:hover {
-          color: var(--primary-color);
-        }
+    .provider-info a:hover {
+      color: var(--primary-color);
+    }
 
     .watchlist-card-title {
       font-size: 18px;
@@ -595,356 +595,302 @@
 <body>
   <#import "/fragments/auth-modals.ftlh" as auth>
 
-  <!-- Top Navigation Bar -->
-  <div class="topnav">
-          <a href="/home" class="logo-link">
-              <h1 class="logo">AniWatch</h1>
-          </a>
-          <div class="nav-links">
-              <#if isAuthenticated?? && isAuthenticated>
-                  <div class="dropdown">
-                      <a href="#" class="dropbtn">
-                          <i class="fas fa-user"></i> ${username!}
-                      </a>
-                      <div class="dropdown-menu">
-                          <#if isProvider?? && isProvider>
-                              <a href="/provider-profile/${providerId!}">My Profile</a>
-                              <a href="/watchlists/new">Create Watchlist</a>
-                          <#else>
-                              <a href="/user-profile/${userId!}">My Profile</a>
-                          </#if>
-                          <a href="/logout">Logout</a>
+    <!-- Top Navigation Bar -->
+    <div class="topnav">
+      <a href="/home" class="logo-link">
+        <h1 class="logo">AniWatch</h1>
+      </a>
+      <div class="nav-links">
+        <#if isAuthenticated?? && isAuthenticated>
+          <div class="dropdown">
+            <a href="#" class="dropbtn">
+              <i class="fas fa-user"></i> ${username!}
+            </a>
+            <div class="dropdown-menu">
+              <#if isProvider?? && isProvider>
+                <a href="/provider-profile/${providerId!}">My Profile</a>
+                <a href="/watchlists/new">Create Watchlist</a>
+                <#else>
+                  <a href="/user-profile/${userId!}">My Profile</a>
+              </#if>
+              <a href="/logout">Logout</a>
+            </div>
+          </div>
+          <a href="/watchlists/watchlist-list">Watchlists library</a>
+          <a href="/browse-anime">Browse Anime</a>
+          <#else>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+            <a href="/watchlists/watchlist-list">Watchlists library</a>
+            <a href="/browse-anime">Browse Anime</a>
+        </#if>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+      <!-- Hero Section -->
+      <div class="container">
+        <div class="hero-section">
+          <div class="hero-content text-center">
+            <h1>Discover and track your favorite anime and manga!</h1>
+            <p>Join our community of anime enthusiasts to create, share and discover the best watchlists.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Anime Data Section -->
+      <div class="container">
+        <div class="section-heading">
+          <h2>Popular ${currentSeason} Anime</h2>
+          <p>Trending series this season that everyone’s watching</p>
+        </div>
+
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper">
+            <#-- if we have API data -->
+              <#if seasonalAnime?has_content>
+                <#list seasonalAnime as anime>
+                  <div class="swiper-slide">
+                    <div class="anime-card">
+                      <img src="${anime.imageUrl!'/pics/default-anime.jpg'}" srcset="
+                      ${anime.imageUrl!''}   1x,
+                      ${anime.imageUrl?replace('.jpg','@2x.jpg')!''} 2x
+                    " alt="${anime.title!}" loading="lazy" />
+                      <div class="card-body">
+                        <h5 class="card-title">${anime.title! 'Untitled'}</h5>
+                        <p class="card-text">
+                          Alternate: ${anime.alternateTitle! '—'}
+                        </p>
                       </div>
+                    </div>
                   </div>
-                  <a href="/watchlists/watchlist-list">Watchlists library</a>
-                  <a href="/browse-anime">Browse Anime</a>
-              <#else>
-                  <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
-                  <a href="/watchlists/watchlist-list">Watchlists library</a>
-                  <a href="/browse-anime">Browse Anime</a>
+                </#list>
+                <#else>
+                  <div class="col-12 text-center">
+                    <p class="text-muted">No anime available at the moment.</p>
+                  </div>
               </#if>
           </div>
-      </div>
 
-  <!-- Main Content -->
-  <div class="content">
-    <!-- Hero Section -->
-    <div class="container">
-      <div class="hero-section">
-        <div class="hero-content text-center">
-          <h1>Discover and track your favorite anime and manga!</h1>
-          <p>Join our community of anime enthusiasts to create, share and discover the best watchlists.</p>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
         </div>
       </div>
-    </div>
 
-    <!-- Anime Data Section -->
-    <div class="container">
-      <div class="section-heading">
-        <h2>Popular ${currentSeason} Anime</h2>
-        <p>Trending series this season that everyone's watching</p>
-      </div>
 
-      <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <div class="anime-card">
-              <div class="card-img-container">
-                <img src="/pics/Solo-Leveling.jpg" alt="Solo Leveling">
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Solo Leveling</h5>
-                <p class="card-text">Alternate Title: Ore dake Level Up na Ken</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="anime-card">
-              <div class="card-img-container">
-                <img src="/pics/The-Apothecary-Diaries.jpg" alt="The Apothecary Diaries">
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">The Apothecary Diaries</h5>
-                <p class="card-text">Alternate Title: Kusuriya no Hitorigoto</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="anime-card">
-              <div class="card-img-container">
-                <img src="/pics/One-Piece.jpg" alt="One Piece">
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">One Piece</h5>
-                <p class="card-text">Alternate Title: One Piece</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="anime-card">
-              <div class="card-img-container">
-                <img src="/pics/ReZero.jpg" alt="Re:Zero">
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Re:ZERO - Starting Life in Another World</h5>
-                <p class="card-text">Alternate Title: Re:Zero kara Hajimeru Isekai Seikatsu</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="anime-card">
-              <div class="card-img-container">
-                <img src="/pics/Orb.jpg" alt="Orb: On the Movements of the Earth">
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Orb: On the Movements of the Earth</h5>
-                <p class="card-text">Alternate Title: Chi. Chikyuu no Undou ni Tsuite</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="anime-card">
-              <div class="card-img-container">
-                <img src="/pics/Shangri-La-Frontier.jpg" alt="Shangri-La Frontier">
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Shangri-La Frontier</h5>
-                <p class="card-text">Alternate Title: Shangri-La Frontier: Kusoge Hunter, Kamige ni Idoman to su</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="anime-card">
-              <div class="card-img-container">
-                <img src="/pics/Dr.Stone.jpg" alt="Dr. Stone">
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Dr. Stone</h5>
-                <p class="card-text">Alternate Title: Dr. Stone: Science Future</p>
-              </div>
-            </div>
+      <!-- Welcome Section -->
+      <div class="container">
+        <div class="welcome-section">
+          <div class="welcome-content">
+            <h2>Welcome to AniWatch</h2>
+            <p>Find the Anime Watchlist that fits exactly what you're looking for!</p>
           </div>
         </div>
-
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
       </div>
-    </div>
 
-    <!-- Welcome Section -->
-    <div class="container">
-      <div class="welcome-section">
-        <div class="welcome-content">
-          <h2>Welcome to AniWatch</h2>
-          <p>Find the Anime Watchlist that fits exactly what you're looking for!</p>
+      <!-- Featured Watchlists Section -->
+      <div class="container">
+        <div class="section-heading">
+          <h2>Featured Watchlists</h2>
+          <p>Curated collections from our top providers</p>
         </div>
-      </div>
-    </div>
 
-    <!-- Featured Watchlists Section -->
-    <div class="container">
-      <div class="section-heading">
-        <h2>Featured Watchlists</h2>
-        <p>Curated collections from our top providers</p>
-      </div>
-
-      <div class="swiper mySwiper2">
-        <div class="swiper-wrapper">
-          <#if featuredWatchlists?has_content>
-            <#list featuredWatchlists as watchlist>
-              <div class="swiper-slide watchlist-item">
-                <div class="watchlist-card">
-                  <img src="${watchlist.thumbnail!'/pics/default-watchlist.jpg'}" alt="${watchlist.title}" class="watchlist-thumbnail" onerror="this.src='/pics/default-watchlist.jpg';">
-                  <div class="watchlist-card-body">
-                    <h5 class="watchlist-card-title">${watchlist.title}</h5>
-                    <div class="provider-info">
-                      <img src="${watchlist.avatar!'/pics/default-profile.jpg'}" alt="Provider" class="profile-image">
-                      <span class="watchlist-card-text">By: <a href="/provider-profile/${providerId!}" class="text-light">${watchlist.providerUsername}</a></span>
-                    </div>
-                    <div class="watchlist-metadata">
-                      <div class="views-counter">
-                        <i class="fas fa-eye"></i> ${watchlist.views!'0'} views
+        <div class="swiper mySwiper2">
+          <div class="swiper-wrapper">
+            <#if featuredWatchlists?has_content>
+              <#list featuredWatchlists as watchlist>
+                <div class="swiper-slide watchlist-item">
+                  <div class="watchlist-card">
+                    <img src="${watchlist.thumbnail!'/pics/default-watchlist.jpg'}" alt="${watchlist.title}"
+                      class="watchlist-thumbnail" onerror="this.src='/pics/default-watchlist.jpg';">
+                    <div class="watchlist-card-body">
+                      <h5 class="watchlist-card-title">${watchlist.title}</h5>
+                      <div class="provider-info">
+                        <img src="${watchlist.avatar!'/pics/default-profile.jpg'}" alt="Provider" class="profile-image">
+                        <span class="watchlist-card-text">By: <a href="/provider-profile/${providerId!}"
+                            class="text-light">${watchlist.providerUsername}</a></span>
                       </div>
-                      <div class="rating-container">
-                        <span class="text-warning">
-                          <#assign stars = (watchlist.rating?has_content && watchlist.rating gt 0)?then(watchlist.rating?round, 0)>
-                          <#list 1..5 as i>
-                            <#if i <= stars>★<#else>☆</#if>
-                          </#list>
-                        </span>
-                        (${(watchlist.rating?has_content)?then(watchlist.rating?string("0.0"), "0.0")}/5)
+                      <div class="watchlist-metadata">
+                        <div class="views-counter">
+                          <i class="fas fa-eye"></i> ${watchlist.views!'0'} views
+                        </div>
+                        <div class="rating-container">
+                          <span class="text-warning">
+                            <#assign stars=(watchlist.rating?has_content && watchlist.rating gt
+                              0)?then(watchlist.rating?round, 0)>
+                              <#list 1..5 as i>
+                                <#if i <=stars>★<#else>☆</#if>
+                              </#list>
+                          </span>
+                          (${(watchlist.rating?has_content)?then(watchlist.rating?string("0.0"), "0.0")}/5)
+                        </div>
                       </div>
+                      <#if isAuthenticated?? && isAuthenticated>
+                        <div class="btn-group">
+                          <a href="/watchlists/${watchlist.watchlistId}" class="btn btn-outline-light">View list</a>
+                          <button class="btn btn-primary"
+                            data-watchlist-id="${watchlist.watchlistId}">Subscribe</button>
+                        </div>
+                        <#else>
+                          <div class="btn-group">
+                            <a href="/watchlists/${watchlist.watchlistId}" class="btn btn-outline-light">View list</a>
+                          </div>
+                      </#if>
                     </div>
-                    <#if isAuthenticated?? && isAuthenticated>
-                                            <div class="btn-group">
-                                              <a href="/watchlists/${watchlist.watchlistId}" class="btn btn-outline-light">View list</a>
-                                              <button class="btn btn-primary" data-watchlist-id="${watchlist.watchlistId}">Subscribe</button>
-                                            </div>
-                                          <#else>
-                                            <div class="btn-group">
-                                              <a href="/watchlists/${watchlist.watchlistId}" class="btn btn-outline-light">View list</a>
-                                            </div>
-                                          </#if>
                   </div>
                 </div>
-              </div>
-            </#list>
-          <#else>
-            <div class="col-12 text-center">
-              <p class="text-muted">No watchlists available yet.</p>
-            </div>
-          </#if>
+              </#list>
+              <#else>
+                <div class="col-12 text-center">
+                  <p class="text-muted">No watchlists available yet.</p>
+                </div>
+            </#if>
+          </div>
+
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
         </div>
-
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
       </div>
     </div>
-  </div>
 
-  <!-- Footer -->
-  <footer class="footer-section">
-    <div class="container">
-      <div class="social-links">
-        <a href="https://discord.com/" target="_blank">
-          <img src="/pics/discord-logo.png" alt="Discord">
-        </a>
-        <a href="https://www.instagram.com/" target="_blank">
-          <img src="/pics/instagram-logo.png" alt="Instagram">
-        </a>
-        <a href="https://www.reddit.com/" target="_blank">
-          <img src="/pics/reddit-logo.jpeg" alt="Reddit">
-        </a>
-        <a href="https://twitter.com/" target="_blank">
-          <img src="/pics/x-logo.jpeg" alt="Twitter">
-        </a>
+    <!-- Footer -->
+    <footer class="footer-section">
+      <div class="container">
+        <div class="social-links">
+          <a href="https://discord.com/" target="_blank">
+            <img src="/pics/discord-logo.png" alt="Discord">
+          </a>
+          <a href="https://www.instagram.com/" target="_blank">
+            <img src="/pics/instagram-logo.png" alt="Instagram">
+          </a>
+          <a href="https://www.reddit.com/" target="_blank">
+            <img src="/pics/reddit-logo.jpeg" alt="Reddit">
+          </a>
+          <a href="https://twitter.com/" target="_blank">
+            <img src="/pics/x-logo.jpeg" alt="Twitter">
+          </a>
+        </div>
+        <p>&copy; 2025 AniWatch</p>
       </div>
-      <p>&copy; 2025 AniWatch</p>
-    </div>
-  </footer>
+    </footer>
 
-  <@auth.authModals/>
+    <@auth.authModals />
 
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <script src="/js/main.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="/js/login-registration.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/login-registration.js"></script>
 
-  <script>
-    <#noparse>
+    <script>
+      <#noparse>
               // Subscription handling
-            document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
               const subscribeButtons = document.querySelectorAll('.btn-primary');
 
               subscribeButtons.forEach(button => {
                 if (button.textContent === 'Subscribe') {
                   const watchlistId = button.getAttribute('data-watchlist-id');
 
-                  // Check if already subscribed
-                  fetch("/api/subscriptions/check/" + watchlistId)
+        // Check if already subscribed
+        fetch("/api/subscriptions/check/" + watchlistId)
                     .then(response => response.json())
                     .then(isSubscribed => {
                       if (isSubscribed) {
-                        button.textContent = 'Unsubscribe';
-                        button.classList.remove('btn-primary');
-                        button.classList.add('btn-danger');
+          button.textContent = 'Unsubscribe';
+        button.classList.remove('btn-primary');
+        button.classList.add('btn-danger');
                       }
                     })
                     .catch(error => {
-                      console.error('Error checking subscription status:', error);
+          console.error('Error checking subscription status:', error);
                     });
 
-                  // Add click handler
-                  button.addEventListener('click', function() {
+        // Add click handler
+        button.addEventListener('click', function() {
                     const isSubscribing = button.textContent === 'Subscribe';
-                    const endpoint = isSubscribing ?
-                      "/api/subscriptions/subscribe/" + watchlistId :
-                      "/api/subscriptions/unsubscribe/" + watchlistId;
+        const endpoint = isSubscribing ?
+        "/api/subscriptions/subscribe/" + watchlistId :
+        "/api/subscriptions/unsubscribe/" + watchlistId;
 
-                    fetch(endpoint, {
-                      method: 'POST'
+        fetch(endpoint, {
+          method: 'POST'
                     })
                     .then(response => {
                       if (response.ok) {
                         if (isSubscribing) {
-                          button.textContent = 'Unsubscribe';
-                          button.classList.remove('btn-primary');
-                          button.classList.add('btn-danger');
+          button.textContent = 'Unsubscribe';
+        button.classList.remove('btn-primary');
+        button.classList.add('btn-danger');
                         } else {
-                          button.textContent = 'Subscribe';
-                          button.classList.remove('btn-danger');
-                          button.classList.add('btn-primary');
+          button.textContent = 'Subscribe';
+        button.classList.remove('btn-danger');
+        button.classList.add('btn-primary');
                         }
                       }
                     })
                     .catch(error => {
-                      console.error('Error updating subscription:', error);
+          console.error('Error updating subscription:', error);
                     });
                   });
                 }
               });
 
-              // Handle unsubscribe buttons on profile page
-              const unsubscribeButtons = document.querySelectorAll('.unsubscribe-btn');
+        // Handle unsubscribe buttons on profile page
+        const unsubscribeButtons = document.querySelectorAll('.unsubscribe-btn');
               unsubscribeButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                  const watchlistId = button.dataset.watchlistId;
+          button.addEventListener('click', function () {
+            const watchlistId = button.dataset.watchlistId;
 
-                  fetch("/api/subscriptions/unsubscribe/" + watchlistId, {
-                    method: 'POST'
-                  })
-                  .then(response => {
-                    if (response.ok) {
-                      // Remove the watchlist card from the display
-                      button.closest('.watchlist-item').remove();
+            fetch("/api/subscriptions/unsubscribe/" + watchlistId, {
+              method: 'POST'
+            })
+              .then(response => {
+                if (response.ok) {
+                  // Remove the watchlist card from the display
+                  button.closest('.watchlist-item').remove();
 
-                      // Update the subscription count
-                      const counterElement = document.querySelector('.stats-list .green + span');
-                      if (counterElement) {
-                        let count = parseInt(counterElement.textContent);
-                        counterElement.textContent = (count - 1).toString();
-                      }
-                    }
-                  });
-                });
+                  // Update the subscription count
+                  const counterElement = document.querySelector('.stats-list .green + span');
+                  if (counterElement) {
+                    let count = parseInt(counterElement.textContent);
+                    counterElement.textContent = (count - 1).toString();
+                  }
+                }
+              });
+          });
               });
 
-              // Add some animations
-              const animateOnScroll = function() {
+        // Add some animations
+        const animateOnScroll = function() {
                 const elements = document.querySelectorAll('.section-heading, .hero-content, .welcome-content');
 
                 elements.forEach(element => {
                   const elementPosition = element.getBoundingClientRect().top;
-                  const screenPosition = window.innerHeight / 1.3;
+        const screenPosition = window.innerHeight / 1.3;
 
-                  if (elementPosition < screenPosition) {
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
+        if (elementPosition < screenPosition) {
+          element.style.opacity = '1';
+        element.style.transform = 'translateY(0)';
                   }
                 });
               };
 
               // Set initial styles for animation
               document.querySelectorAll('.section-heading, .hero-content, .welcome-content').forEach(element => {
-                element.style.opacity = '0';
-                element.style.transform = 'translateY(20px)';
-                element.style.transition = 'all 0.8s ease-out';
+          element.style.opacity = '0';
+        element.style.transform = 'translateY(20px)';
+        element.style.transition = 'all 0.8s ease-out';
               });
 
-              // Run once on load
-              animateOnScroll();
+        // Run once on load
+        animateOnScroll();
 
-              // Add scroll event listener
-              window.addEventListener('scroll', animateOnScroll);
+        // Add scroll event listener
+        window.addEventListener('scroll', animateOnScroll);
             });
-            </#noparse>
-          </script>
-        </body>
-        </html>
+      </#noparse>
+    </script>
+</body>
+
+</html>

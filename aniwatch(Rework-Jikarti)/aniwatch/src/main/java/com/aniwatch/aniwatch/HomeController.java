@@ -1,4 +1,7 @@
 package com.aniwatch.aniwatch;
+
+import com.aniwatch.aniwatch.anime.Anime;
+import com.aniwatch.aniwatch.anime.AnimeService;
 import com.aniwatch.aniwatch.user.*;
 import com.aniwatch.aniwatch.watchlist.*;
 
@@ -21,6 +24,9 @@ public class HomeController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AnimeService animeService;
 
     @GetMapping("/")
     public String redirectToHome(
@@ -68,6 +74,13 @@ public class HomeController {
         return "redirect:" + redirectUrl.toString();
     }
 
+    // This is the http GET request you put in your browser to access the home page
+    // It will redirect to the home page and show the login modal if specified in
+    // the URL
+    // e.g. http://localhost:8080/home?showLoginModal=true&loginError=true
+    // This is the home page of the website, where you can see a few random
+    // watchlists
+
     @GetMapping("/home")
     public String home(
             @RequestParam(value = "showLoginModal", required = false) Boolean showLoginModal,
@@ -95,22 +108,30 @@ public class HomeController {
             model.addAttribute("registered", true);
         }
 
-        // Something extra to determine current season ;-)
+        // 1) Compute season + year
         LocalDate today = LocalDate.now();
+        int year = today.getYear();
         int month = today.getMonthValue();
-
         String currentSeason;
-        if (month >= 1 && month <= 3) {
+        if (month <= 3) {
             currentSeason = "Winter";
-        } else if (month >= 4 && month <= 6) {
+        } else if (month <= 6) {
             currentSeason = "Spring";
-        } else if (month >= 7 && month <= 9) {
+        } else if (month <= 9) {
             currentSeason = "Summer";
         } else {
             currentSeason = "Fall";
         }
-
+        // add for display
         model.addAttribute("currentSeason", currentSeason);
+
+        // 2) Fetch (but don’t save) seasonal anime
+        List<Anime> seasonalAnime = animeService.fetchSeasonalAnime(
+                year,
+                currentSeason, // e.g. "Summer"
+                20 // limit
+        );
+        model.addAttribute("seasonalAnime", seasonalAnime);
 
         return "home";
     }
