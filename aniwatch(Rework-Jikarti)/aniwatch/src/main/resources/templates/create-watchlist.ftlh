@@ -115,7 +115,7 @@
             z-index: 1;
             border-radius: 8px;
             margin-top: 4px!important;
-            margin-right: -74px!important;
+            margin-right: -84px!important;
         }
 
         .dropdown:hover .dropdown-menu {
@@ -204,7 +204,6 @@
             border-radius: 8px;
             padding: 12px 15px;
             transition: all 0.3s;
-            color: black;
         }
 
         .form-control:focus {
@@ -299,6 +298,139 @@
             display: none;
         }
 
+        /* Anime Selection Section */
+        .anime-selection-section {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .anime-selection-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .selected-anime-container {
+            background: linear-gradient(135deg, rgba(26, 30, 37, 0.6) 0%, rgba(44, 62, 80, 0.6) 100%);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .selected-anime-count {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .count-badge {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border-radius: 50px;
+            padding: 5px 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .selected-anime-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .selected-anime-item {
+            background: rgba(44, 62, 80, 0.7);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            height: 220px;
+        }
+
+        .selected-anime-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary-color);
+        }
+
+        .selected-anime-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+
+        .selected-anime-title {
+            padding: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .remove-anime-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .remove-anime-btn:hover {
+            background: rgba(231, 76, 60, 1);
+            transform: scale(1.1);
+        }
+
+        .add-anime-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .add-anime-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .empty-selection {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+        }
+
+        .empty-selection i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            opacity: 0.7;
+        }
+
         /* Buttons */
         .btn {
             padding: 12px 25px;
@@ -387,6 +519,16 @@
                 flex-direction: column;
             }
 
+            .selected-anime-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .anime-selection-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
             .social-links a {
                 width: 40px;
                 height: 40px;
@@ -467,7 +609,7 @@
                     <!-- Thumbnail Upload -->
                     <div class="mb-4 thumbnail-section">
                         <label class="form-label">
-                            <i class="fas fa-image"></i> Watchlist Thumbnail
+                            <i class="fas fa-image"></i> Watchlist Thumbnail (choose after adding anime)
                         </label>
 
                         <div class="upload-area" id="upload-area">
@@ -487,6 +629,39 @@
                         </div>
 
                         <img id="thumbnailPreview" src="#" alt="Thumbnail Preview" class="thumbnail-preview">
+                    </div>
+
+                    <!-- Anime Selection Section -->
+                    <div class="anime-selection-section">
+                        <div class="anime-selection-header">
+                            <label class="form-label mb-0">
+                                <i class="fas fa-tv"></i> Anime Selection
+                            </label>
+                            <a href="/watchlists/select-anime" class="add-anime-btn" id="addAnimeBtn">
+                                <i class="fas fa-plus"></i> Add Anime
+                            </a>
+                        </div>
+
+                        <div class="selected-anime-container">
+                            <div class="selected-anime-count">
+                                <span>Selected:</span>
+                                <span class="count-badge" id="selectedCount">0/24</span>
+                            </div>
+
+                            <!-- Empty state shown when no anime selected -->
+                            <div class="empty-selection" id="emptySelection">
+                                <i class="fas fa-film"></i>
+                                <p>No anime selected yet. Click "Add Anime" to start building your watchlist.</p>
+                            </div>
+
+                            <!-- Grid of selected anime -->
+                            <div class="selected-anime-grid" id="selectedAnimeGrid" style="display: none;">
+                                <!-- Selected anime will be dynamically added here via JavaScript -->
+                            </div>
+
+                            <!-- Hidden input to store selected anime IDs -->
+                            <input type="hidden" name="selectedAnimeIds" id="selectedAnimeIds" value="">
+                        </div>
                     </div>
 
                     <!-- Buttons -->
@@ -531,122 +706,312 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+    <#noparse>
         // File input handling
         document.addEventListener('DOMContentLoaded', function() {
-            // Get all necessary elements
-            const uploadArea = document.getElementById('upload-area');
-            const fileInput = document.getElementById('thumbnailFile');
-            const preview = document.getElementById('thumbnailPreview');
-            const selectedFile = document.getElementById('selected-file');
-            const selectedFileName = document.getElementById('selected-file-name');
-            const removeFileBtn = document.getElementById('remove-file');
-
-            // Track if we're currently processing a file to prevent multiple uploads
-            let isProcessingFile = false;
-
-            // Click handler for the upload area - separate from the file input
-            uploadArea.addEventListener('click', function(e) {
-                // Prevent duplicate events
-                if (e.target !== fileInput) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    // Only trigger click if we're not already processing a file
-                    if (!isProcessingFile) {
-                        fileInput.click();
-                    }
-                }
-            });
-
-            // File input change handler
-            fileInput.addEventListener('change', function(e) {
-                e.stopPropagation();
-                if (!isProcessingFile && this.files && this.files[0]) {
-                    processSelectedFile(this.files[0]);
-                }
-            });
-
-            // Handle file processing in one place to avoid duplication
-            function processSelectedFile(file) {
-                isProcessingFile = true;
-
-                const reader = new FileReader();
-
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                    selectedFile.classList.add('active');
-                    selectedFileName.textContent = file.name;
-                    uploadArea.style.borderColor = '#3498db';
-
-                    // Reset the processing flag after a short delay
-                    setTimeout(() => {
-                        isProcessingFile = false;
-                    }, 300);
-                };
-
-                reader.onerror = function() {
-                    console.error('Error reading file');
-                    isProcessingFile = false;
-                };
-
-                reader.readAsDataURL(file);
+          // Define storage keys
+          const STORAGE_KEYS = {
+            CREATE_WATCHLIST: {
+              ANIME_LIST: 'create_watchlist_anime_list',
+              TEMP_DATA: 'create_watchlist_temp_data'
+            },
+            EDIT_WATCHLIST: {
+              ANIME_LIST: 'edit_watchlist_anime_list',
+              TEMP_DATA: 'edit_watchlist_temp_data'
+            },
+            SELECT_ANIME: {
+              ORIGIN: 'select_anime_origin',
+              WATCHLIST_ID: 'select_anime_watchlist_id'
             }
+          };
 
-            // Remove file handler
-            removeFileBtn.addEventListener('click', function(e) {
+          // Clear any edit mode storage to avoid conflicts
+          localStorage.removeItem(STORAGE_KEYS.EDIT_WATCHLIST.ANIME_LIST);
+          localStorage.removeItem(STORAGE_KEYS.EDIT_WATCHLIST.TEMP_DATA);
+
+          // Set origin for select-anime
+          localStorage.setItem(STORAGE_KEYS.SELECT_ANIME.ORIGIN, 'create');
+          localStorage.removeItem(STORAGE_KEYS.SELECT_ANIME.WATCHLIST_ID);
+
+          // File input handling
+          const uploadArea = document.getElementById('upload-area');
+          const fileInput = document.getElementById('thumbnailFile');
+          const preview = document.getElementById('thumbnailPreview');
+          const selectedFile = document.getElementById('selected-file');
+          const selectedFileName = document.getElementById('selected-file-name');
+          const removeFileBtn = document.getElementById('remove-file');
+
+          // Track if we're currently processing a file to prevent multiple uploads
+          let isProcessingFile = false;
+
+          // Click handler for the upload area - separate from the file input
+          if (uploadArea) {
+            uploadArea.addEventListener('click', function(e) {
+              // Prevent duplicate events
+              if (e.target !== fileInput) {
                 e.preventDefault();
                 e.stopPropagation();
-                removeFile();
+                // Only trigger click if we're not already processing a file
+                if (!isProcessingFile) {
+                  fileInput.click();
+                }
+              }
             });
+          }
 
-            function removeFile() {
-                fileInput.value = '';
-                preview.src = '#';
-                preview.style.display = 'none';
-                selectedFile.classList.remove('active');
-                uploadArea.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+          // File input change handler
+          if (fileInput) {
+            fileInput.addEventListener('change', function(e) {
+              e.stopPropagation();
+              if (!isProcessingFile && this.files && this.files[0]) {
+                processSelectedFile(this.files[0]);
+              }
+            });
+          }
+
+          // Handle file processing in one place to avoid duplication
+          function processSelectedFile(file) {
+            isProcessingFile = true;
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+              preview.src = e.target.result;
+              preview.style.display = 'block';
+              selectedFile.classList.add('active');
+              selectedFileName.textContent = file.name;
+              uploadArea.style.borderColor = '#3498db';
+
+              setTimeout(() => {
                 isProcessingFile = false;
-            }
+              }, 300);
+            };
 
-            // === Drag and Drop Functionality ===
-            // Prevent defaults for all drag events
+            reader.onerror = function() {
+              console.error('Error reading file');
+              isProcessingFile = false;
+            };
+
+            reader.readAsDataURL(file);
+          }
+
+          // Remove file handler
+          if (removeFileBtn) {
+            removeFileBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              removeFile();
+            });
+          }
+
+          function removeFile() {
+            fileInput.value = '';
+            preview.src = '#';
+            preview.style.display = 'none';
+            selectedFile.classList.remove('active');
+            uploadArea.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            isProcessingFile = false;
+          }
+
+          // Drag and Drop Functionality
+          if (uploadArea) {
             ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }, false);
+              uploadArea.addEventListener(eventName, function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+              }, false);
             });
 
             // Highlight upload area on drag enter/over
             ['dragenter', 'dragover'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, function() {
-                    uploadArea.style.borderColor = '#3498db';
-                    uploadArea.style.backgroundColor = 'rgba(52, 152, 219, 0.1)';
-                }, false);
+              uploadArea.addEventListener(eventName, function() {
+                uploadArea.style.borderColor = '#3498db';
+                uploadArea.style.backgroundColor = 'rgba(52, 152, 219, 0.1)';
+              }, false);
             });
 
             // Remove highlight on drag leave/drop
             ['dragleave', 'drop'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, function() {
-                    uploadArea.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                    uploadArea.style.backgroundColor = '';
-                }, false);
+              uploadArea.addEventListener(eventName, function() {
+                uploadArea.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                uploadArea.style.backgroundColor = '';
+              }, false);
             });
 
             // Handle file drop
             uploadArea.addEventListener('drop', function(e) {
-                if (!isProcessingFile && e.dataTransfer.files && e.dataTransfer.files[0]) {
-                    const file = e.dataTransfer.files[0];
-                    // Update the file input with the dropped file
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    fileInput.files = dataTransfer.files;
+              if (!isProcessingFile && e.dataTransfer.files && e.dataTransfer.files[0]) {
+                const file = e.dataTransfer.files[0];
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                fileInput.files = dataTransfer.files;
 
-                    // Process the file
-                    processSelectedFile(file);
-                }
+                processSelectedFile(file);
+              }
             }, false);
+          }
+
+          // Initialize selected anime from localStorage
+          initSelectedAnime();
+
+          function initSelectedAnime() {
+            const selectedAnimeGrid = document.getElementById('selectedAnimeGrid');
+            const emptySelection = document.getElementById('emptySelection');
+            const selectedAnimeIds = document.getElementById('selectedAnimeIds');
+            const countBadge = document.getElementById('selectedCount');
+
+            // Try to get selected anime from localStorage using the CREATE key
+            const storedAnimeList = localStorage.getItem(STORAGE_KEYS.CREATE_WATCHLIST.ANIME_LIST);
+
+            if (storedAnimeList) {
+              try {
+                const animeList = JSON.parse(storedAnimeList);
+
+                if (animeList.length > 0) {
+                  // Hide empty state, show grid
+                  emptySelection.style.display = 'none';
+                  selectedAnimeGrid.style.display = 'grid';
+
+                  // Update count badge
+                  countBadge.textContent = `${animeList.length}/24`;
+
+                  // Update hidden input with anime IDs
+                  selectedAnimeIds.value = animeList.map(anime => anime.id).join(',');
+
+                  // Populate grid with selected anime
+                  animeList.forEach(anime => {
+                    addAnimeToGrid(anime);
+                  });
+                }
+              } catch (error) {
+                console.error('Error parsing stored anime list:', error);
+                localStorage.removeItem(STORAGE_KEYS.CREATE_WATCHLIST.ANIME_LIST);
+              }
+            }
+
+            // Add listener for Add Anime button
+            const addAnimeBtn = document.getElementById('addAnimeBtn');
+            if (addAnimeBtn) {
+              addAnimeBtn.addEventListener('click', function(e) {
+                const title = document.getElementById('title').value;
+                const description = document.getElementById('description').value;
+
+                // Get thumbnail data if it exists
+                let thumbnailData = null;
+                const thumbnailPreview = document.getElementById('thumbnailPreview');
+                if (thumbnailPreview && thumbnailPreview.style.display !== 'none') {
+                  thumbnailData = thumbnailPreview.src;
+                }
+
+                if (title || description || thumbnailData) {
+                  localStorage.setItem(STORAGE_KEYS.CREATE_WATCHLIST.TEMP_DATA, JSON.stringify({
+                    title,
+                    description,
+                    thumbnailData
+                  }));
+                }
+              });
+            }
+          }
+
+          function addAnimeToGrid(anime) {
+            const selectedAnimeGrid = document.getElementById('selectedAnimeGrid');
+            if (!selectedAnimeGrid) return;
+
+            // Create anime item element
+            const animeItem = document.createElement('div');
+            animeItem.className = 'selected-anime-item';
+            animeItem.dataset.id = anime.id;
+
+            // Create anime content
+            animeItem.innerHTML = `
+              <img src="${anime.imageUrl || '/pics/default-anime.jpg'}" alt="${anime.title}" class="selected-anime-img">
+              <div class="selected-anime-title">${anime.title}</div>
+              <button type="button" class="remove-anime-btn" aria-label="Remove" onclick="removeAnime(${anime.id})">
+                <i class="fas fa-times"></i>
+              </button>
+            `;
+
+            // Add to grid
+            selectedAnimeGrid.appendChild(animeItem);
+          }
+
+          // Define removeAnime function globally so it can be called from the onclick attribute
+          window.removeAnime = function(animeId) {
+            const selectedAnimeGrid = document.getElementById('selectedAnimeGrid');
+            const emptySelection = document.getElementById('emptySelection');
+            const selectedAnimeIds = document.getElementById('selectedAnimeIds');
+            const countBadge = document.getElementById('selectedCount');
+
+            // Remove the anime item from grid
+            const animeItem = selectedAnimeGrid.querySelector(`.selected-anime-item[data-id="${animeId}"]`);
+            if (animeItem) {
+              animeItem.remove();
+            }
+
+            // Get the current list from localStorage
+            let animeList = [];
+            const storedAnimeList = localStorage.getItem(STORAGE_KEYS.CREATE_WATCHLIST.ANIME_LIST);
+
+            if (storedAnimeList) {
+              try {
+                animeList = JSON.parse(storedAnimeList);
+                // Filter out the removed anime
+                animeList = animeList.filter(anime => anime.id !== animeId);
+
+                // Update localStorage
+                localStorage.setItem(STORAGE_KEYS.CREATE_WATCHLIST.ANIME_LIST, JSON.stringify(animeList));
+
+                // Update hidden input with anime IDs
+                selectedAnimeIds.value = animeList.map(anime => anime.id).join(',');
+
+                // Update count badge
+                countBadge.textContent = `${animeList.length}/24`;
+
+                // Show empty state if no anime left
+                if (animeList.length === 0) {
+                  emptySelection.style.display = 'block';
+                  selectedAnimeGrid.style.display = 'none';
+                }
+              } catch (error) {
+                console.error('Error parsing stored anime list:', error);
+              }
+            }
+          };
+
+          // Restore form data if available when returning from anime selection
+          const tempWatchlistData = localStorage.getItem(STORAGE_KEYS.CREATE_WATCHLIST.TEMP_DATA);
+
+          if (tempWatchlistData) {
+            try {
+              const data = JSON.parse(tempWatchlistData);
+
+              // Restore title and description
+              if (data.title) {
+                document.getElementById('title').value = data.title;
+              }
+
+              if (data.description) {
+                document.getElementById('description').value = data.description;
+              }
+            } catch (error) {
+              console.error('Error parsing temp watchlist data:', error);
+              localStorage.removeItem(STORAGE_KEYS.CREATE_WATCHLIST.TEMP_DATA);
+            }
+          }
+
+          // Form submission handler
+          const form = document.querySelector('form');
+          if (form) {
+            form.addEventListener('submit', function(e) {
+              // Clear localStorage when form is submitted
+              localStorage.removeItem(STORAGE_KEYS.CREATE_WATCHLIST.ANIME_LIST);
+              localStorage.removeItem(STORAGE_KEYS.CREATE_WATCHLIST.TEMP_DATA);
+              localStorage.removeItem(STORAGE_KEYS.SELECT_ANIME.ORIGIN);
+            });
+          }
         });
+    </#noparse>
     </script>
 </body>
 </html>

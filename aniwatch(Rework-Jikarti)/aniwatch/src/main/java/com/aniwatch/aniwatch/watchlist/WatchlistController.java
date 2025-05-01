@@ -1,10 +1,15 @@
 package com.aniwatch.aniwatch.watchlist;
 
-
+import com.aniwatch.aniwatch.anime.Anime;
+import com.aniwatch.aniwatch.anime.AnimeRepository;
+import com.aniwatch.aniwatch.anime.AnimeService;
 import com.aniwatch.aniwatch.user.*;
 import com.aniwatch.aniwatch.provider.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,14 +20,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/watchlists")
@@ -37,21 +41,35 @@ public class WatchlistController {
     @Autowired
     private ProviderService providerService;
 
+    @Autowired
+    private AnimeService animeService;
+
+    @Autowired
+    private AnimeRepository animeRepository;
+
+    @Autowired
+    private WatchlistAnimeRepository watchlistAnimeRepository;
+
     @GetMapping("/{watchlistId}")
     public String getWatchlist(@PathVariable Long watchlistId, Model model) {
         watchlistService.incrementWatchlistViews(watchlistId);
         Watchlist watchlist = watchlistService.getWatchlistByWatchlistId(watchlistId);
         model.addAttribute("watchlistId", watchlist.getWatchlistId());
         model.addAttribute("title", watchlist.getTitle());
+        model.addAttribute("thumbnail", watchlist.getThumbnail());
         model.addAttribute("description", watchlist.getDescription());
         model.addAttribute("providerUsername", watchlist.getProviderUsername());
-        model.addAttribute("providerId", watchlist.getProviderId());
+        model.addAttribute("watchlistProviderId", watchlist.getProviderId());
         model.addAttribute("avatar", watchlist.getAvatar());
         model.addAttribute("views", watchlist.getViews());
         model.addAttribute("rating", watchlist.getRating() != null ?
                 String.format("%.1f", watchlist.getRating()) : "0.0");
         model.addAttribute("ratingStars", getRatingStars(watchlist.getRating()));
         model.addAttribute("comments", watchlist.getComments());
+
+        // Get the animes in this watchlist
+        List<Anime> animeList = watchlistService.getAnimeInWatchlist(watchlistId);
+        model.addAttribute("animeList", animeList);
 
         // Get authentication state
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -80,8 +98,10 @@ public class WatchlistController {
                 model.addAttribute("isProvider", isProvider);
 
                 if (isProvider) {
-                    Long currProviderId = userService.getProviderId(username);
-                    model.addAttribute("currProviderId", currProviderId);
+                    Long currentUserProviderId = userService.getProviderId(username);
+                    model.addAttribute("providerId", currentUserProviderId);
+                } else {
+                    model.addAttribute("userId", user.getId());
                 }
 
                 // Check if subscribed
@@ -100,7 +120,7 @@ public class WatchlistController {
         return "watchlist";
     }
 
-    // Method to get the correct avatar for the current user
+    // Method to get the correct avatar for the current user, when commenting
     private String getCurrentUserAvatar(String username) {
         User user = userService.findByUsername(username).orElse(null);
         if (user == null) {
@@ -126,7 +146,7 @@ public class WatchlistController {
                 user.getProfileImage() : "/pics/default-profile.jpg";
     }
 
-    @GetMapping ("/watchlist-list")
+    @GetMapping("/watchlist-list")
     public String listWatchlists(Model model) {
         List<Watchlist> watchlists = watchlistService.getAllWatchlists();
         model.addAttribute("watchlists", watchlists);
@@ -149,6 +169,11 @@ public class WatchlistController {
                 Long providerId = userService.getProviderId(username);
                 model.addAttribute("providerId", providerId);
             }
+
+            User user = userService.findByUsername(username).orElse(null);
+            if (user != null) {
+                model.addAttribute("userId", user.getId());
+            }
         }
         return "watchlist-list";
     }
@@ -166,7 +191,7 @@ public class WatchlistController {
         // Check if the user is a provider
         boolean isProvider = userService.isProvider(username);
         if (!isProvider) {
-            return "redirect:/home"; // Redirect non-providers
+            return "redirect:/home"; // if not redirect non-providers
         }
 
         Long providerId = userService.getProviderId(username);
@@ -179,6 +204,98 @@ public class WatchlistController {
         return "create-watchlist";
     }
 
+    @GetMapping("/select-anime")
+    public String selectAnime(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "24") int size,
+            @RequestParam(value = "watchlistId", required = false) Long watchlistId,
+            @RequestParam(value = "view", required = false) Boolean view,
+            Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() ||
+                authentication.getName().equals("anonymousUser")) {
+            return "redirect:/login";
+        }
+
+        String username = authentication.getName();
+
+        // Check if the user is a provider - use your original approach
+        boolean isProvider = userService.isProvider(username);
+        if (!isProvider) {
+            return "redirect:/home"; // simply redirect non-providers
+        }
+
+        // Since we know the user is a provider at this point, get the provider ID
+        Long providerId = userService.getProviderId(username);
+
+        // Get paginated anime list
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("title").ascending());
+        Page<Anime> animePage = animeRepository.findAll(pageRequest);
+
+        model.addAttribute("animeList", animePage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", animePage.getTotalPages());
+        model.addAttribute("isAuthenticated", true);
+        model.addAttribute("isProvider", true);
+        model.addAttribute("username", username);
+        model.addAttribute("providerId", providerId);
+
+        if (watchlistId != null) {
+            model.addAttribute("watchlistId", watchlistId);
+
+            // Add view mode flag based on the view parameter
+            boolean viewMode = view != null && view;
+            model.addAttribute("viewMode", viewMode);
+            model.addAttribute("editMode", !viewMode);
+
+            // This gets all existing anime in a specific watchlist for potential pre-selection
+            List<Anime> watchlistAnime = watchlistService.getAnimeInWatchlist(watchlistId);
+            model.addAttribute("watchlistAnime", watchlistAnime);
+        }
+
+        return "select-anime";
+    }
+
+    @PostMapping("/add-anime/{watchlistId}")
+    public String addAnimeToWatchlist(
+            @PathVariable Long watchlistId,
+            @RequestParam("selectedAnimeIds") String selectedAnimeIds,
+            RedirectAttributes redirectAttributes) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        // Check if user is authorized to edit this watchlist
+        boolean isOwner = watchlistService.isWatchlistOwner(watchlistId, username);
+        if (!isOwner) {
+            redirectAttributes.addFlashAttribute("error", "You don't have permission to edit this watchlist");
+            return "redirect:/watchlists/" + watchlistId;
+        }
+
+        try {
+            // Parse the selected anime IDs
+            if (selectedAnimeIds != null && !selectedAnimeIds.isEmpty()) {
+                List<Long> animeIds = Arrays.stream(selectedAnimeIds.split(","))
+                        .map(String::trim)
+                        .filter(id -> !id.isEmpty())
+                        .map(Long::parseLong)
+                        .collect(Collectors.toList());
+
+                if (!animeIds.isEmpty()) {
+                    // Add the anime to the watchlist
+                    watchlistService.addAnimeToWatchlist(watchlistId, animeIds);
+                    redirectAttributes.addFlashAttribute("success", "Anime added to watchlist successfully");
+                }
+            }
+
+            return "redirect:/watchlists/" + watchlistId;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Failed to add anime: " + e.getMessage());
+            return "redirect:/watchlists/" + watchlistId;
+        }
+    }
+
     @PostMapping("/create")
     public String createWatchlist(
             @RequestParam("title") String title,
@@ -186,6 +303,7 @@ public class WatchlistController {
             @RequestParam("providerId") Long providerId,
             @RequestParam("providerUsername") String providerUsername,
             @RequestParam(value = "thumbnailFile", required = false) MultipartFile thumbnailFile,
+            @RequestParam(value = "selectedAnimeIds", required = false) String selectedAnimeIds,
             RedirectAttributes redirectAttributes) {
 
         try {
@@ -207,7 +325,6 @@ public class WatchlistController {
             watchlist.setViews(0L);
             watchlist.setNumRatings(0);
 
-            // Handle thumbnail upload
             if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
                 try {
                     String uploadDir = "src/main/resources/static/uploads/watchlists";
@@ -232,9 +349,22 @@ public class WatchlistController {
             }
 
             // Save the watchlist
-            watchlistService.createWatchlist(watchlist);
+            Watchlist savedWatchlist = watchlistService.createWatchlist(watchlist);
 
-            // Redirect to the provider's profile
+            // Handle selected anime if any
+            if (selectedAnimeIds != null && !selectedAnimeIds.isEmpty()) {
+                List<Long> animeIds = Arrays.stream(selectedAnimeIds.split(","))
+                        .map(String::trim)
+                        .filter(id -> !id.isEmpty())
+                        .map(Long::parseLong)
+                        .collect(Collectors.toList());
+
+                if (!animeIds.isEmpty()) {
+                    watchlistService.addAnimeToWatchlist(savedWatchlist.getWatchlistId(), animeIds);
+                }
+            }
+
+            // This redirects to the provider's profile
             return "redirect:/provider-profile/" + providerId;
 
         } catch (Exception e) {
@@ -282,12 +412,20 @@ public class WatchlistController {
         }
 
         Watchlist watchlist = watchlistService.getWatchlistByWatchlistId(watchlistId);
+        List<Anime> watchlistAnime = watchlistService.getAnimeInWatchlist(watchlistId);
+
+        // Prepare the anime IDs string for the hidden input
+        String selectedAnimeIdsString = watchlistAnime.stream()
+                .map(anime -> String.valueOf(anime.getId()))
+                .collect(Collectors.joining(","));
 
         model.addAttribute("watchlist", watchlist);
+        model.addAttribute("watchlistAnime", watchlistAnime);
+        model.addAttribute("selectedAnimeIdsString", selectedAnimeIdsString);
         model.addAttribute("isAuthenticated", true);
         model.addAttribute("isProvider", true);
         model.addAttribute("username", username);
-        model.addAttribute("providerId", watchlist.getProviderId());
+        model.addAttribute("providerId", userService.getProviderId(username));
 
         return "edit-watchlist";
     }
@@ -298,6 +436,7 @@ public class WatchlistController {
             @RequestParam("title") String title,
             @RequestParam("description") String description,
             @RequestParam(value = "thumbnailFile", required = false) MultipartFile thumbnailFile,
+            @RequestParam(value = "selectedAnimeIds", required = false) String selectedAnimeIds,
             RedirectAttributes redirectAttributes) {
 
         try {
@@ -338,7 +477,27 @@ public class WatchlistController {
                 }
             }
 
+            // Update the watchlist
             watchlistService.updateWatchlist(watchlist);
+
+            // Handle selected anime if any
+            if (selectedAnimeIds != null) {
+                // First, remove all existing anime associations
+                watchlistService.removeAllAnimeFromWatchlist(watchlistId);
+
+                // Then add the new selections
+                if (!selectedAnimeIds.isEmpty()) {
+                    List<Long> animeIds = Arrays.stream(selectedAnimeIds.split(","))
+                            .map(String::trim)
+                            .filter(id -> !id.isEmpty())
+                            .map(Long::parseLong)
+                            .collect(Collectors.toList());
+
+                    if (!animeIds.isEmpty()) {
+                        watchlistService.addAnimeToWatchlist(watchlistId, animeIds);
+                    }
+                }
+            }
 
             redirectAttributes.addFlashAttribute("success", "Watchlist updated successfully");
 

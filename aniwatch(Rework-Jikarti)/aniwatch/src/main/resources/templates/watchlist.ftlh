@@ -144,24 +144,26 @@
 
     /* Watchlist Header */
     .watchlist-header {
-      background: linear-gradient(rgba(26, 30, 37, 0.8), rgba(44, 62, 80, 0.8)), url('/pics/hero-bg.jpg');
+      background-image: url('${thumbnail!'/pics/default-watchlist.jpg'}');
       background-size: cover;
       background-position: center;
-      padding: 60px 0;
+      padding: 80px 0;
       margin-bottom: 40px;
       position: relative;
       border-radius: 15px;
       overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     }
 
-    .watchlist-header:before {
+    .watchlist-header::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, rgba(52, 152, 219, 0.3) 0%, rgba(155, 89, 182, 0.3) 100%);
+      background: rgba(26, 30, 37, 0.7);
+      backdrop-filter: blur(10px);
       z-index: 0;
     }
 
@@ -171,10 +173,15 @@
     }
 
     .watchlist-title {
-      font-size: 36px;
+      font-size: 42px;
       font-weight: 700;
       margin-bottom: 10px;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(90deg, #fff, #ecf0f1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
     }
 
     /* Provider Section */
@@ -201,6 +208,10 @@
       flex: 1;
     }
 
+    .provider-info p{
+       margin-bottom: 0px;
+    }
+
     .provider-info a {
       color: var(--text-light);
       text-decoration: none;
@@ -215,7 +226,6 @@
     .provider-stats {
       display: flex;
       align-items: center;
-      margin-top: 10px;
     }
 
     .provider-stats > div {
@@ -357,248 +367,370 @@
       white-space: nowrap;
     }
 
+    .add-anime-card {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, rgba(41, 128, 185, 0.3) 0%, rgba(44, 62, 80, 0.3) 100%) !important;
+        height: 100%;
+        min-height: 310px;
+        transition: all 0.3s ease;
+        border: 2px dashed rgba(52, 152, 219, 0.5) !important;
+      }
+
+      .add-anime-card:hover {
+        background: linear-gradient(135deg, rgba(41, 128, 185, 0.5) 0%, rgba(44, 62, 80, 0.5) 100%) !important;
+        border-color: rgba(52, 152, 219, 1) !important;
+      }
+
+      .add-anime-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        height: 100%;
+        width: 100%;
+        padding: 30px;
+      }
+
+      .add-anime-placeholder i {
+        font-size: 64px;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+      }
+
+      .add-anime-card:hover .add-anime-placeholder i {
+        transform: scale(1.2);
+      }
+
+      .add-anime-placeholder p {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-light);
+        margin: 0;
+      }
+
     /* Comment Section */
     .comment-heading-container {
+      display: flex;
       align-items: center;
-      margin-bottom: 35px;
-      margin-top: 20px;
+      margin-bottom: 2rem;
+      margin-top: 1rem;
     }
 
     .comment-heading {
-        margin-left: 30px;
-        margin-top: -23px;
+      margin-left: 1.5rem;
+      margin-top: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
     }
 
     .comment-card {
-        background-color: linear-gradient(135deg, #1a1e25 0%, #2c3e50 100%);
-        color: white;
-        transition: transform 0.3s;
-        align-content: center;
-        border-radius: 10px;
-        margin-top: -10px;
-        margin-bottom: -10px;
+      color: var(--text-light);
+      transition: transform 0.3s ease;
+      border-radius: 10px;
     }
 
     .comment-card-body {
-        background-color: linear-gradient(135deg, #1a1e25 0%, #2c3e50 100%);
-        overflow: hidden; /* Hide any overflow content */
-        word-break: break-all; /* Optional: Break very long words if needed */
+      background: transparent;
+      overflow: hidden;
+      word-break: break-all;
     }
 
     .comment-card-body p {
-        /* Ensure text wraps within the container */
-        white-space: pre-wrap; /* Preserve new lines and wrap text */
-        word-wrap: break-word; /* Break long words to fit within the container */
-        overflow-wrap: break-word; /* Modern equivalent of word-wrap */
-        margin-top: 8px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
     }
 
-
     .comment-header {
-        display: flex;
-        align-items: center;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
     }
 
     .rounded-circle {
-        margin-top: 5px;
-        height: 50px;
-        width: 50px;
-        border: 1.5px solid #007bff;
+      height: 3rem;
+      width: 3rem;
+      border: 1.5px solid var(--primary-color);
+      object-fit: cover;
+      margin-top: 20px;
     }
 
     .comment-author {
-        margin-right: 1rem;
-        font-weight: bold;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-light);
     }
 
-    .comment-time {
-        font-size: 0.8rem;
-        color: #777;
-        margin-bottom: 2px;
-    }
-
+    .comment-time,
     .comment-date {
-        font-size: 0.8rem;
-        color: #777;
-        margin-right: 5px;
-        margin-bottom: 2px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
     }
 
     .comment-text {
-        margin-top: 10px;
+      margin-top: 0.75rem;
+      font-size: 0.95rem;
     }
 
     .current-user-avatar {
-      width: 50px;
-      height: 50px;
+      width: 3rem;
+      height: 3rem;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--primary-color);
     }
 
     .comment-input-wrapper {
-        display: flex;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      max-width: 100%;
+      position: relative;
     }
 
     #commentBox {
-        resize: none; /* Prevent manual resizing */
-        overflow-y: auto; /* Allow scrolling internally without showing scrollbar */
-        white-space: pre-wrap; /* Preserve new lines and wrap text */
-        word-wrap: break-word; /* Ensure long words wrap */
-        height: 90px;
+      resize: none;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      height: 5.5rem;
+      width: 100%;
+      background: var(--card-bg);
+      color: var(--text-light);
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 0.9rem;
     }
 
     #commentBox::-webkit-scrollbar {
-        width: 8px; /* Width of the scrollbar */
+      width: 0.5rem;
     }
 
     #commentBox::-webkit-scrollbar-track {
-        background: #2c2f33; /* Track background */
-        border-radius: 5px;
+      background: #2c2f33;
+      border-radius: 5px;
     }
 
     #commentBox::-webkit-scrollbar-thumb {
-        background: #7289da; /* Thumb (the moving part) */
-        border-radius: 5px;
-        cursor: pointer;
+      background: var(--primary-color);
+      border-radius: 5px;
     }
 
-        #commentBox::-webkit-scrollbar-thumb:hover {
-            background: #5b6eae; /* Darker shade on hover */
-        }
+    #commentBox::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-dark);
+    }
 
+    .post-reply-btn {
+        margin-left: 100px;
+    }
 
     .emoji-button {
-        position: absolute;
-        background-color: transparent; /* Remove the background color */
-        border: none; /* Completely remove the border */
-        margin-left: 677px; /* Keep the positioning */
-        margin-top: 7px; /* Keep the positioning */
-        font-size: 20px; /* Keep the emoji size */
-        padding: 0; /* Remove any padding that might create a "box" effect */
-        transition: none; /* Remove the background transition since there's no background */
-        cursor: pointer; /* Add a pointer cursor to indicate it's clickable */
+      background: transparent;
+      border: none;
+      font-size: 1.25rem;
+      padding: 0.25rem;
+      cursor: pointer;
+      position: absolute;
+      right: 0.75rem;
+      top: 0.2rem;
     }
 
     .emoji-button:hover {
-      transform: scale(1.2);
+      opacity: 0.8;
+    }
+
+    #emojiPickerContainer {
+      z-index: 9999;
+      max-height: 20rem;
+      overflow-y: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
 
     .reply-emoji-button {
-        position: absolute;
-        background-color: transparent;
-        border: none;
-        top: 50%; /* Center vertically */
-        transform: translateY(-50%); /* Adjust for vertical centering */
-        font-size: 20px;
-        padding: 0;
-        margin-left: 677px; /* Keep the positioning */
-        margin-top: -17px; /* Keep the positioning */
-        transition: none;
-        cursor: pointer;
+      background: transparent;
+      border: none;
+      font-size: 1.25rem;
+      padding: 0.25rem;
+      cursor: pointer;
+      position: absolute;
+      right: 12px;
+      top: 35%;
+      transform: translateY(-50%);
     }
-        .reply-emoji-button:hover {
-                opacity: 0.8;
-                transform: translateY(-50%) scale(1.2); /* Keep vertical centering on hover */
-            }
+
+    .reply-input-wrapper {
+        width: 100%!important;
+    }
+
+    .reply-emoji-button:hover {
+      opacity: 0.8;
+    }
 
     .toggle-replies {
-        display: none; /* Hidden by default, shown via JS if there are replies */
-        font-size: 1em;
-        color: #007bff;
+      display: block;
+      font-size: 0.9rem;
+      color: var(--primary-color);
+      text-decoration: none!important;
+      margin-top: 0.5rem;
+      cursor: pointer;
+    }
+
+    .toggle-replies:hover {
+      text-decoration: underline;
     }
 
     .reply .toggle-replies {
-        display: none!important; /* Hidden by default, shown via JS if there are replies */
-
+      display: none !important;
     }
 
     .reply .reply-box {
-        max-width: 648px;
-        width: 648px;
+      width: 100%;
+      max-width: 100%;
+      height: 5rem;
+      background: var(--card-bg);
+      color: var(--text-light);
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 0.9rem;
     }
 
-    .reply .reply-emoji-button {
-        margin-left: 605px;
-        margin-top: -25px;
+    .reply-box::-webkit-scrollbar {
+      width: 0.5rem;
     }
 
-
-    .reply-box {
-        height: 90px;
-        resize: none;
+    .reply-box::-webkit-scrollbar-track {
+      background: #2c2f33;
+      border-radius: 5px;
     }
 
-        .reply-box::-webkit-scrollbar {
-            width: 8px; /* Width of the scrollbar */
-        }
+    .reply-box::-webkit-scrollbar-thumb {
+      background: var(--primary-color);
+      border-radius: 5px;
+    }
 
-        .reply-box::-webkit-scrollbar-track {
-            background: #2c2f33; /* Track background */
-            border-radius: 5px;
-        }
-
-        .reply-box::-webkit-scrollbar-thumb {
-            background: #7289da; /* Thumb (the moving part) */
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-            .reply-box::-webkit-scrollbar-thumb:hover {
-                background: #5b6eae; /* Darker shade on hover */
-            }
+    .reply-box::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-dark);
+    }
 
     .reply .comment-date,
     .reply .comment-time,
     .nested-reply .comment-date,
     .nested-reply .comment-time {
-        font-size: 0.8rem; /* Smaller font for the time */
-        color: #777; /* Gray color for the time */
-        margin-right: 5px;
-        margin-bottom: 5px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
     }
 
-    .reply .comment-card-body p,
-    .nested-reply .comment-card-body p {
+    .reply-btn,
+    .report-btn,
+    .delete-btn {
+      font-size: 0.85rem;
+      color: var(--primary-color);
+      text-decoration: none;
+      margin-right: 1rem;
+      transition: color 0.3s ease;
     }
 
-    .reply .reply-btn {
-        position: absolute;
-        transform: translateX(42%); /* Adjust for vertical centering */
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        margin-left: 556px;
+    .reply-btn:hover,
+    .report-btn:hover,
+    .delete-btn:hover {
+      color: var(--primary-dark);
     }
 
-    .reply-btn {
-        position: absolute;
-        margin-left: 649px;
+    .action-buttons-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.5rem;
     }
 
+    .voting-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+    }
 
     .view-more-comments {
-        font-size: 1em;
-        color: #007bff;
-        margin-top: 10px;
-        margin-bottom: 20px;
-        display: block;
-        text-align: center;
-        text-decoration: none
+      font-size: 0.9rem;
+      color: var(--primary-color);
+      margin: 1rem auto;
+      display: block;
+      text-align: center;
+      text-decoration: none!important;
     }
 
-        .view-more-comments:hover {
-            text-decoration: none;
-        }
+    @media (max-width: 767px) {
+      .comment-heading {
+        margin-left: 1rem;
+        font-size: 1.25rem;
+      }
 
-    /* Hidden Main Comments */
-    #commentSection .d-flex.flex-start.mb-4.hidden {
-        display: none !important;
+      .comment-card {
+        padding: 0.75rem;
+      }
+
+      .comment-input-wrapper {
+        max-width: 95%;
+      }
+
+      .reply .reply-box {
+        max-width: 98%;
+      }
+
+      .rounded-circle,
+      .current-user-avatar {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+
+      .comment-author {
+        font-size: 0.9rem;
+      }
+
+      .comment-text {
+        font-size: 0.85rem;
+      }
+
+      .reply-btn,
+      .report-btn,
+      .delete-btn {
+        font-size: 0.8rem;
+        margin-right: 0.75rem;
+      }
     }
 
-    /* Hidden Main Comments */
-    .d-flex.flex-start.mb-4.hidden {
-        display: none;
+    @media (max-width: 576px) {
+      .comment-input-wrapper {
+        max-width: 100%;
+      }
+
+      .reply .reply-box {
+        max-width: 100%;
+      }
+
+      .action-buttons-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      .voting-buttons,
+      .action-buttons {
+        gap: 0.75rem;
+      }
     }
 
     /* Footer */
@@ -719,6 +851,10 @@
         height: 20px;
       }
     }
+
+    .action-buttons {
+        margin-left: 0px;
+    }
   </style>
 </head>
 
@@ -769,11 +905,11 @@
 
       <!-- Provider Section -->
       <div class="provider-section">
-        <a href="/provider-profile/${providerId!}">
+        <a href="/provider-profile/${watchlistProviderId!}">
           <img src="${avatar!'/pics/default-profile.jpg'}" alt="Provider Icon" class="provider-icon">
         </a>
         <div class="provider-info">
-          <p>Created by: <a href="/provider-profile/${providerId!}">${providerUsername!''}</a></p>
+          <p>Created by: <a href="/provider-profile/${watchlistProviderId!}">${providerUsername!''}</a></p>
           <div class="provider-stats">
             <div class="rating-display">
               <span class="five-star-rating rating-stars" id="rateButton">${ratingStars}</span>
@@ -813,87 +949,45 @@
       <!-- Anime Cards -->
       <h2 class="section-title mb-4">Anime in this Watchlist</h2>
       <div class="row">
-        <div class="col-md-4 mb-4">
-          <div class="anime-card">
-            <img src="/pics/Berserk.jpg" class="anime-card-img" alt="Berserk">
-            <div class="card-body">
-              <h5 class="card-title">Berserk</h5>
-              <p class="card-text">A dark fantasy epic of vengeance and fate.</p>
+        <#if animeList?has_content>
+          <#list animeList as anime>
+            <div class="col-md-4 mb-4">
+              <!-- Add data-id attribute to each anime card -->
+              <div class="anime-card" data-id="${anime.id}">
+                <img src="${anime.imageUrl!'/pics/default-anime.jpg'}" class="anime-card-img" alt="${anime.title}">
+                <div class="card-body">
+                  <h5 class="card-title">${anime.title}</h5>
+                  <p class="card-text">${anime.alternateTitle!''}</p>
+                </div>
+              </div>
+            </div>
+          </#list>
+          <!-- Add Anime Card - Only visible to watchlist owner -->
+          <#if isAuthenticated?? && isAuthenticated && username == providerUsername>
+            <div class="col-md-4 mb-4">
+              <a href="/watchlists/select-anime?watchlistId=${watchlistId}" class="text-decoration-none">
+                <div class="anime-card add-anime-card">
+                  <div class="add-anime-placeholder">
+                    <i class="fas fa-plus-circle"></i>
+                    <p>Add More Anime</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </#if>
+        <#else>
+          <div class="col-12 text-center">
+            <div class="empty-anime-message">
+              <i class="fas fa-film mb-3" style="font-size: 48px; color: var(--text-muted);"></i>
+              <p>This watchlist doesn't have any anime yet.</p>
+              <#if isAuthenticated?? && isAuthenticated && username == providerUsername>
+                <a href="/watchlists/select-anime?watchlistId=${watchlistId}" class="btn btn-primary mt-3">
+                  <i class="fas fa-plus-circle me-2"></i>Add Anime
+                </a>
+              </#if>
             </div>
           </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="anime-card">
-            <img src="/pics/Code-geass.jpg" class="anime-card-img" alt="Code Geass">
-            <div class="card-body">
-              <h5 class="card-title">Code Geass</h5>
-              <p class="card-text">A strategic rebellion against an empire.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="anime-card">
-            <img src="/pics/Vinland-saga.jpg" class="anime-card-img" alt="Vinland Saga">
-            <div class="card-body">
-              <h5 class="card-title">Vinland Saga</h5>
-              <p class="card-text">A Viking tale of revenge and redemption.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="anime-card">
-            <img src="/pics/Parasyte-the-maxim.jpg" class="anime-card-img" alt="Parasyte: The Maxim">
-            <div class="card-body">
-              <h5 class="card-title">Parasyte: The Maxim</h5>
-              <p class="card-text">A human-alien symbiosis thriller.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="anime-card">
-            <img src="/pics/Bunguo-stray-dogs.jpg" class="anime-card-img" alt="Bunguo Stray Dogs">
-            <div class="card-body">
-              <h5 class="card-title">Bunguo Stray Dogs</h5>
-              <p class="card-text">Supernatural detectives inspired by literature.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="anime-card">
-            <img src="/pics/Detective-conan.jpg" class="anime-card-img" alt="Detective Conan">
-            <div class="card-body">
-              <h5 class="card-title">Detective Conan</h5>
-              <p class="card-text">A young detective solving endless mysteries.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="anime-card">
-            <img src="/pics/Tokyo-ravens.jpg" class="anime-card-img" alt="Tokyo Ravens">
-            <div class="card-body">
-              <h5 class="card-title">Tokyo Ravens</h5>
-              <p class="card-text">Magic and spirits in modern Tokyo.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="anime-card">
-            <img src="/pics/Baki.jpg" class="anime-card-img" alt="Baki">
-            <div class="card-body">
-              <h5 class="card-title">Baki</h5>
-              <p class="card-text">Brutal martial arts battles.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="anime-card">
-            <img src="/pics/Trigun.jpg" class="anime-card-img" alt="Trigun">
-            <div class="card-body">
-              <h5 class="card-title">Trigun</h5>
-              <p class="card-text">A gunslinger's journey in a desert world.</p>
-            </div>
-          </div>
-        </div>
+        </#if>
       </div>
 
       <!-- Comment Section -->
@@ -971,6 +1065,76 @@
   <script>
     // Subscribe/Unsubscribe Functionality
     document.addEventListener('DOMContentLoaded', function() {
+      // Define storage keys
+      const STORAGE_KEYS = {
+        CREATE_WATCHLIST: {
+          ANIME_LIST: 'create_watchlist_anime_list',
+          TEMP_DATA: 'create_watchlist_temp_data'
+        },
+        EDIT_WATCHLIST: {
+          ANIME_LIST: 'edit_watchlist_anime_list',
+          TEMP_DATA: 'edit_watchlist_temp_data'
+        },
+        VIEW_WATCHLIST: {
+          ANIME_LIST: 'view_watchlist_anime_list',
+        },
+        SELECT_ANIME: {
+          ORIGIN: 'select_anime_origin',
+          WATCHLIST_ID: 'select_anime_watchlist_id'
+        }
+      };
+
+      // Clear any other watchlist storage to avoid conflicts
+      localStorage.removeItem(STORAGE_KEYS.CREATE_WATCHLIST.ANIME_LIST);
+      localStorage.removeItem(STORAGE_KEYS.CREATE_WATCHLIST.TEMP_DATA);
+      localStorage.removeItem(STORAGE_KEYS.EDIT_WATCHLIST.ANIME_LIST);
+      localStorage.removeItem(STORAGE_KEYS.EDIT_WATCHLIST.TEMP_DATA);
+
+      // Find the "Add More Anime" button
+      const addAnimeButton = document.querySelector('a[href^="/watchlists/select-anime"]');
+
+      if (addAnimeButton) {
+        // Get the current watchlist ID
+        const watchlistId = addAnimeButton.href.split('watchlistId=')[1];
+
+        // Update the URL to include view=true parameter
+        addAnimeButton.href = `/watchlists/select-anime?watchlistId=${watchlistId}&view=true`;
+
+        addAnimeButton.addEventListener('click', function(e) {
+          // Get all anime cards from the page
+          const animeCards = document.querySelectorAll('.anime-card:not(.add-anime-card)');
+          const animeList = [];
+
+          // Extract anime data from each card
+          animeCards.forEach(card => {
+            const img = card.querySelector('.anime-card-img');
+            const title = card.querySelector('.card-title');
+
+            if (img && title) {
+              // Extract the anime ID from data attribute or parse it from URL
+              // For this example, we'll assume you add data-id to each anime card
+              const animeId = parseInt(card.dataset.id || '0');
+
+              if (animeId) {
+                animeList.push({
+                  id: animeId,
+                  title: title.textContent,
+                  imageUrl: img.src
+                });
+              }
+            }
+          });
+
+          // Store the current anime list in localStorage
+          localStorage.setItem(STORAGE_KEYS.VIEW_WATCHLIST.ANIME_LIST, JSON.stringify(animeList));
+
+          // Set the origin for select-anime
+          localStorage.setItem(STORAGE_KEYS.SELECT_ANIME.ORIGIN, 'view');
+          localStorage.setItem(STORAGE_KEYS.SELECT_ANIME.WATCHLIST_ID, watchlistId);
+        });
+      }
+
+      // Subscribe/Unsubscribe Functionality
       const subscribeButton = document.getElementById('subscribeButton');
       if (subscribeButton) {
         subscribeButton.addEventListener('click', function() {
@@ -1008,10 +1172,8 @@
           });
         });
       }
-    });
 
-    // Comment Section Animation
-    document.addEventListener('DOMContentLoaded', function() {
+      // Comment Section Animation
       const animateOnScroll = function() {
         const elements = document.querySelectorAll('.comment-card, .anime-card');
 
@@ -1026,17 +1188,14 @@
         });
       };
 
-      // Set initial styles for animation
       document.querySelectorAll('.comment-card, .anime-card').forEach(element => {
         element.style.opacity = '0';
         element.style.transform = 'translateY(20px)';
         element.style.transition = 'all 0.6s ease-out';
       });
 
-      // Run once on load
       setTimeout(animateOnScroll, 300);
 
-      // Add scroll event listener
       window.addEventListener('scroll', animateOnScroll);
     });
   </script>

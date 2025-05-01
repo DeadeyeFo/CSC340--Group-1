@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/comments")
@@ -34,6 +35,12 @@ public class CommentController {
     public ResponseEntity<List<Comment>> getComments(@PathVariable Long watchlistId, Model model) {
         List<Comment> comments = commentService.getCommentsByWatchlistId(watchlistId);
 
+        // This updates each comment with the latest avatar URL
+        for (Comment comment : comments) {
+            String latestAvatarUrl = userService.getCurrentUserAvatar(comment.getUsername());
+            comment.setAvatarSrc(latestAvatarUrl);
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         boolean isAuthenticated = authentication != null &&
                 authentication.isAuthenticated() &&
@@ -41,11 +48,10 @@ public class CommentController {
 
         model.addAttribute("isAuthenticated", isAuthenticated);
 
+        //Whether to show the comment form
         if (isAuthenticated) {
-            // Show the comment form for logged-in users
             model.addAttribute("showCommentForm", true);
         } else {
-            // Don't show comment form, but still show comments
             model.addAttribute("showCommentForm", false);
         }
 
@@ -70,7 +76,6 @@ public class CommentController {
             if (authentication != null && authentication.isAuthenticated()) {
                 String currentUsername = authentication.getName();
 
-                // Determine correct avatar URL
                 String avatarUrl = userService.getCurrentUserAvatar(currentUsername);
                 comment.setAvatarSrc(avatarUrl);
             } else {
@@ -104,7 +109,6 @@ public class CommentController {
             if (authentication != null && authentication.isAuthenticated()) {
                 String currentUsername = authentication.getName();
 
-                // Determine correct avatar URL
                 String avatarUrl = userService.getCurrentUserAvatar(currentUsername);
                 reply.setAvatarSrc(avatarUrl);
             } else {
@@ -122,6 +126,12 @@ public class CommentController {
     @GetMapping("/replies/{parentCommentId}")
     public ResponseEntity<List<Comment>> getReplies(@PathVariable Long parentCommentId) {
         List<Comment> replies = commentService.getReplies(parentCommentId);
+
+        for (Comment reply : replies) {
+            String latestAvatarUrl = userService.getCurrentUserAvatar(reply.getUsername());
+            reply.setAvatarSrc(latestAvatarUrl);
+        }
+
         return ResponseEntity.ok(replies);
     }
 
@@ -146,6 +156,50 @@ public class CommentController {
             throw e;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to dislike comment", e);
+        }
+    }
+
+    @DeleteMapping("/delete/{commentId}")
+    public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You must be logged in to delete comments");
+            }
+
+            String username = authentication.getName();
+            commentService.deleteComment(commentId, username);
+            return ResponseEntity.ok().body(Map.of("success", true, "message", "Comment deleted successfully"));
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to delete comment: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/report/{commentId}")
+    public ResponseEntity<?> reportComment(
+            @PathVariable Long commentId,
+            @RequestParam String reason) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You must be logged in to report comments");
+            }
+
+            String reportedBy = authentication.getName();
+            ReportedComment reportedComment = commentService.reportComment(commentId, reportedBy, reason);
+            return ResponseEntity.ok().body(Map.of(
+                    "success", true,
+                    "message", "Comment reported successfully",
+                    "reportId", reportedComment.getId()
+            ));
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to report comment: " + e.getMessage());
         }
     }
 }

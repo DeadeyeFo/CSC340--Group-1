@@ -90,6 +90,10 @@ public class HomeController {
         // This just gets a few random watchlists to display in home
         List<Watchlist> featuredWatchlists = watchlistService.getRandomWatchlists(4);
 
+        featuredWatchlists.forEach(watchlist -> {
+            model.addAttribute("watchlistProviderId_" + watchlist.getWatchlistId(), watchlist.getProviderId());
+        });
+
         model.addAttribute("featuredWatchlists", featuredWatchlists);
 
         // Add authentication info to model

@@ -3,21 +3,16 @@ package com.aniwatch.aniwatch.anime;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "anime")
 public class Anime {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "mal_id", unique = true, nullable = false)
-    private Long externalId;             // the Jikan mal_id
+    private Long externalId; // the Jikan mal_id
 
-    @Column(nullable = false)
     private String title;
-
     private String alternateTitle;
-
     private String imageUrl;
 
     public Long getId() {
@@ -26,6 +21,14 @@ public class Anime {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(Long externalId) {
+        this.externalId = externalId;
     }
 
     public String getTitle() {
@@ -51,8 +54,4 @@ public class Anime {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-    
-        // getters & setters
-        public Long getExternalId() { return externalId; }
-        public void setExternalId(Long externalId) { this.externalId = externalId; }
 }

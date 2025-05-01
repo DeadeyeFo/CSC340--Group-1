@@ -271,7 +271,6 @@
       height: 100%;
       border: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-      margin-bottom: 20px;
     }
 
     .watchlist-card:hover {
@@ -696,7 +695,7 @@
         </div>
 
         <div class="swiper mySwiper2">
-          <div class="swiper-wrapper">
+          <div class="swiper-wrapper" autoplay-delay="2500">
             <#if featuredWatchlists?has_content>
               <#list featuredWatchlists as watchlist>
                 <div class="swiper-slide watchlist-item">
@@ -707,7 +706,7 @@
                       <h5 class="watchlist-card-title">${watchlist.title}</h5>
                       <div class="provider-info">
                         <img src="${watchlist.avatar!'/pics/default-profile.jpg'}" alt="Provider" class="profile-image">
-                        <span class="watchlist-card-text">By: <a href="/provider-profile/${providerId!}"
+                        <span class="watchlist-card-text">By: <a href="/provider-profile/${watchlist.providerId!}"
                             class="text-light">${watchlist.providerUsername}</a></span>
                       </div>
                       <div class="watchlist-metadata">
@@ -806,7 +805,6 @@
           console.error('Error checking subscription status:', error);
                     });
 
-        // Add click handler
         button.addEventListener('click', function() {
                     const isSubscribing = button.textContent === 'Subscribe';
         const endpoint = isSubscribing ?
@@ -836,7 +834,7 @@
                 }
               });
 
-        // Handle unsubscribe buttons on profile page
+        // Handle unsubscribe buttons
         const unsubscribeButtons = document.querySelectorAll('.unsubscribe-btn');
               unsubscribeButtons.forEach(button => {
           button.addEventListener('click', function () {
@@ -861,7 +859,6 @@
           });
               });
 
-        // Add some animations
         const animateOnScroll = function() {
                 const elements = document.querySelectorAll('.section-heading, .hero-content, .welcome-content');
 
@@ -876,17 +873,15 @@
                 });
               };
 
-              // Set initial styles for animation
               document.querySelectorAll('.section-heading, .hero-content, .welcome-content').forEach(element => {
           element.style.opacity = '0';
         element.style.transform = 'translateY(20px)';
         element.style.transition = 'all 0.8s ease-out';
               });
 
-        // Run once on load
         animateOnScroll();
 
-        // Add scroll event listener
+        // scroll event listener for animation loading
         window.addEventListener('scroll', animateOnScroll);
             });
       </#noparse>

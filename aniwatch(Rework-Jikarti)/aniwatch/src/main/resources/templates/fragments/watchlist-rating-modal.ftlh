@@ -31,7 +31,6 @@
 </div>
 
 <style>
-/* Rating Modal - Renamed to avoid conflicts */
 .wl-rating-modal {
   display: none;
   position: fixed;
@@ -101,7 +100,6 @@
 .wl-stars-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 25px;
 }
 
 .wl-star-rating {
@@ -208,7 +206,6 @@
 <script>
 <#noparse>
 document.addEventListener("DOMContentLoaded", function () {
-  // Get elements - all renamed to avoid conflicts
   const rateButton = document.getElementById("rateButton");
   const modal = document.getElementById("watchlistRatingModal");
   const closeBtn = document.querySelector(".wl-rating-close");
@@ -216,24 +213,21 @@ document.addEventListener("DOMContentLoaded", function () {
   const messageContainer = document.getElementById("wl-rating-message");
   const starInputs = document.querySelectorAll('input[name="wl-rating"]');
 
-  // Check if elements exist
+  // Check if the elements exists first
   if (!rateButton || !modal || !closeBtn || !submitBtn || !messageContainer) {
     console.error("Required rating modal elements not found");
     return;
   }
 
-  // Open modal
   rateButton.addEventListener("click", function() {
     modal.style.display = "flex";
     resetModal();
   });
 
-  // Close modal when clicking X
   closeBtn.addEventListener("click", function() {
     modal.style.display = "none";
   });
 
-  // Close modal when clicking outside
   window.addEventListener("click", function(event) {
     if (event.target === modal) {
       modal.style.display = "none";
@@ -254,11 +248,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to submit rating
   function submitRating(rating) {
-    // Show loading state
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="wl-loading-spinner"></span> Submitting...';
 
-    // Clear any existing message
     messageContainer.textContent = "";
     messageContainer.classList.remove("wl-show", "wl-success", "wl-error");
 
@@ -284,26 +276,24 @@ document.addEventListener("DOMContentLoaded", function () {
       // Show success message
       showMessage(`Thank you for rating this watchlist ${rating} star(s)!`, "wl-success");
 
-      // Reset button
       submitBtn.disabled = false;
       submitBtn.innerHTML = "Submit Rating";
 
-      // Close modal after delay
+      // Closes modal after a delay
       setTimeout(() => {
         modal.style.display = "none";
-      }, 2000);
+      }, 1000);
     })
     .catch(error => {
       console.error("Error submitting rating:", error);
       showMessage("Error submitting rating. Please try again.", "wl-error");
 
-      // Reset button
       submitBtn.disabled = false;
       submitBtn.innerHTML = "Submit Rating";
     });
   }
 
-  // Function to update displayed rating on page
+  // Function to update displayed rating on the page
   function updateDisplayedRating(newRating) {
     const ratingStarsElement = document.querySelector('.five-star-rating');
     const ratingTextElement = document.querySelector('.rating-display span:nth-child(2)');
@@ -319,7 +309,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Function to show message
+  // Function to show the message
   function showMessage(text, type) {
     messageContainer.textContent = text;
     messageContainer.classList.add("wl-show", type);
@@ -327,16 +317,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to reset modal state
   function resetModal() {
-    // Reset radio buttons
     starInputs.forEach(input => {
       input.checked = false;
     });
 
-    // Clear message
     messageContainer.textContent = "";
     messageContainer.classList.remove("wl-show", "wl-success", "wl-error");
 
-    // Reset button
     submitBtn.disabled = false;
     submitBtn.innerHTML = "Submit Rating";
   }

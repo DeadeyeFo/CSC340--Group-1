@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AniWatch - All Anime</title>
+
+  <!-- Stylesheets -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --primary-dark: #2980b9;
+      --secondary-color: #2c3e50;
+      --dark-bg: #1a1e25;
+      --card-bg: #2c3e50;
+      --text-light: #ecf0f1;
+      --text-muted: #bdc3c7;
+      --success: #2ecc71;
+      --warning: #f1c40f;
+      --danger: #e74c3c;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a1e25 0%, #2c3e50 100%);
+      color: var(--text-light);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Navigation Bar */
+    .topnav {
+      background-color: rgba(26, 30, 37, 0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #3498db, #9b59b6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0;
+    }
+
+    .logo-link {
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+      position: relative;
+      padding: 5px 0;
+    }
+
+    .nav-links a:before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #3498db, #9b59b6);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover:before {
+      width: 100%;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 11px;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      background-color: #222 !important;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      border-radius: 8px;
+      margin-top: 4px !important;
+      margin-right: -84px !important;
+    }
+
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown-menu a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #495057;
+    }
+
+    .fa-user {
+      margin-top: 14.5px;
+    }
+
+    /* Content Styles */
+    .content {
+      padding-top: 100px;
+      padding-bottom: 50px;
+    }
+
+    /* Page Header */
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .page-header h2 {
+      font-weight: 700;
+      font-size: 36px;
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .page-header h2:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, #3498db, #9b59b6);
+    }
+
+    .page-header p {
+      color: var(--text-muted);
+      font-size: 18px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Search and Filter Section */
+    .search-filter-section {
+      background: linear-gradient(135deg, rgba(44, 62, 80, 0.3) 0%, rgba(52, 73, 94, 0.3) 100%);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .search-bar {
+      width: 100%;
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .search-bar .form-control {
+      background-color: rgba(52, 73, 94, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50px;
+      padding: 15px 25px;
+      color: var(--text-light);
+      font-size: 16px;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .search-bar .form-control:focus {
+      background-color: rgba(52, 73, 94, 0.5);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+    }
+
+    .search-bar .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .search-bar:before {
+      content: '\f002';
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary-color);
+      font-size: 20px;
+      z-index: 1;
+    }
+
+    .filter-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .filter-section select {
+      background-color: rgba(52, 73, 94, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 10px 15px;
+      color: var(--text-light);
+      font-size: 14px;
+      transition: all 0.3s;
+      min-width: 150px;
+    }
+
+    .filter-section select:focus {
+      background-color: rgba(52, 73, 94, 0.5);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+    }
+
+    .filter-section select option {
+      background-color: var(--dark-bg);
+    }
+
+    /* Back Button */
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .back-button i {
+      margin-right: 8px;
+    }
+
+    .back-button:hover {
+      color: var(--primary-color);
+      transform: translateX(-3px);
+    }
+
+    /* Section Headings */
+    .section-heading {
+      margin-bottom: 30px;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-heading h2 {
+      font-weight: 600;
+      font-size: 28px;
+      color: var(--text-light);
+      margin: 0;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    .section-heading h2:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(to bottom, #3498db, #9b59b6);
+      border-radius: 2px;
+    }
+
+    /* Anime Cards Grid */
+    .anime-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .anime-card {
+      background: linear-gradient(135deg, rgba(44, 62, 80, 0.7) 0%, rgba(52, 73, 94, 0.7) 100%);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      height: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+    }
+
+    .anime-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      border-color: rgba(52, 152, 219, 0.3);
+    }
+
+    .anime-card img {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      transition: all 0.5s;
+    }
+
+    .anime-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .anime-card .card-body {
+      padding: 20px;
+      background: rgba(26, 30, 37, 0.9);
+    }
+
+    .anime-card .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-light);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .anime-card .card-text {
+      font-size: 14px;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Pagination */
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 50px;
+    }
+
+    .pagination {
+      background: rgba(52, 73, 94, 0.3);
+      border-radius: 50px;
+      padding: 5px;
+      display: inline-flex;
+    }
+
+    .pagination .page-item .page-link {
+      border: none;
+      color: var(--text-light);
+      background-color: transparent;
+      transition: all 0.3s;
+      padding: 10px 15px;
+      border-radius: 50px;
+      margin: 0 5px;
+    }
+
+    .pagination .page-item.active .page-link,
+    .pagination .page-item .page-link:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .pagination .page-item.disabled .page-link {
+      color: var(--text-muted);
+    }
+
+    /* Footer Styles */
+    .footer-section {
+      background-color: rgba(26, 30, 37, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 40px 0 20px;
+      margin-top: 80px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: rgba(52, 73, 94, 0.5);
+      transition: all 0.3s;
+    }
+
+    .social-links a:hover {
+      transform: translateY(-5px);
+      background-color: var(--primary-color);
+    }
+
+    .social-links img {
+      width: 25px;
+      height: 25px;
+      object-fit: contain;
+    }
+
+    .footer-section p {
+      color: var(--text-muted);
+      margin-top: 20px;
+    }
+
+    /* Animation for card loading */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .anime-card {
+      animation: fadeInUp 0.5s ease-out forwards;
+      animation-delay: calc(var(--index) * 0.1s);
+      opacity: 0;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 991px) {
+      .anime-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      }
+
+      .page-header h2 {
+        font-size: 30px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .topnav {
+        padding: 10px 15px;
+      }
+
+      .logo {
+        font-size: 24px;
+      }
+
+      .nav-links {
+        gap: 10px;
+      }
+
+      .page-header h2 {
+        font-size: 26px;
+      }
+
+      .filter-section {
+        flex-direction: column;
+      }
+
+      .filter-section select {
+        width: 100%;
+      }
+
+      .anime-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <#import "/fragments/auth-modals.ftlh" as auth>
+
+    <!-- Top Navigation Bar -->
+    <div class="topnav">
+      <a href="/home" class="logo-link">
+        <h1 class="logo">AniWatch</h1>
+      </a>
+      <div class="nav-links">
+        <#if isAuthenticated?? && isAuthenticated>
+          <div class="dropdown">
+            <a href="#" class="dropbtn">
+              <i class="fas fa-user"></i> ${username!}
+            </a>
+            <div class="dropdown-menu">
+              <#if isProvider?? && isProvider>
+                <a href="/provider-profile/${providerId!}">My Profile</a>
+                <a href="/watchlists/new">Create Watchlist</a>
+                <#else>
+                  <a href="/user-profile/${userId!}">My Profile</a>
+              </#if>
+              <a href="/logout">Logout</a>
+            </div>
+          </div>
+          <#else>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+        </#if>
+        <a href="/watchlists/watchlist-list">Watchlist library</a>
+        <a href="/browse-anime">Browse Anime</a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+      <div class="container">
+        <a href="/browse-anime" class="back-button">
+          <i class="fas fa-arrow-left"></i> Back to Browse
+        </a>
+
+        <div class="page-header">
+          <h2>All Anime</h2>
+          <p>Browse our complete anime collection</p>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <div class="search-filter-section">
+          <div class="search-bar">
+            <input type="text" id="searchInput" class="form-control"
+              placeholder="Search anime by title, genre, or studio..." />
+          </div>
+          <div class="filter-section">
+            <select id="genreFilter" class="form-select">
+              <option value="">All Genres</option>
+              <option value="action">Action</option>
+              <option value="adventure">Adventure</option>
+              <option value="comedy">Comedy</option>
+              <option value="drama">Drama</option>
+              <option value="fantasy">Fantasy</option>
+              <option value="horror">Horror</option>
+              <option value="mystery">Mystery</option>
+              <option value="romance">Romance</option>
+              <option value="sci-fi">Sci-Fi</option>
+              <option value="slice-of-life">Slice of Life</option>
+            </select>
+            <select id="seasonFilter" class="form-select">
+              <option value="">All Seasons</option>
+              <option value="winter">Winter</option>
+              <option value="spring">Spring</option>
+              <option value="summer">Summer</option>
+              <option value="fall">Fall</option>
+            </select>
+            <select id="yearFilter" class="form-select">
+              <option value="">All Years</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+              <option value="older">2019 & Older</option>
+            </select>
+            <select id="sortFilter" class="form-select">
+              <option value="popularity">Sort by Popularity</option>
+              <option value="title-asc">Sort by Title (A-Z)</option>
+              <option value="title-desc">Sort by Title (Z-A)</option>
+              <option value="latest">Sort by Latest</option>
+              <option value="rating">Sort by Rating</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- All Anime Section -->
+        <div class="section-heading">
+          <h2>Anime Collection</h2>
+        </div>
+
+        <!-- Anime Grid -->
+        <div class="anime-grid">
+          <#if allAnimeList?has_content>
+            <#list allAnimeList as anime>
+              <div class="anime-card" style="--index: ${anime?index}">
+                <img src="${anime.imageUrl!'/pics/default-anime.jpg'}" srcset="
+                  ${anime.imageUrl!''} 1x,
+                  ${anime.imageUrl?replace('.jpg','@2x.jpg')!''} 2x
+                " alt="${anime.title!}" loading="lazy" />
+                <div class="card-body">
+                  <h5 class="card-title">${anime.title}</h5>
+                  <p class="card-text">Alternate Title: ${anime.alternateTitle}</p>
+                </div>
+              </div>
+            </#list>
+          <#else>
+            <div class="col-12 text-center">
+              <p>No anime available at the moment.</p>
+            </div>
+          </#if>
+        </div>
+
+        <!-- Pagination -->
+        <#if allAnimeList?? && allAnimeList?size gt 20>
+          <div class="pagination-container">
+            <ul class="pagination">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                  <i class="fas fa-chevron-left"></i>
+                </a>
+              </li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">
+                  <i class="fas fa-chevron-right"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </#if>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+      <div class="container">
+        <div class="social-links">
+          <a href="https://discord.com/" target="_blank">
+            <img src="/pics/discord-logo.png" alt="Discord" />
+          </a>
+          <a href="https://www.instagram.com/" target="_blank">
+            <img src="/pics/instagram-logo.png" alt="Instagram" />
+          </a>
+          <a href="https://www.reddit.com/" target="_blank">
+            <img src="/pics/reddit-logo.jpeg" alt="Reddit" />
+          </a>
+          <a href="https://twitter.com/" target="_blank">
+            <img src="/pics/x-logo.jpeg" alt="Twitter" />
+          </a>
+        </div>
+        <p>&copy; 2025 AniWatch</p>
+      </div>
+    </footer>
+
+    <!-- Auth Modals -->
+    <@auth.authModals />
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/login-registration.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const animeCards = document.querySelectorAll('.anime-card');
+        animeCards.forEach((card, index) => {
+          card.style.setProperty('--index', index % 20); // Reset index after 20 to prevent too long delays
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+          searchInput.addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            filterAnime(searchTerm);
+          });
+        }
+
+        const genreFilter = document.getElementById('genreFilter');
+        const seasonFilter = document.getElementById('seasonFilter');
+        const yearFilter = document.getElementById('yearFilter');
+        const sortFilter = document.getElementById('sortFilter');
+
+        if (genreFilter) genreFilter.addEventListener('change', applyFilters);
+        if (seasonFilter) seasonFilter.addEventListener('change', applyFilters);
+        if (yearFilter) yearFilter.addEventListener('change', applyFilters);
+        if (sortFilter) sortFilter.addEventListener('change', applyFilters);
+
+        function applyFilters() {
+          console.log('Filters applied');
+        }
+
+        function filterAnime(searchTerm) {
+          console.log('Filtering anime with term:', searchTerm);
+        }
+      });
+    </script>
+</body>
+</html>

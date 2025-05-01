@@ -219,45 +219,44 @@
         }
 
         .watchlist-card {
-            background: linear-gradient(135deg, rgba(44, 62, 80, 0.7) 0%, rgba(52, 73, 94, 0.7) 100%);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            height: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
-        }
+              background: linear-gradient(135deg, rgba(44, 62, 80, 0.7) 0%, rgba(52, 73, 94, 0.7) 100%);
+              border-radius: 12px;
+              overflow: hidden;
+              transition: all 0.3s ease;
+              height: 100%;
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            }
 
-        .watchlist-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            border-color: rgba(52, 152, 219, 0.3);
-        }
+            .watchlist-card:hover {
+              transform: translateY(-10px);
+              box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+              border-color: rgba(52, 152, 219, 0.3);
+            }
 
-        .watchlist-thumbnail {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            transition: all 0.5s;
-        }
+            .watchlist-thumbnail {
+              width: 100%;
+              height: 180px;
+              object-fit: cover;
+              transition: all 0.5s;
+            }
 
-        .watchlist-card:hover .watchlist-thumbnail {
-            transform: scale(1.05);
-        }
+            .watchlist-card:hover .watchlist-thumbnail {
+              transform: scale(1.05);
+            }
 
-        .watchlist-card-body {
-            padding: 20px;
-            background: rgba(26, 30, 37, 0.9);
-        }
+            .watchlist-card-body {
+              padding: 20px;
+              background: rgba(26, 30, 37, 0.9);
+            }
 
-        .provider-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
+            .provider-info {
+              display: flex;
+              align-items: center;
+              margin-bottom: 15px;
+            }
 
-        .provider-info a {
+            .provider-info a {
               color: var(--text-light);
               text-decoration: none;
               font-weight: 600;
@@ -268,100 +267,109 @@
               color: var(--primary-color);
             }
 
-        .watchlist-card-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            color: var(--text-light);
-            padding: 8px 12px;
-            background: rgba(52, 73, 94, 0.5);
-            border-radius: 6px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+            .watchlist-card-title {
+              font-size: 18px;
+              font-weight: 600;
+              margin-bottom: 10px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              color: var(--text-light);
+              padding: 5px 10px;
+              background: rgba(52, 73, 94, 0.5);
+              border-radius: 5px;
+              text-align: center;
+            }
 
-        .profile-image {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-color);
-            margin-right: 10px;
-        }
+            .profile-image {
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              object-fit: cover;
+              border: 2px solid var(--primary-color);
+              margin-right: 10px;
+            }
 
-        .watchlist-card-text {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
+            .watchlist-card-text {
+              font-size: 14px;
+              color: var(--text-muted);
+            }
 
-        .watchlist-metadata {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 8px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
+            .watchlist-metadata {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 15px;
+              padding: 8px 0;
+              border-top: 1px solid rgba(255, 255, 255, 0.1);
+              border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
 
-        .views-counter {
-            font-size: 14px;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-        }
+            .views-counter {
+              font-size: 14px;
+              color: var(--text-muted);
+              display: flex;
+              align-items: center;
+            }
 
-        .views-counter i {
-            margin-right: 5px;
-            color: var(--primary-color);
-        }
+            .views-counter i {
+              margin-right: 5px;
+              color: var(--primary-color);
+            }
 
-        .rating-container {
-            display: flex;
-            align-items: center;
-        }
+            .rating-container {
+              display: flex;
+              align-items: center;
+            }
 
-        .rating-container .text-warning {
-            color: var(--warning) !important;
-            margin-right: 5px;
-        }
+            .rating-container .text-warning {
+              color: var(--warning) !important;
+              margin-right: 5px;
+            }
 
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
+            .btn-group {
+              display: flex;
+              gap: 10px;
+            }
 
-        .btn {
-            padding: 8px 16px;
-            font-weight: 500;
-            border-radius: 6px;
-            transition: all 0.3s;
-        }
+            .btn {
+              padding: 8px 16px;
+              font-weight: 500;
+              border-radius: 6px;
+              transition: all 0.3s;
+            }
 
-        .btn-outline-light {
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            color: var(--text-light);
-        }
+            .btn-outline-light {
+              border: 1px solid rgba(255, 255, 255, 0.5);
+              color: var(--text-light);
+            }
 
-        .btn-outline-light:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: var(--text-light);
-        }
+            .btn-outline-light:hover {
+              background-color: rgba(255, 255, 255, 0.1);
+              border-color: var(--text-light);
+            }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            border: none;
-        }
+            .btn-primary {
+              background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+              border: none;
+            }
 
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #2980b9 0%, #2573a7 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-        }
+            .btn-primary:hover {
+              background: linear-gradient(135deg, #2980b9 0%, #2573a7 100%);
+              transform: translateY(-2px);
+              box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            }
+
+            .btn-danger {
+              background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+              border: none;
+            }
+
+            .btn-danger:hover {
+              background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+              transform: translateY(-2px);
+              box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+            }
 
         .btn-danger {
             background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
@@ -534,7 +542,7 @@
             transform: translateY(20px);
             animation: fadeInUp 0.5s ease-out forwards;
         }
-
+         //animation delays for up until the last visible anime card
         .watchlist-item:nth-child(1) { animation-delay: 0.1s; }
         .watchlist-item:nth-child(2) { animation-delay: 0.2s; }
         .watchlist-item:nth-child(3) { animation-delay: 0.3s; }
@@ -692,11 +700,6 @@
                 <div class="empty-state">
                     <i class="fas fa-list-alt"></i>
                     <p>No watchlists found.</p>
-                    <#if isProvider?? && isProvider>
-                        <a href="/watchlists/new" class="btn btn-primary mt-3">
-                            <i class="fas fa-plus-circle me-2"></i> Create Your First Watchlist
-                        </a>
-                    </#if>
                 </div>
             </#if>
         </div>
@@ -753,7 +756,6 @@
             const allItems = Array.from(watchlistContainer.querySelectorAll('.watchlist-item'));
             const noResultsMsg = document.getElementById('noSearchResults');
 
-            // If search is cleared, restore original state
             if (searchTerm === '') {
                 watchlistContainer.innerHTML = originalHTML;
                 if (noResultsMsg) noResultsMsg.style.display = 'none';
@@ -763,11 +765,10 @@
                     viewMoreContainer.style.display = originalViewMoreDisplay;
                 }
 
-                setupViewMore(); // Reattach event listeners
+                setupViewMore();
                 return;
             }
 
-            // Handle search
             watchlistContainer.innerHTML = '';
 
             const matchingItems = allItems.filter(item => {
@@ -788,12 +789,10 @@
                 item.classList.remove('hidden-watchlist');
             });
 
-            // Show/hide no results message
             if (noResultsMsg) {
                 noResultsMsg.style.display = matchingItems.length > 0 ? 'none' : 'block';
             }
 
-            // Hide view more button during search
             if (viewMoreContainer) {
                 viewMoreContainer.style.display = 'none';
             }
@@ -803,7 +802,6 @@
             const viewMoreBtn = document.getElementById('viewMoreBtn');
             if (!viewMoreBtn) return;
 
-            // Remove existing event listeners by cloning and replacing
             const newViewMoreBtn = viewMoreBtn.cloneNode(true);
             viewMoreBtn.parentNode.replaceChild(newViewMoreBtn, viewMoreBtn);
 
@@ -849,7 +847,6 @@
                                 // Get all subscribe buttons
                                 const subscribeButtons = document.querySelectorAll('.btn-primary');
 
-                                // Add click event to each button
                                 subscribeButtons.forEach(button => {
                                     if (button.textContent === 'Subscribe') {
                                         const watchlistId = button.getAttribute('data-watchlist-id');
@@ -868,7 +865,6 @@
                                                 console.error('Error checking subscription status:', error);
                                             });
 
-                                        // Add click handler
                                         button.addEventListener('click', function() {
                                             const isSubscribing = button.textContent === 'Subscribe';
                                             const endpoint = isSubscribing ?
@@ -898,7 +894,6 @@
                                     }
                                 });
 
-                                // Handle unsubscribe buttons on profile page
                                 const unsubscribeButtons = document.querySelectorAll('.unsubscribe-btn');
                                 unsubscribeButtons.forEach(button => {
                                     button.addEventListener('click', function() {
@@ -909,7 +904,6 @@
                                         })
                                         .then(response => {
                                             if (response.ok) {
-                                                // Remove the watchlist card from the display
                                                 button.closest('.watchlist-item').remove();
 
                                                 // Update the subscription count
@@ -923,7 +917,6 @@
                                     });
                                 });
 
-                                // Add loading animation for the page
                                 window.addEventListener('load', function() {
                                     document.body.classList.add('loaded');
                                 });

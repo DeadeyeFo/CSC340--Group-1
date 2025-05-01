@@ -7,20 +7,113 @@
 
     const COMMENTS_PER_PAGE = 5;
 
+    // Function to check if a comment has been reported by the current user
+    function hasReportedComment(commentId) {
+        // Get reported comments from localStorage
+        const reportedComments = JSON.parse(localStorage.getItem('reportedComments') || '[]');
+        return reportedComments.includes(String(commentId));
+    }
+
+    // Function to mark a comment as reported
+    function markCommentAsReported(commentId) {
+        const reportedComments = JSON.parse(localStorage.getItem('reportedComments') || '[]');
+
+        // Add this comment if not already present
+        if (!reportedComments.includes(String(commentId))) {
+            reportedComments.push(String(commentId));
+            localStorage.setItem('reportedComments', JSON.stringify(reportedComments));
+        }
+    }
+
+    // A debounce function to prevent multiple calls
+    function debounce(func, wait) {
+        let timeout;
+        return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+
+    // Post comment function
+    function postComment() {
+        try {
+            const commentBox = document.getElementById("commentBox");
+            if (!commentBox) {
+                throw new Error("Comment box element not found.");
+            }
+
+            const commentText = commentBox.value.trim();
+            if (!commentText) {
+                alert("Please enter a comment.");
+                commentBox.focus();
+                return;
+            }
+
+            const username = document.querySelector(".comment-author")?.textContent?.trim();
+            if (!username) {
+                throw new Error("Unable to determine current user.");
+            }
+
+            const currentUserAvatar = document.querySelector(".current-user-avatar").src;
+            const url = `/comments/add/${watchlistId}`;
+
+            fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({ username: username, text: commentText })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(`Failed to post comment: ${response.status} ${text}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(comment => {
+                commentBox.value = "";
+                comment.avatarSrc = currentUserAvatar;
+                commentsCache.unshift(comment);
+                sortAndDisplayComments(currentSortType);
+
+                if (currentSortType === "newest") {
+                    const firstComment = document.querySelector(".d-flex.flex-start");
+                    if (firstComment) {
+                        firstComment.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                    }
+                }
+            })
+            .catch(error => {
+                console.error("Error posting comment:", error);
+                alert("Failed to post comment. Please try again.");
+            });
+        } catch (error) {
+            console.error("Error posting comment:", error.message);
+            alert("An error occurred while posting your comment. Please try again.");
+        }
+    }
+
+    const debouncedPostComment = debounce(postComment, 500);
+
+    // Binded the debounced function to the comment button click
+    // It ensures any previous bindings are removed to prevent duplicates
+    $(".comment-card-body .btn-primary").off("click").on("click", function() {
+        debouncedPostComment();
+    });
+
     // Only initialize emoji picker if comment input exists (i.e., user is logged in)
     if (document.querySelector(".comment-input-wrapper")) {
         const pickerContainer = document.createElement("div");
         pickerContainer.id = "emojiPickerContainer";
         pickerContainer.style.display = "none";
         pickerContainer.style.position = "absolute";
-        pickerContainer.style.zIndex = "1000";
-        document.querySelector(".comment-input-wrapper").appendChild(pickerContainer);
+        pickerContainer.style.zIndex = "9999";
+        document.body.appendChild(pickerContainer);
 
         let activeInput = null;
 
         const pickerOptions = {
             onEmojiSelect: function (emoji) {
-                console.log("Emoji selected:", emoji);
                 if (!activeInput) return;
                 const currentText = activeInput.val();
                 const newText = currentText + emoji.native;
@@ -38,27 +131,27 @@
 
         $("#emojiPicker").on("click", function (e) {
             e.preventDefault();
-            console.log("Main emoji button clicked");
             activeInput = $("#commentBox");
             const isVisible = pickerContainer.style.display === "block";
             pickerContainer.style.display = isVisible ? "none" : "block";
             if (!isVisible) {
                 const buttonRect = this.getBoundingClientRect();
-                pickerContainer.style.top = `${buttonRect.bottom + window.scrollY}px`;
-                pickerContainer.style.left = `${buttonRect.left + window.scrollX - 150}px`;
+                const commentBoxRect = $("#commentBox")[0].getBoundingClientRect();
+                pickerContainer.style.top = `${commentBoxRect.top + window.scrollY - pickerContainer.offsetHeight - 5}px`;
+                pickerContainer.style.left = `${buttonRect.left + window.scrollX - 310}px`;
             }
         });
 
         $(document).on("click", ".reply-emoji-button", function (e) {
             e.preventDefault();
-            console.log("Reply emoji button clicked");
             activeInput = $(this).closest(".reply-input-wrapper").find(".reply-box");
             const isVisible = pickerContainer.style.display === "block";
             pickerContainer.style.display = isVisible ? "none" : "block";
             if (!isVisible) {
                 const buttonRect = this.getBoundingClientRect();
-                pickerContainer.style.top = `${buttonRect.bottom + window.scrollY}px`;
-                pickerContainer.style.left = `${buttonRect.left + window.scrollX - 150}px`;
+                const replyBoxRect = $(this).closest(".reply-input-wrapper").find(".reply-box")[0].getBoundingClientRect();
+                pickerContainer.style.top = `${replyBoxRect.top + window.scrollY - pickerContainer.offsetHeight - 5}px`;
+                pickerContainer.style.left = `${buttonRect.left + window.scrollX - 310}px`;
             }
         });
 
@@ -78,11 +171,12 @@
 
     function createCommentElement(comment, isReply = false, nestingLevel = 0, parentAuthor = null) {
         const commentId = comment.commentId || Math.floor(Math.random() * 10000);
-
-        console.log(`Creating ${isReply ? 'reply' : 'comment'} element with ID: ${commentId}, mentioning: ${parentAuthor || 'none'}`);
+        const isCurrentUser = comment.username === (document.querySelector(".comment-author")?.textContent?.trim() || '');
+        const isDeleted = comment.text === "[Comment deleted by user]";
+        const hasBeenReported = hasReportedComment(commentId);
 
         const commentDiv = document.createElement("div");
-        commentDiv.className = isReply ? "d-flex flex-start reply" : "d-flex flex-start mb-4";
+        commentDiv.className = isReply ? "d-flex flex-start reply" : "d-flex flex-start";
         commentDiv.setAttribute('data-comment-id', commentId);
         commentDiv.setAttribute('data-nesting-level', isReply ? 1 : 0);
 
@@ -94,7 +188,6 @@
         avatarImg.width = isReply ? 65 : 65;
         avatarImg.height = isReply ? 65 : 65;
         avatarImg.style.cursor = "pointer";
-
         avatarImg.setAttribute('data-username', comment.username);
 
         // Comment card container
@@ -127,57 +220,101 @@
 
         // Comment text with mention if reply
         const commentP = document.createElement("p");
+        commentP.className = "comment-text";
+        if (isDeleted) {
+            commentP.classList.add("deleted");
+        }
 
         if (isReply && parentAuthor) {
-            // Create mention link (@) for parent author
+            let cleanUsername = parentAuthor;
+            if (cleanUsername.includes('@')) {
+                cleanUsername = cleanUsername.replace(/^@+/, '').split('@').pop();
+            }
             const mentionText = document.createElement("a");
             mentionText.href = "#";
             mentionText.style.color = "#007bff";
-            mentionText.textContent = `@${parentAuthor}`;
+            mentionText.style.fontWeight = "600";
+            mentionText.textContent = `@${cleanUsername}`;
             mentionText.style.textDecoration = "none";
             mentionText.style.marginRight = "5px";
-
             commentP.appendChild(mentionText);
             commentP.appendChild(document.createTextNode(" " + comment.text));
         } else {
             commentP.textContent = comment.text;
         }
 
-        // Action buttons (like, dislike, reply)
+        // Action buttons (like, dislike, reply) - only if not deleted
         const actionDiv = document.createElement("div");
-        actionDiv.className = "d-flex justify-content-between align-items-center mb-3";
+        actionDiv.className = "action-buttons d-flex align-items-center";
         actionDiv.setAttribute('data-comment-id', commentId);
 
-        const likeDiv = document.createElement("div");
-        likeDiv.className = "d-flex align-items-center gap-2";
+        if (!isDeleted) {
+            const likeDiv = document.createElement("div");
+            likeDiv.className = "d-flex align-items-center gap-2";
 
-        const likeLink = document.createElement("a");
-        likeLink.href = "#";
-        likeLink.className = "link-muted me-2 like-btn";
-        likeLink.setAttribute('data-action', 'like');
-        likeLink.innerHTML = `<i class="fas fa-thumbs-up me-1"></i><span class="like-count">${comment.likes || 0}</span>`;
+            const likeLink = document.createElement("a");
+            likeLink.href = "#";
+            likeLink.className = "link-muted me-2 like-btn";
+            likeLink.setAttribute('data-action', 'like');
+            likeLink.setAttribute('data-comment-id', commentId);
+            likeLink.innerHTML = `<i class="fas fa-thumbs-up me-1"></i><span class="like-count">${comment.likes || 0}</span>`;
 
-        const dislikeLink = document.createElement("a");
-        dislikeLink.href = "#";
-        dislikeLink.className = "link-muted dislike-btn";
-        dislikeLink.setAttribute('data-action', 'dislike');
-        dislikeLink.innerHTML = `<i class="fas fa-thumbs-down me-1"></i><span class="dislike-count">${comment.dislikes || 0}</span>`;
+            const dislikeLink = document.createElement("a");
+            dislikeLink.href = "#";
+            dislikeLink.className = "link-muted dislike-btn";
+            dislikeLink.setAttribute('data-action', 'dislike');
+            likeLink.setAttribute('data-comment-id', commentId);
+            dislikeLink.innerHTML = `<i class="fas fa-thumbs-down me-1"></i><span class="dislike-count">${comment.dislikes || 0}</span>`;
 
-        // Only show reply button if user is logged in
-        const isLoggedIn = document.querySelector(".comment-input-wrapper") !== null;
+            // Only show reply button if user is logged in
+            const isLoggedIn = document.querySelector(".comment-input-wrapper") !== null;
 
-        likeDiv.appendChild(likeLink);
-        likeDiv.appendChild(dislikeLink);
+            likeDiv.appendChild(likeLink);
+            likeDiv.appendChild(dislikeLink);
+            actionDiv.appendChild(likeDiv);
 
-        actionDiv.appendChild(likeDiv);
+            // Action buttons container (right side)
+            const actionButtonsDiv = document.createElement("div");
+            actionButtonsDiv.className = "report-delete-btn align-items-center";
 
-        if (isLoggedIn) {
-            const replyLink = document.createElement("a");
-            replyLink.href = "#";
-            replyLink.className = "link-muted reply-btn";
-            replyLink.setAttribute('data-action', 'reply');
-            replyLink.innerHTML = '<i class="fas fa-reply me-1"></i> Reply';
-            actionDiv.appendChild(replyLink);
+            if (isLoggedIn) {
+                const replyLink = document.createElement("a");
+                replyLink.href = "#";
+                replyLink.className = "link-muted reply-btn";
+                replyLink.setAttribute('data-action', 'reply');
+                replyLink.innerHTML = '<i class="fas fa-reply me-1"></i> Reply';
+                actionButtonsDiv.appendChild(replyLink);
+            }
+
+            // Add report button - only show if user is logged in, not their own comment, and not already reported
+            if (isLoggedIn && !isCurrentUser && !hasBeenReported) {
+                const reportLink = document.createElement("a");
+                reportLink.href = "#";
+                reportLink.className = "link-muted report-btn ms-2";
+                reportLink.setAttribute('data-action', 'report');
+                reportLink.setAttribute('data-comment-id', commentId);
+                reportLink.innerHTML = '<i class="fas fa-flag me-1"></i> Report';
+                actionButtonsDiv.appendChild(reportLink);
+            } else if (isLoggedIn && !isCurrentUser && hasBeenReported) {
+                // Show "Reported" text if the comment has been reported
+                const reportedSpan = document.createElement("span");
+                reportedSpan.className = "text-muted small ms-2 reported-badge";
+                reportedSpan.innerHTML = '<i class="fas fa-flag me-1"></i> Reported';
+                actionButtonsDiv.appendChild(reportedSpan);
+            }
+
+            // Add delete button - only show if it's the current user's comment
+            if (isCurrentUser) {
+                const deleteLink = document.createElement("a");
+                deleteLink.href = "#";
+                deleteLink.className = "link-muted delete-btn ms-2";
+                deleteLink.setAttribute('data-action', 'delete');
+                deleteLink.setAttribute('data-comment-id', commentId);
+                deleteLink.innerHTML = '<i class="fas fa-trash me-1"></i> Delete';
+                actionButtonsDiv.appendChild(deleteLink);
+            }
+
+            actionDiv.appendChild(actionButtonsDiv);
         }
 
         headerDiv.appendChild(authorHeading);
@@ -195,7 +332,7 @@
         return commentDiv;
     }
 
-    // Add a click event handler for profile links
+    // Click event handler for profile links
     $(document).on('click', '.user-profile-link', function(e) {
         e.preventDefault();
         const username = $(this).data('username');
@@ -203,14 +340,10 @@
             console.error("Username not found on clicked element");
             return;
         }
-
-        // Determine if this is a provider or regular user
         navigateToUserProfile(username);
     });
 
-    // Function to handle determining user type and redirecting
     function navigateToUserProfile(username) {
-        // First, check if the user exists and get their type
         fetch(`/user/check-type?username=${encodeURIComponent(username)}`)
             .then(response => {
                 if (!response.ok) {
@@ -221,11 +354,8 @@
             .then(data => {
                 if (data.exists) {
                     if (data.isProvider) {
-                        // If provider, redirect to provider profile
                         window.location.href = `/provider-profile/${data.providerId}`;
                     } else {
-                        // If regular user, redirect to user profile
-                        // You might want to implement a public user profile page
                         window.location.href = `/user-profile/${data.userId}`;
                     }
                 } else {
@@ -285,10 +415,7 @@
             return;
         }
 
-        // Count all replies including nested ones
         const replyCount = $repliesSection.find('.reply').length;
-
-        console.log(`Updating toggle for comment: ${replyCount} replies`);
 
         if (replyCount === 0) {
             $toggleLink.remove();
@@ -298,7 +425,7 @@
 
         if ($toggleLink.length === 0) {
             $toggleLink = $('<a href="#" class="link-muted toggle-replies"></a>');
-            $commentBody.find('.d-flex.justify-content-between').after($toggleLink);
+            $commentBody.find('.action-buttons').after($toggleLink);
         }
 
         const isHidden = $repliesSection.is(':hidden');
@@ -310,39 +437,133 @@
 
     function applyViewMoreComments() {
         const $commentSection = $('#commentSection');
-        const $mainComments = $commentSection.find('> .d-flex.flex-start.mb-4');
+        const $mainComments = $commentSection.find('> .d-flex.flex-start:not(.reply)');
         const totalComments = $mainComments.length;
-        const $viewMoreButton = $commentSection.find('.view-more-comments');
-
-        console.log(`applyViewMoreComments called: ${totalComments} total main comments`);
+        const $viewMoreButton = $commentSection.find('.view-more-comments-container');
 
         $viewMoreButton.remove();
 
         if (totalComments > COMMENTS_PER_PAGE) {
-            console.log(`Showing ${COMMENTS_PER_PAGE} comments, hiding ${totalComments - COMMENTS_PER_PAGE}`);
+            $mainComments.removeClass('hidden');
             $mainComments.each(function (index) {
-                const $comment = $(this);
                 if (index >= COMMENTS_PER_PAGE) {
-                    $comment.addClass('hidden').hide();
-                } else {
-                    $comment.removeClass('hidden').show();
+                    $(this).addClass('hidden');
                 }
             });
 
             const remainingComments = totalComments - COMMENTS_PER_PAGE;
-            console.log(`Adding "View More" button for ${remainingComments} remaining comments`);
 
-            const $lastVisibleComment = $mainComments.eq(COMMENTS_PER_PAGE - 1);
-            const $newViewMoreButton = $(`<a href="#" class="link-muted view-more-comments">View ${remainingComments} more comments</a>`);
-            $lastVisibleComment.after($newViewMoreButton);
+            const $viewMoreButtonHtml = $(`
+                <div class="text-center mt-3 mb-3 view-more-comments-container">
+                    <a href="#" class="link-muted view-more-comments">View ${remainingComments} more comments</a>
+                </div>
+            `);
+            $mainComments.eq(COMMENTS_PER_PAGE - 1).after($viewMoreButtonHtml);
         } else {
-            console.log("Total comments within limit, showing all comments");
-            $mainComments.removeClass('hidden').show();
+            $mainComments.removeClass('hidden');
         }
     }
 
+    // The CSS for hiding comments and styling deleted comments
+    const commentStyles = `
+    <style>
+    /* Hidden Main Comments */
+    #commentSection .d-flex.flex-start.hidden {
+        display: none !important;
+    }
+
+    /* Hidden Replies */
+    .replies-section .reply.hidden {
+        display: none !important;
+    }
+
+    /* Deleted Comment Style */
+    .comment-text.deleted {
+        color: #6c757d;
+    }
+
+    /* Toast Notification Styles */
+    .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+    .report-toast {
+        background-color: rgba(0, 128, 0, 0.85);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        font-size: 14px;
+        max-width: 350px;
+        display: flex;
+        align-items: center;
+        animation: slideIn 0.3s ease forwards;
+    }
+    .report-toast i {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+    /* Reported Badge Style */
+    .reported-badge {
+        color: #ff3d3d !important;
+    }
+    .reported-badge i {
+        color: #ff3d3d !important;
+    }
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+    </style>
+    `;
+
+    if (!$('head style:contains("Hidden Main Comments")').length) {
+        $('head').append(commentStyles);
+    }
+
+    // Create toast container if it doesn't exist
+    if (!$('.toast-container').length) {
+        $('body').append('<div class="toast-container"></div>');
+    }
+
+    function showToastNotification(message, type = 'success') {
+        const icon = type === 'success' ? 'check-circle' : 'exclamation-triangle';
+        const bgColor = type === 'success' ? 'rgba(0, 128, 0, 0.85)' : 'rgba(220, 53, 69, 0.85)';
+
+        const toast = document.createElement('div');
+        toast.className = 'report-toast';
+        toast.style.backgroundColor = bgColor;
+        toast.innerHTML = `<i class="fas fa-${icon}"></i> ${message}`;
+
+        $('.toast-container').append(toast);
+
+        // Remove the toast after 3 seconds
+        setTimeout(() => {
+            toast.style.animation = 'fadeOut 0.5s ease forwards';
+            setTimeout(() => {
+                toast.remove();
+            }, 500);
+        }, 3000);
+    }
+
     function fetchComments() {
-        console.log("Fetching comments for watchlistId:", watchlistId);
         fetch(`/comments/list/${watchlistId}`)
             .then(response => {
                 if (!response.ok) {
@@ -351,23 +572,18 @@
                 return response.json();
             })
             .then(comments => {
-                console.log("Comments fetched:", comments);
                 const commentSection = document.getElementById("commentSection");
                 commentSection.innerHTML = "";
 
                 if (!comments || comments.length === 0) {
-                    commentSection.innerHTML = '<p class="text-center text-muted">No comments yet.</p>';
+                    commentSection.innerHTML = '<p class="text-center text-light">No comments yet.</p>';
                     return;
                 }
 
-                // Sort comments by date (newest first)
                 comments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
                 comments.forEach(comment => {
                     const commentElement = createCommentElement(comment);
                     commentSection.appendChild(commentElement);
-
-                    // Fetch replies for this comment
                     fetchRepliesFlat(comment.commentId, commentElement, comment.username);
                 });
 
@@ -379,20 +595,17 @@
     }
 
     function fetchRepliesFlat(commentId, commentElement, commentUsername) {
-        console.log(`Fetching replies for comment ID: ${commentId}`);
-
         let repliesSection = commentElement.querySelector('.replies-section');
         let toggleLink = commentElement.querySelector('.toggle-replies');
 
         if (!repliesSection) {
             toggleLink = document.createElement('a');
             toggleLink.href = '#';
-            toggleLink.className = 'link-muted toggle-replies mb-2';
+            toggleLink.className = 'link-muted toggle-replies';
 
-            const actionDiv = commentElement.querySelector('.d-flex.justify-content-between');
+            const actionDiv = commentElement.querySelector('.action-buttons');
             actionDiv.parentNode.insertBefore(toggleLink, actionDiv.nextSibling);
 
-            // Create replies section
             repliesSection = document.createElement('div');
             repliesSection.className = 'replies-section mt-3';
             toggleLink.parentNode.insertBefore(repliesSection, toggleLink.nextSibling);
@@ -401,7 +614,6 @@
         let allReplies = [];
         const processedReplies = new Set();
 
-        // Function to gather ALL replies (direct and nested) recursively
         async function gatherAllReplies(parentId, parentUsername) {
             try {
                 const response = await fetch(`/comments/replies/${parentId}`);
@@ -414,9 +626,6 @@
                     return;
                 }
 
-                console.log(`Found ${replies.length} direct replies to ${parentId}`);
-
-                // First add these replies to collection
                 for (const reply of replies) {
                     if (!processedReplies.has(reply.commentId)) {
                         allReplies.push({
@@ -425,8 +634,6 @@
                             nestingLevel: 1
                         });
                         processedReplies.add(reply.commentId);
-
-                        // Recursively fetch replies to this reply
                         await gatherAllReplies(reply.commentId, reply.username);
                     }
                 }
@@ -435,21 +642,12 @@
             }
         }
 
-        // Main execution flow
         async function loadAndDisplayReplies() {
             try {
-                // First, gather ALL replies recursively
                 await gatherAllReplies(commentId, commentUsername);
-
-                // Sort all collected replies by date (newest first)
                 allReplies.sort((a, b) => new Date(b.reply.createdAt) - new Date(a.reply.createdAt));
 
-                console.log(`Total replies gathered for comment ${commentId}: ${allReplies.length}`);
-
-                // Clear the replies section to avoid duplicates
                 repliesSection.innerHTML = '';
-
-                // Add all replies to the section
                 for (const replyData of allReplies) {
                     const replyElement = createCommentElement(
                         replyData.reply,
@@ -460,20 +658,15 @@
                     repliesSection.appendChild(replyElement);
                 }
 
-                // Update visibility of toggle link and replies section
                 if (allReplies.length > 0) {
                     const replyCount = allReplies.length;
-                    // Set initial visibility based on localStorage
                     const isVisible = localStorage.getItem(`reply-section-${commentId}`) === 'visible';
                     repliesSection.style.display = isVisible ? 'block' : 'none';
-
                     toggleLink.textContent = isVisible ?
                         `Hide ${replyCount} ${replyCount === 1 ? 'reply' : 'replies'}` :
                         `Show ${replyCount} ${replyCount === 1 ? 'reply' : 'replies'}`;
-
                     toggleLink.style.display = 'block';
                 } else {
-                    // No replies, hide both
                     toggleLink.style.display = 'none';
                     repliesSection.style.display = 'none';
                 }
@@ -481,12 +674,9 @@
                 console.error(`Error in loadAndDisplayReplies for comment ${commentId}:`, error);
             }
         }
-
-        // Execute the main function
         loadAndDisplayReplies();
     }
 
-    // Like/dislike handlers
     $(document).on('click', '.like-btn, .dislike-btn', function (e) {
         e.preventDefault();
         const $actionElement = $(this);
@@ -504,6 +694,13 @@
             })
             .then(updatedComment => {
                 $actionElement.find(`.${action}-count`).text(updatedComment[action + 's']);
+                const commentIndex = commentsCache.findIndex(c => c.commentId === id);
+                if (commentIndex !== -1) {
+                    commentsCache[commentIndex][action + 's'] = updatedComment[action + 's'];
+                    if (currentSortType === "top") {
+                        sortAndDisplayComments("top");
+                    }
+                }
             })
             .catch(error => {
                 console.error(`Error ${action}ing comment:`, error);
@@ -511,666 +708,723 @@
             });
     });
 
-    // Only attach reply handlers if user is logged in
     if (document.querySelector(".comment-input-wrapper")) {
-        // Toggle reply input form
         $(document).on('click', '.reply-btn', function (e) {
             e.preventDefault();
             const $replyBtn = $(this);
-            const $actionDiv = $replyBtn.closest('.d-flex.justify-content-between');
+            const $actionDiv = $replyBtn.closest('.action-buttons');
+            const $commentCardBody = $replyBtn.closest('.comment-card-body');
             const $commentWithId = $replyBtn.closest('[data-comment-id]');
             const parentId = $commentWithId.attr('data-comment-id');
-
-            console.log("Reply button clicked for comment ID:", parentId);
 
             if (!parentId) {
                 console.error("Could not find parent comment ID");
                 return;
             }
 
-            // Check if there's already an input wrapper
-            let $existingWrapper = $actionDiv.next('.reply-input-wrapper');
+            let $existingWrapper;
+            if ($actionDiv.length) {
+                $existingWrapper = $actionDiv.next('.reply-input-wrapper');
+            } else if ($commentCardBody.length) {
+                $existingWrapper = $commentCardBody.find('.reply-input-wrapper');
+            }
 
-            if ($existingWrapper.length > 0) {
-                // Toggle existing wrapper
+            if ($existingWrapper && $existingWrapper.length > 0) {
                 $existingWrapper.slideUp(300, function() {
                     $(this).remove();
                 });
                 return;
             }
 
-            // Close any other open reply inputs
             $('.reply-input-wrapper').slideUp(200, function() {
                 $(this).remove();
             });
 
-            // Create new reply input wrapper
             const $replyInputWrapper = $(createReplyInputWrapper(parentId));
-            $actionDiv.after($replyInputWrapper);
+            if ($actionDiv.length) {
+                $actionDiv.after($replyInputWrapper);
+            } else if ($commentCardBody.length) {
+                $commentCardBody.append($replyInputWrapper);
+            }
 
-            // Show and focus
             $replyInputWrapper.hide().slideDown(300, function() {
                 $replyInputWrapper.find('.reply-box').focus();
             });
         });
 
-        // Post reply handler
         $(document).on('click', '.post-reply-btn', function (e) {
-            e.preventDefault();
-            const $button = $(this);
-            const $replyInputWrapper = $button.closest('.reply-input-wrapper');
-            const $replyBox = $replyInputWrapper.find('.reply-box');
-            const replyText = $replyBox.val().trim();
-            const parentId = $replyInputWrapper.attr('data-parent-id');
+                    e.preventDefault();
+                    const $button = $(this);
+                    const $replyInputWrapper = $button.closest('.reply-input-wrapper');
+                    const $replyBox = $replyInputWrapper.find('.reply-box');
+                    const replyText = $replyBox.val().trim();
+                    const parentId = $replyInputWrapper.attr('data-parent-id');
 
-            console.log("Posting reply to parent ID:", parentId);
+                    if (!parentId) {
+                        console.error("Parent comment ID is missing");
+                        alert("Could not identify parent comment. Please try again.");
+                        return;
+                    }
 
-            if (!parentId) {
-                console.error("Parent comment ID is missing");
-                alert("Could not identify parent comment. Please try again.");
-                return;
+                    if (!replyText) {
+                        alert("Please enter a reply.");
+                        $replyBox.focus();
+                        return;
+                    }
+
+                    const username = document.querySelector(".comment-author")?.textContent?.trim();
+                    if (!username) {
+                        console.error("Could not determine current user for reply");
+                        alert("Unable to post reply: user information missing.");
+                        return;
+                    }
+
+                    const currentUserAvatar = document.querySelector(".current-user-avatar").src;
+
+                    $button.prop('disabled', true).text('Posting...');
+
+                    fetch(`/comments/reply/${parentId}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({
+                            username: username,
+                            text: replyText
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Failed to post reply: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(reply => {
+                        reply.avatarSrc = currentUserAvatar;
+                        const $parentElement = $replyInputWrapper.closest('[data-comment-id]');
+                        const username = $parentElement.find('.comment-author').text().trim();
+
+                        const $mainComment = $parentElement.hasClass('d-flex flex-start:not(.reply)') ?
+                                          $parentElement :
+                                          $parentElement.closest('.d-flex.flex-start:not(.reply)');
+
+                        if (!$mainComment.length) {
+                            console.error("Could not find main comment");
+                            return;
+                        }
+
+                        const mainCommentId = $mainComment.data('comment-id');
+                        let $repliesSection = $mainComment.find('.replies-section');
+                        let $toggleLink = $mainComment.find('.toggle-replies');
+
+                        if ($repliesSection.length === 0) {
+                            $toggleLink = $('<a href="#" class="link-muted toggle-replies"></a>');
+                            const $actionButtons = $mainComment.find('.action-buttons');
+                            $actionButtons.after($toggleLink);
+
+                            $repliesSection = $('<div class="replies-section mt-3"></div>');
+                            $toggleLink.after($repliesSection);
+                        }
+
+                        const newReply = createCommentElement(reply, true, 1, username);
+                        $repliesSection.prepend(newReply);
+
+                        const replyCount = $repliesSection.find('.reply').length;
+                        $toggleLink.text(`Hide ${replyCount} ${replyCount === 1 ? 'reply' : 'replies'}`);
+                        $toggleLink.show();
+
+                        $repliesSection.show();
+                        localStorage.setItem(`reply-section-${mainCommentId}`, 'visible');
+
+                        $replyBox.val('');
+                        $replyInputWrapper.slideUp(function() {
+                            $(this).remove();
+                        });
+
+                        $(newReply).hide().slideDown().get(0).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        $button.prop('disabled', false).text('Reply');
+                    })
+                    .catch(error => {
+                        console.error("Error posting reply:", error);
+                        alert("Failed to post reply. Please try again.");
+                        $button.prop('disabled', false).text('Reply');
+                    });
+                });
             }
 
-            if (!replyText) {
-                alert("Please enter a reply.");
-                $replyBox.focus();
-                return;
-            }
+            $(document).on('click', '.toggle-replies', function (e) {
+                e.preventDefault();
+                const $link = $(this);
+                const $repliesSection = $link.next('.replies-section');
+                const $comment = $link.closest('[data-comment-id]');
+                const commentId = $comment.data('comment-id');
 
-            // Get the current username  and avatar from the comment input
-            const username = document.querySelector(".comment-author").textContent;
-            const currentUserAvatar = document.querySelector(".current-user-avatar").src;
-
-            // Show loading state
-            $button.prop('disabled', true).text('Posting...');
-
-            fetch(`/comments/reply/${parentId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({
-                    username: username,
-                    text: replyText
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Failed to post reply: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(reply => {
-                reply.avatarSrc = currentUserAvatar;
-                // Get the clicked element's data
-                const $parentElement = $replyInputWrapper.closest('[data-comment-id]');
-                const username = $parentElement.find('.comment-author').text().trim();
-
-                // Find the main comment regardless of nesting level
-                const $mainComment = $parentElement.hasClass('d-flex flex-start mb-4') ?
-                                  $parentElement :
-                                  $parentElement.closest('.d-flex.flex-start.mb-4');
-
-                if (!$mainComment.length) {
-                    console.error("Could not find main comment");
+                if (!$repliesSection.length) {
+                    console.error("No replies section found");
                     return;
                 }
 
-                const mainCommentId = $mainComment.data('comment-id');
+                const $replies = $repliesSection.find('.reply');
+                const replyCount = $replies.length;
 
-                // Get or create replies section
-                let $repliesSection = $mainComment.find('.replies-section');
-                let $toggleLink = $mainComment.find('.toggle-replies');
-
-                if ($repliesSection.length === 0) {
-                    // Create toggle link first
-                    $toggleLink = $('<a href="#" class="link-muted toggle-replies"></a>');
-                    $mainComment.find('.comment-card-body').find('.d-flex.justify-content-between').after($toggleLink);
-
-                    // Create replies section
-                    $repliesSection = $('<div class="replies-section mt-3"></div>');
-                    $toggleLink.after($repliesSection);
+                if (replyCount === 0) {
+                    $link.hide();
+                    return;
                 }
 
-                // Create the new reply element with proper mention
-                const newReply = createCommentElement(reply, true, 1, username);
+                if ($repliesSection.is(':visible')) {
+                    $repliesSection.slideUp(200, function() {
+                        $link.text(`Show ${replyCount} ${replyCount === 1 ? 'reply' : 'replies'}`);
+                        localStorage.setItem(`reply-section-${commentId}`, 'hidden');
+                    });
+                } else {
+                    $repliesSection.slideDown(200, function() {
+                        $link.text(`Hide ${replyCount} ${replyCount === 1 ? 'reply' : 'replies'}`);
+                        localStorage.setItem(`reply-section-${commentId}`, 'visible');
+                    });
+                }
+            });
 
-                // Always prepend (add to beginning) for newest first order
-                $repliesSection.prepend(newReply);
+            $(document).on('click', '.view-more-comments', function (e) {
+                e.preventDefault();
+                const $button = $(this);
+                const $commentSection = $('#commentSection');
+                const $hiddenComments = $commentSection.find('.d-flex.flex-start.hidden');
 
-                // Update toggle link text
-                const replyCount = $repliesSection.find('.reply').length;
-                $toggleLink.text(`Hide ${replyCount} ${replyCount === 1 ? 'reply' : 'replies'}`);
-                $toggleLink.show();
+                if ($hiddenComments.length > 0) {
+                    $hiddenComments.removeClass('hidden');
+                    $button.closest('.view-more-comments-container').fadeOut(300, function () {
+                        $(this).remove();
+                    });
+                }
+            });
 
-                // Show replies section and save state
-                $repliesSection.show();
-                localStorage.setItem(`reply-section-${mainCommentId}`, 'visible');
+            setTimeout(function() {
+                if (typeof fetchComments === 'function' && $('.comment-sorting-controls').length === 0) {
+                    fetchComments();
+                }
+            }, 500);
 
-                // Clean up
-                $replyBox.val('');
-                $replyInputWrapper.slideUp(function() {
-                    $(this).remove();
+            const originalFetchComments = fetchComments;
+
+            let currentSortType = "newest";
+            let commentsCache = [];
+
+            function createSortingControls() {
+                $('.comments-header').remove();
+
+                const headerHTML = `
+                    <div class="comments-header">
+                        <div class="comments-title">
+                            <i class="far fa-comment-alt"></i>
+                            <h5>Comments</h5>
+                        </div>
+                        <div class="sort-controls">
+                            <span>Sort by:</span>
+                            <div class="sort-buttons">
+                                <button type="button" class="sort-btn active" data-sort="newest">Newest</button>
+                                <button type="button" class="sort-btn" data-sort="oldest">Oldest</button>
+                                <button type="button" class="sort-btn" data-sort="top">Top</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                const styles = `
+                    <style>
+                        .comments-header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 35px;
+                            width: 100%;
+                            margin-top: 30px;
+                            color: white;
+                        }
+
+                        .comments-title {
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                        }
+
+                        .comments-title i {
+                            font-size: 1.2rem;
+                            color: white;
+                        }
+
+                        .comments-title h5 {
+                            margin: 0;
+                            font-size: 1.2rem;
+                            font-weight: 600;
+                            color: white;
+                        }
+
+                        .sort-controls {
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                        }
+
+                        .sort-controls span {
+                            color: white;
+                            font-size: 0.9rem;
+                        }
+
+                        .sort-buttons {
+                            display: flex;
+                            gap: 5px;
+                        }
+
+                        .sort-btn {
+                            background-color: rgba(44, 62, 80, 0.5);
+                            color: white;
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            transition: all 0.2s ease;
+                            font-size: 0.8rem;
+                            padding: 4px 10px;
+                            border-radius: 4px;
+                            cursor: pointer;
+                        }
+
+                        .sort-btn:hover {
+                            background-color: rgba(52, 152, 219, 0.3);
+                            color: white;
+                        }
+
+                        .sort-btn.active {
+                            background: linear-gradient(135deg, #3498db, #2980b9);
+                            color: white;
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.4);
+                        }
+
+                        @media (max-width: 576px) {
+                            .comments-header {
+                                flex-direction: column;
+                                align-items: flex-start;
+                            }
+
+                            .sort-controls {
+                                margin-top: 10px;
+                                width: 100%;
+                            }
+                        }
+                    </style>
+                `;
+
+                $('head style:contains("comments-header")').remove();
+                $('head').append(styles);
+
+                const existingHeader = $('h5:contains("Comments"), span:contains("Comments"), .comment-heading, div:contains("Comments")').filter(function() {
+                    return $(this).clone().children().remove().end().text().trim() === "Comments";
                 });
 
-                // Scroll to new reply
-                $(newReply).hide().slideDown().get(0).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                const commentIcon = $('.fa-comment, .fa-comment-alt, .far.fa-comment-alt');
 
-                // Reset button
-                $button.prop('disabled', false).text('Reply');
-            })
-            .catch(error => {
-                console.error("Error posting reply:", error);
-                alert("Failed to post reply. Please try again.");
-                $button.prop('disabled', false).text('Reply');
-            });
-        });
-    }
-
-    // Toggle replies visibility with localStorage
-    $(document).on('click', '.toggle-replies', function (e) {
-        e.preventDefault();
-        const $link = $(this);
-        const $repliesSection = $link.next('.replies-section');
-        const $comment = $link.closest('[data-comment-id]');
-        const commentId = $comment.data('comment-id');
-
-        if (!$repliesSection.length) {
-            console.error("No replies section found");
-            return;
-        }
-
-        const $replies = $repliesSection.find('.reply');
-        const replyCount = $replies.length;
-
-        if (replyCount === 0) {
-            $link.hide();
-            return;
-        }
-
-        console.log("Toggling replies. Comment ID:", commentId, "Current visibility:", $repliesSection.is(':visible'), "Count:", replyCount);
-
-        if ($repliesSection.is(':visible')) {
-            // Hide replies
-            $repliesSection.slideUp(200, function() {
-                $link.text(`Show ${replyCount} ${replyCount === 1 ? 'reply' : 'replies'}`);
-                // Store toggle state
-                localStorage.setItem(`reply-section-${commentId}`, 'hidden');
-            });
-        } else {
-            // Show replies
-            $repliesSection.slideDown(200, function() {
-                $link.text(`Hide ${replyCount} ${replyCount === 1 ? 'reply' : 'replies'}`);
-                // Store toggle state
-                localStorage.setItem(`reply-section-${commentId}`, 'visible');
-            });
-        }
-    });
-
-    // View more comments
-    $(document).on('click', '.view-more-comments', function (e) {
-        e.preventDefault();
-        const $button = $(this);
-        const $commentSection = $('#commentSection');
-        const $hiddenComments = $commentSection.find('.d-flex.flex-start.mb-4.hidden');
-
-        console.log("View More Comments clicked, showing", $hiddenComments.length, "hidden comments");
-
-        $hiddenComments.removeClass('hidden').slideDown({
-            duration: 300,
-            complete: function () {
-                $button.remove();
-            }
-        });
-    });
-
-    // Post new comment - only define if user is logged in
-    if (document.querySelector(".comment-input-wrapper")) {
-        window.postComment = function () {
-            try {
-                const commentBox = document.getElementById("commentBox");
-                if (!commentBox) {
-                    throw new Error("Comment box element not found.");
+                if (existingHeader.length > 0) {
+                    existingHeader.hide();
+                }
+                if (commentIcon.length > 0) {
+                    commentIcon.hide();
                 }
 
-                const commentText = commentBox.value.trim();
-                if (!commentText) {
-                    alert("Please enter a comment.");
-                    commentBox.focus();
+                const commentBox = $('.comment-input-wrapper, .comment-box-container, textarea[placeholder*="comment"], textarea[placeholder*="Leave a comment"]').closest('div.row, div.comment-section, div.container');
+                const loginBanner = $('.login-banner, .comment-login, .login-prompt, div:contains("Please log in to leave a comment")');
+                const commentSection = $('#commentSection');
+
+                if (commentSection.length > 0) {
+                    const animeCards = $('.anime-card, .anime-box, .card').last();
+
+                    if (animeCards.length > 0) {
+                        animeCards.closest('.row, .container').after(headerHTML);
+                    } else {
+                        if (loginBanner.length > 0) {
+                            loginBanner.before(headerHTML);
+                        } else if (commentBox.length > 0) {
+                            commentBox.before(headerHTML);
+                        } else {
+                            commentSection.before(headerHTML);
+                        }
+                    }
+                } else {
+                    const content = $('.content, main, #main-content').first();
+                    if (content.length > 0) {
+                        const possibleHeaders = content.find('h1, h2, h3, h4, h5, h6, div').filter(function() {
+                            return $(this).text().includes('Comments');
+                        });
+
+                        if (possibleHeaders.length > 0) {
+                            possibleHeaders.first().replaceWith(headerHTML);
+                        } else {
+                            content.append(headerHTML);
+                        }
+                    } else {
+                        $('body').append(headerHTML);
+                    }
+                }
+
+                $('.sort-btn').off('click').on('click', function() {
+                    const sortType = $(this).data('sort');
+                    if (sortType === currentSortType) return;
+
+                    $('.sort-btn').removeClass('active');
+                    $(this).addClass('active');
+
+                    currentSortType = sortType;
+                    sortAndDisplayComments(sortType);
+                });
+            }
+
+            function sortAndDisplayComments(sortType) {
+                if (!commentsCache || commentsCache.length === 0) {
+                    const commentSection = document.getElementById("commentSection");
+                    commentSection.innerHTML = '<p class="text-center text-light">No comments yet.</p>';
                     return;
                 }
 
-                const username = document.querySelector(".comment-author").textContent;
-                const currentUserAvatar = document.querySelector(".current-user-avatar").src;
-                const url = `/comments/add/${watchlistId}`;
+                const sortedComments = [...commentsCache];
+                switch (sortType) {
+                    case "newest":
+                        sortedComments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                        break;
+                    case "oldest":
+                        sortedComments.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                        break;
+                    case "top":
+                        sortedComments.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+                        break;
+                    default:
+                        sortedComments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                }
 
-                fetch(url, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: new URLSearchParams({ username: username, text: commentText })
+                const commentSection = document.getElementById("commentSection");
+                commentSection.innerHTML = "";
+
+                sortedComments.forEach(comment => {
+                    const commentElement = createCommentElement(comment);
+                    commentSection.appendChild(commentElement);
+                    fetchRepliesFlat(comment.commentId, commentElement, comment.username);
+                });
+
+                applyViewMoreComments();
+                $("#commentSection > div").addClass("comment-sort-fade");
+            }
+
+            fetchComments = function() {
+                fetch(`/comments/list/${watchlistId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Failed to fetch comments: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(comments => {
+                        commentsCache = comments || [];
+
+                        if ($(".comment-sorting-controls").length === 0) {
+                            createSortingControls();
+
+                            $(document).on("click", ".sort-btn", function() {
+                                const sortType = $(this).data("sort");
+                                if (sortType === currentSortType) return;
+
+                                $(".sort-btn").removeClass("active");
+                                $(this).addClass("active");
+
+                                currentSortType = sortType;
+                                sortAndDisplayComments(sortType);
+                            });
+                        }
+
+                        sortAndDisplayComments(currentSortType);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching comments:", error);
+                        const commentSection = document.getElementById("commentSection");
+                        commentSection.innerHTML = '<p class="text-center text-danger">Failed to load comments. Please try again later.</p>';
+                    });
+            };
+
+            const originalLikeDislikeHandler = $._data($(document)[0], "events")?.click?.find(
+                handler => handler.selector === '.like-btn, .dislike-btn'
+            );
+
+            if (originalLikeDislikeHandler) {
+                $(document).off('click', '.like-btn, .dislike-btn');
+
+                $(document).on('click', '.like-btn, .dislike-btn', function (e) {
+                    e.preventDefault();
+                    const $actionElement = $(this);
+                    const action = $actionElement.data('action');
+                    const $comment = $actionElement.closest('[data-comment-id]');
+                    const id = $comment.data('comment-id');
+                    const url = action === 'like' ? `/comments/like/${id}` : `/comments/dislike/${id}`;
+
+                    fetch(url, { method: 'POST' })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`Failed to ${action} comment: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(updatedComment => {
+                            $actionElement.find(`.${action}-count`).text(updatedComment[action + 's']);
+                            const commentIndex = commentsCache.findIndex(c => c.commentId === id);
+                            if (commentIndex !== -1) {
+                                commentsCache[commentIndex][action + 's'] = updatedComment[action + 's'];
+                                if (currentSortType === "top") {
+                                    sortAndDisplayComments("top");
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.error(`Error ${action}ing comment:`, error);
+                            alert(`Failed to ${action} comment. Please try again.`);
+                        });
+                });
+            }
+
+            // Delete comment handler
+            $(document).on('click', '.delete-btn', function(e) {
+                e.preventDefault();
+                const $button = $(this);
+                const commentId = $button.data('comment-id');
+
+                if (!commentId) {
+                    console.error("Comment ID not found");
+                    alert("Unable to delete comment: Comment ID missing.");
+                    return;
+                }
+
+                if (!confirm("Are you sure you want to delete this comment? This action cannot be undone.")) {
+                    return;
+                }
+
+                const username = document.querySelector(".comment-author")?.textContent?.trim();
+                if (!username) {
+                    console.error("Could not determine current user for deletion");
+                    alert("Unable to delete comment: user information missing.");
+                    return;
+                }
+
+                $button.prop('disabled', true);
+
+                fetch(`/comments/delete/${commentId}`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ username: username })
                 })
                 .then(response => {
                     if (!response.ok) {
-                        return response.text().then(text => {
-                            throw new Error(`Failed to post comment: ${response.status} ${text}`);
+                        return response.json().then(data => {
+                            throw new Error(data.message || `Failed to delete comment: ${response.status}`);
                         });
                     }
                     return response.json();
                 })
-                .then(comment => {
-                    console.log("Comment posted:", comment);
-                    commentBox.value = "";
-                    const commentSection = document.getElementById("commentSection");
-                    comment.avatarSrc = currentUserAvatar;
-                    const newComment = createCommentElement(comment);
-                    if (commentSection.firstChild) {
-                        commentSection.insertBefore(newComment, commentSection.firstChild);
+                .then(data => {
+                    const $commentElement = $(`[data-comment-id="${commentId}"]`);
+                    const commentIndex = commentsCache.findIndex(c => c.commentId.toString() === commentId.toString());
+
+                    if (data.isReply) {
+                        // Reply was fully deleted
+                        $commentElement.remove();
+
+                        // Find the parent comment and re-fetch its replies to update the UI
+                        const $parentComment = $commentElement.closest('.d-flex.flex-start:not(.reply)');
+                        const parentCommentId = $parentComment.data('comment-id');
+                        const parentCommentUsername = $parentComment.find('.comment-author').text().trim();
+
+                        if (parentCommentId) {
+                            fetchRepliesFlat(parentCommentId, $parentComment[0], parentCommentUsername);
+                        }
+                    } else if (data.hasReplies) {
+                        // Parent comment was marked as deleted (has replies)
+                        const $commentText = $commentElement.find('.comment-text');
+                        $commentText.text('[Comment deleted by user]');
+                        $commentText.addClass('deleted');
+
+                        const $actionDiv = $commentElement.find('.action-buttons');
+                        $actionDiv.empty();
+
+                        if (commentIndex !== -1) {
+                            commentsCache[commentIndex].text = "[Comment deleted by user]";
+                        }
+
+                        // Re-fetch replies to ensure they are displayed
+                        const commentUsername = $commentElement.find('.comment-author').text().trim();
+                        fetchRepliesFlat(commentId, $commentElement[0], commentUsername);
                     } else {
-                        commentSection.appendChild(newComment);
+                        // Parent comment was fully deleted (no replies)
+                        $commentElement.remove();
+                        if (commentIndex !== -1) {
+                            commentsCache.splice(commentIndex, 1);
+                        }
                     }
-                    newComment.scrollIntoView({ behavior: "smooth", block: "nearest" });
-                    applyViewMoreComments();
+
+                    alert(data.message || "Comment deleted successfully.");
                 })
                 .catch(error => {
-                    console.error("Error posting comment:", error);
-                    alert("Failed to post comment. Please try again.");
+                    console.error("Error deleting comment:", error);
+                    alert(`Failed to delete comment: ${error.message}`);
+                })
+                .finally(() => {
+                    $button.prop('disabled', false);
                 });
-            } catch (error) {
-                console.error("Error posting comment:", error.message);
-                alert("An error occurred while posting your comment. Please try again.");
-            }
-        };
-    }
+            });
 
-    setTimeout(function() {
-        if (typeof fetchComments === 'function' && $('.comment-sorting-controls').length === 0) {
-          console.log("Initializing comment sorting controls...");
-          fetchComments();
-        }
-      }, 500);
+            // Report comment handler
+            $(document).on('click', '.report-btn', function(e) {
+                e.preventDefault();
+                const commentId = $(this).data('comment-id');
 
-
-    const originalFetchComments = fetchComments;
-    const originalPostComment = window.postComment;
-
-    let currentSortType = "newest"; // Default sort type
-    let commentsCache = []; // To store all comments for easy re-sorting
-
-    function createSortingControls() {
-        $('.comments-header').remove();
-
-        const headerHTML = `
-            <div class="comments-header">
-                <div class="comments-title">
-                    <i class="far fa-comment-alt"></i>
-                    <h5>Comments</h5>
-                </div>
-                <div class="sort-controls">
-                    <span>Sort by:</span>
-                    <div class="sort-buttons">
-                        <button type="button" class="sort-btn active" data-sort="newest">Newest</button>
-                        <button type="button" class="sort-btn" data-sort="oldest">Oldest</button>
-                        <button type="button" class="sort-btn" data-sort="top">Top</button>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        const styles = `
-            <style>
-                .comments-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: 35px;
-                    width: 100%;
-                    margin-top: 30px;
-                    color: white;
+                if (!commentId) {
+                    console.error("Comment ID not found");
+                    return;
                 }
 
-                .comments-title {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                }
+                showReportModal(commentId);
+            });
 
-                .comments-title i {
-                    font-size: 1.2rem;
-                    color: white;
-                }
+            window.showReportModal = function(commentId) {
+                let reportModal = document.getElementById('reportCommentModal');
 
-                .comments-title h5 {
-                    margin: 0;
-                    font-size: 1.2rem;
-                    font-weight: 600;
-                    color: white;
-                }
+                if (!reportModal) {
+                    const modalHTML = `
+                        <div class="modal fade" id="reportCommentModal" tabindex="-1" aria-labelledby="reportCommentModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content bg-dark text-light">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="reportCommentModalLabel">Report Comment</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Please select a reason for reporting this comment:</p>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="reportReason" id="reasonSpam" value="Spam or misleading">
+                                            <label class="form-check-label" for="reasonSpam">Spam or misleading</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="reportReason" id="reasonHateful" value="Hateful or abusive content">
+                                            <label class="form-check-label" for="reasonHateful">Hateful or abusive content</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="reportReason" id="reasonHarassment" value="Harassment or bullying">
+                                            <label class="form-check-label" for="reasonHarassment">Harassment or bullying</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="reportReason" id="reasonInappropriate" value="Inappropriate content">
+                                            <label class="form-check-label" for="reasonInappropriate">Inappropriate content</label>
+                                        </div>
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="radio" name="reportReason" id="reasonOther" value="other">
+                                            <label class="form-check-label" for="reasonOther">Other</label>
+                                        </div>
+                                        <div class="mb-3" id="otherReasonContainer" style="display: none;">
+                                            <label for="otherReason" class="form-label">Please specify:</label>
+                                            <textarea class="form-control bg-secondary text-light" id="otherReason" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" id="submitReportBtn" class="btn btn-danger">Submit Report</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
 
-                .sort-controls {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                }
+                    document.body.insertAdjacentHTML('beforeend', modalHTML);
+                    reportModal = document.getElementById('reportCommentModal');
 
-                .sort-controls span {
-                    color: white;
-                    font-size: 0.9rem;
-                }
+                    document.querySelectorAll('input[name="reportReason"]').forEach(radio => {
+                        radio.addEventListener('change', function() {
+                            const otherContainer = document.getElementById('otherReasonContainer');
+                            otherContainer.style.display = this.value === 'other' ? 'block' : 'none';
+                        });
+                    });
 
-                .sort-buttons {
-                    display: flex;
-                    gap: 5px;
-                }
-
-                .sort-btn {
-                    background-color: rgba(44, 62, 80, 0.5);
-                    color: white;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    transition: all 0.2s ease;
-                    font-size: 0.8rem;
-                    padding: 4px 10px;
-                    border-radius: 4px;
-                    cursor: pointer;
-                }
-
-                .sort-btn:hover {
-                    background-color: rgba(52, 152, 219, 0.3);
-                    color: white;
-                }
-
-                .sort-btn.active {
-                    background: linear-gradient(135deg, #3498db, #2980b9);
-                    color: white;
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.4);
-                }
-
-                @media (max-width: 576px) {
-                    .comments-header {
-                        flex-direction: column;
-                        align-items: flex-start;
-                    }
-
-                    .sort-controls {
-                        margin-top: 10px;
-                        width: 100%;
-                    }
-                }
-            </style>
-        `;
-
-        $('head style:contains("comments-header")').remove();
-        $('head').append(styles);
-
-        // Find the existing comment section header to hide
-        const existingHeader = $('h5:contains("Comments"), span:contains("Comments"), .comment-heading, div:contains("Comments")').filter(function() {
-            // This is to only match if this is a text node or heading directly containing "Comments"
-            return $(this).clone().children().remove().end().text().trim() === "Comments";
-        });
-
-        // Also to find any comment icon to hide
-        const commentIcon = $('.fa-comment, .fa-comment-alt, .far.fa-comment-alt');
-
-        // Hide the original elements without removing them
-        if (existingHeader.length > 0) {
-            existingHeader.hide();
-        }
-        if (commentIcon.length > 0) {
-            commentIcon.hide();
-        }
-
-        const commentBox = $('.comment-input-wrapper, .comment-box-container, textarea[placeholder*="comment"], textarea[placeholder*="Leave a comment"]').closest('div.row, div.comment-section, div.container');
-        const loginBanner = $('.login-banner, .comment-login, .login-prompt, div:contains("Please log in to leave a comment")');
-        const commentSection = $('#commentSection');
-
-        // Determines where to insert sort/comment header
-        if (commentSection.length > 0) {
-            const animeCards = $('.anime-card, .anime-box, .card').last();
-
-            if (animeCards.length > 0) {
-                // If anime cards are present, insert after the last one
-                animeCards.closest('.row, .container').after(headerHTML);
-            } else {
-                // Otherwise insert before any login banner or comment box
-                if (loginBanner.length > 0) {
-                    loginBanner.before(headerHTML);
-                } else if (commentBox.length > 0) {
-                    commentBox.before(headerHTML);
-                } else {
-                    commentSection.before(headerHTML);
-                }
-            }
-        } else {
-            // If no comment section, try to find a logical place based on page structure
-            const content = $('.content, main, #main-content').first();
-            if (content.length > 0) {
-                // Find any element that might contain "Comments" text
-                const possibleHeaders = content.find('h1, h2, h3, h4, h5, h6, div').filter(function() {
-                    return $(this).text().includes('Comments');
-                });
-
-                if (possibleHeaders.length > 0) {
-                    possibleHeaders.first().replaceWith(headerHTML);
-                } else {
-                    content.append(headerHTML);
-                }
-            } else {
-                // Last resort - add to body
-                $('body').append(headerHTML);
-            }
-        }
-
-        // Add event listeners for the sort buttons
-        $('.sort-btn').off('click').on('click', function() {
-            const sortType = $(this).data('sort');
-            if (sortType === currentSortType) return; // Skip if already sorted this way
-
-            // Update active button
-            $('.sort-btn').removeClass('active');
-            $(this).addClass('active');
-
-            // Update current sort type
-            currentSortType = sortType;
-
-            // Sort and redisplay comments
-            sortAndDisplayComments(sortType);
-        });
-    }
-
-    // Sort and display comments function
-    function sortAndDisplayComments(sortType) {
-        if (!commentsCache || commentsCache.length === 0) {
-            const commentSection = document.getElementById("commentSection");
-            commentSection.innerHTML = '<p class="text-center text-muted">No comments yet.</p>';
-            return;
-        }
-
-        // Clone the comments array to avoid modifying the cache
-        const sortedComments = [...commentsCache];
-
-        // Sort based on selected type
-        switch (sortType) {
-            case "newest":
-                sortedComments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                break;
-            case "oldest":
-                sortedComments.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-                break;
-            case "top":
-                sortedComments.sort((a, b) => (b.likes || 0) - (a.likes || 0));
-                break;
-            default:
-                sortedComments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        }
-
-        // Display sorted comments
-        const commentSection = document.getElementById("commentSection");
-        commentSection.innerHTML = "";
-
-        sortedComments.forEach(comment => {
-            const commentElement = createCommentElement(comment);
-            commentSection.appendChild(commentElement);
-
-            // Fetch replies for this comment
-            fetchRepliesFlat(comment.commentId, commentElement, comment.username);
-        });
-
-        // Apply paging (limit visible comments)
-        applyViewMoreComments();
-
-        // Add animation class to all comments
-        $("#commentSection > div").addClass("comment-sort-fade");
-    }
-
-    // Override the fetchComments function
-    fetchComments = function() {
-        console.log("Fetching comments for watchlistId:", watchlistId);
-        fetch(`/comments/list/${watchlistId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch comments: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(comments => {
-                console.log("Comments fetched:", comments);
-
-                // Store comments in the cache
-                commentsCache = comments || [];
-
-                // Create sorting controls if they don't exist
-                if ($(".comment-sorting-controls").length === 0) {
-                    createSortingControls();
-
-                    // Add click event for sorting buttons
-                    $(document).on("click", ".sort-btn", function() {
-                        const sortType = $(this).data("sort");
-                        if (sortType === currentSortType) return; // Skip if already sorted this way
-
-                        // Update active button
-                        $(".sort-btn").removeClass("active");
-                        $(this).addClass("active");
-
-                        // Update current sort type
-                        currentSortType = sortType;
-
-                        // Sort and redisplay comments
-                        sortAndDisplayComments(sortType);
+                    document.getElementById('submitReportBtn').addEventListener('click', function() {
+                        const commentId = this.getAttribute('data-comment-id');
+                        submitReport(commentId);
                     });
                 }
 
-                // Sort and display based on current sort type
-                sortAndDisplayComments(currentSortType);
-            })
-            .catch(error => {
-                console.error("Error fetching comments:", error);
-                const commentSection = document.getElementById("commentSection");
-                commentSection.innerHTML = '<p class="text-center text-danger">Failed to load comments. Please try again later.</p>';
-            });
-    };
+                const radioButtons = reportModal.querySelectorAll('input[name="reportReason"]');
+                radioButtons.forEach(radio => radio.checked = false);
 
-    // Override the postComment function
-    if (originalPostComment) {
-        window.postComment = function() {
-            try {
-                const commentBox = document.getElementById("commentBox");
-                if (!commentBox) {
-                    throw new Error("Comment box element not found.");
-                }
+                const otherReasonContainer = reportModal.querySelector('#otherReasonContainer');
+                otherReasonContainer.style.display = 'none';
 
-                const commentText = commentBox.value.trim();
-                if (!commentText) {
-                    alert("Please enter a comment.");
-                    commentBox.focus();
+                const otherReason = reportModal.querySelector('#otherReason');
+                if (otherReason) otherReason.value = '';
+
+                const submitButton = reportModal.querySelector('#submitReportBtn');
+                submitButton.setAttribute('data-comment-id', commentId);
+
+                const bsModal = new bootstrap.Modal(reportModal);
+                bsModal.show();
+            };
+
+            function submitReport(commentId) {
+                const reportModal = document.getElementById('reportCommentModal');
+                const selectedReason = reportModal.querySelector('input[name="reportReason"]:checked');
+
+                if (!selectedReason) {
+                    alert('Please select a reason for reporting this comment.');
                     return;
                 }
 
-                const username = document.querySelector(".comment-author").textContent;
-                const currentUserAvatar = document.querySelector(".current-user-avatar").src;
-                const url = `/comments/add/${watchlistId}`;
+                let reason = selectedReason.value;
 
-                fetch(url, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: new URLSearchParams({ username: username, text: commentText })
+                if (reason === 'other') {
+                    const otherReasonText = reportModal.querySelector('#otherReason').value.trim();
+                    if (!otherReasonText) {
+                        alert('Please specify a reason for reporting this comment.');
+                        return;
+                    }
+                    reason = otherReasonText;
+                }
+
+                const submitButton = reportModal.querySelector('#submitReportBtn');
+                submitButton.disabled = true;
+                submitButton.textContent = 'Submitting...';
+
+                fetch(`/comments/report/${commentId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        reason: reason
+                    })
                 })
                 .then(response => {
                     if (!response.ok) {
-                        return response.text().then(text => {
-                            throw new Error(`Failed to post comment: ${response.status} ${text}`);
+                        return response.json().then(data => {
+                            throw new Error(data.message || `Failed to report comment: ${response.status}`);
                         });
                     }
                     return response.json();
                 })
-                .then(comment => {
-                    console.log("Comment posted:", comment);
-                    commentBox.value = "";
+                .then(data => {
+                    bootstrap.Modal.getInstance(reportModal).hide();
 
-                    // Add new comment to cache
-                    comment.avatarSrc = currentUserAvatar;
-                    commentsCache.unshift(comment);
+                    // Mark this comment as reported in the localStorage
+                    markCommentAsReported(commentId);
 
-                    // Re-sort and display comments
-                    sortAndDisplayComments(currentSortType);
+                    // Replace the report button with "Reported" text
+                    const $reportBtn = $(`.report-btn[data-comment-id="${commentId}"]`);
+                    $reportBtn.replaceWith('<span class="text-muted small ms-2 reported-badge"><i class="fas fa-flag me-1"></i> Reported</span>');
 
-                    // Scroll to the new comment if it's visible
-                    if (currentSortType === "newest") {
-                        const firstComment = document.querySelector(".d-flex.flex-start.mb-4");
-                        if (firstComment) {
-                            firstComment.scrollIntoView({ behavior: "smooth", block: "nearest" });
-                        }
-                    }
+                    showToastNotification('Comment reported successfully. Thank you for helping keep our community safe.', 'success');
                 })
                 .catch(error => {
-                    console.error("Error posting comment:", error);
-                    alert("Failed to post comment. Please try again.");
+                    console.error("Error reporting comment:", error);
+                    showToastNotification('Failed to report comment: ' + error.message, 'error');
+                })
+                .finally(() => {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Submit Report';
                 });
-            } catch (error) {
-                console.error("Error posting comment:", error.message);
-                alert("An error occurred while posting your comment. Please try again.");
             }
-        };
-    }
-
-    // Extend the existing like/dislike handlers to update the sorting if in "top" mode
-    const originalLikeDislikeHandler = $._data($(document)[0], "events").click.find(
-        handler => handler.selector === '.like-btn, .dislike-btn'
-    );
-
-    if (originalLikeDislikeHandler) {
-        $(document).off('click', '.like-btn, .dislike-btn');
-
-        $(document).on('click', '.like-btn, .dislike-btn', function (e) {
-            e.preventDefault();
-            const $actionElement = $(this);
-            const action = $actionElement.data('action');
-            const $comment = $actionElement.closest('[data-comment-id]');
-            const id = $comment.data('comment-id');
-            const url = action === 'like' ? `/comments/like/${id}` : `/comments/dislike/${id}`;
-
-            fetch(url, { method: 'POST' })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Failed to ${action} comment: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(updatedComment => {
-                    $actionElement.find(`.${action}-count`).text(updatedComment[action + 's']);
-
-                    // Update comment in the cache
-                    const commentIndex = commentsCache.findIndex(c => c.commentId === id);
-                    if (commentIndex !== -1) {
-                        commentsCache[commentIndex][action + 's'] = updatedComment[action + 's'];
-
-                        // If current sort is "top", re-sort the comments
-                        if (currentSortType === "top") {
-                            sortAndDisplayComments("top");
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error(`Error ${action}ing comment:`, error);
-                    alert(`Failed to ${action} comment. Please try again.`);
-                });
         });
-    }
-});

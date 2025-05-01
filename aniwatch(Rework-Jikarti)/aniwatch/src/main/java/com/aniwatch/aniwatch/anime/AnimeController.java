@@ -1,5 +1,6 @@
 package com.aniwatch.aniwatch.anime;
 
+import com.aniwatch.aniwatch.user.User;
 import com.aniwatch.aniwatch.user.UserService;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class AnimeController {
         // 2) Your existing auth & userService logic...
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         boolean isAuth = auth != null && auth.isAuthenticated()
-                         && !"anonymousUser".equals(auth.getName());
+                && !"anonymousUser".equals(auth.getName());
         model.addAttribute("isAuthenticated", isAuth);
         if (isAuth) {
             String username = auth.getName();
@@ -41,7 +42,44 @@ public class AnimeController {
             if (isProvider) {
                 model.addAttribute("providerId", userService.getProviderId(username));
             }
+            User user = userService.findByUsername(username).orElse(null);
+            if (user != null) {
+                model.addAttribute("userId", user.getId());
+            }
         }
         return "browse-anime";
+    }
+
+    //added a view all anime endpoint which fetches all anime
+    @GetMapping("/view-all")
+    public String viewAllAnime(Model model) {
+        List<Anime> allAnimeList = animeService.getAllAnime();
+        model.addAttribute("allAnimeList", allAnimeList);
+
+        addAuthInfoToModel(model);
+
+        return "view-all-anime";
+    }
+
+    private void addAuthInfoToModel(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAuth = auth != null && auth.isAuthenticated()
+                && !"anonymousUser".equals(auth.getName());
+        model.addAttribute("isAuthenticated", isAuth);
+
+        if (isAuth) {
+            String username = auth.getName();
+            model.addAttribute("username", username);
+            boolean isProvider = userService.isProvider(username);
+            model.addAttribute("isProvider", isProvider);
+
+            if (isProvider) {
+                model.addAttribute("providerId", userService.getProviderId(username));
+            } else {
+                model.addAttribute("userId", userService.findByUsername(username)
+                        .map(user -> user.getId())
+                        .orElse(null));
+            }
+        }
     }
 }

@@ -11,6 +11,9 @@
         <div id="loginErrorAlert" class="alert alert-danger <#if loginError?? && loginError>d-block<#else>d-none</#if>">
           Invalid username or password.
         </div>
+        <div id="adminLoginErrorAlert" class="alert alert-danger <#if adminLoginError?? && adminLoginError>d-block<#else>d-none</#if>">
+          Admin credentials required. You do not have admin privileges.
+        </div>
         <div id="registrationSuccessAlert" class="alert alert-success <#if registered?? && registered>d-block<#else>d-none</#if>">
           Registration successful! Please login.
         </div>
@@ -19,9 +22,26 @@
             <label for="loginUsername" class="form-label">USERNAME</label>
             <input type="text" class="form-control" id="loginUsername" name="username" required>
           </div>
-          <div class="mb-4">
+          <div class="mb-3">
             <label for="loginPassword" class="form-label">PASSWORD</label>
             <input type="password" class="form-control" id="loginPassword" name="password" required>
+          </div>
+          <div class="mb-4">
+            <label class="form-label">LOGIN AS</label>
+            <div class="d-flex gap-3">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="loginType" id="loginTypeUser" value="user" checked>
+                <label class="form-check-label" for="loginTypeUser">
+                  Regular User
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="loginType" id="loginTypeAdmin" value="admin">
+                <label class="form-check-label" for="loginTypeAdmin">
+                  Admin
+                </label>
+              </div>
+            </div>
           </div>
           <div class="d-grid">
             <button type="submit" class="btn btn-primary-modal">Login</button>
@@ -164,6 +184,13 @@
               box-shadow: 0 0 0 3px rgba(79, 166, 255, 0.25)!important;
             }
 
+        .form-check-label {
+          font-size: 16px!important;
+          color: #fff!important;
+          text-transform: none!important;
+          letter-spacing: normal!important;
+        }
+
         .form-text {
             margin-top: .25rem!important;
             font-size: .8em!important;
@@ -206,6 +233,7 @@
           gap: 10px!important;
           justify-content: center!important;
           margin-top: 10px!important;
+          flex-wrap: wrap!important;
         }
 
         .registration-option {
@@ -222,15 +250,15 @@
           background-color: #3a3a3a!important;
         }
 
-.alert {
-  border-radius: 6px;
-  padding: 12px 16px;
-  margin-bottom: 20px;
-}
+        .alert {
+          border-radius: 6px;
+          padding: 12px 16px;
+          margin-bottom: 20px;
+        }
 
-.btn-close-white {
-  filter: invert(1) grayscale(100%) brightness(200%);
-}
+        .btn-close-white {
+          filter: invert(1) grayscale(100%) brightness(200%);
+        }
 </style>
 
 <!-- Auth modals JavaScript -->
@@ -247,27 +275,44 @@ document.addEventListener('DOMContentLoaded', function() {
   if (loginModal) {
     loginModalInstance = new bootstrap.Modal(loginModal);
 
-    // Check if we should show login modal
-    <#if showLoginModal?? && showLoginModal>
-      loginModalInstance.show();
-    </#if>
+    // Check if login modal should be shown based on URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const showLoginModal = urlParams.get('showLoginModal');
+    const loginError = urlParams.get('loginError');
+    const adminLoginError = urlParams.get('adminLoginError');
+    const registered = urlParams.get('registered');
 
-    // Handle login form submission
+    if (showLoginModal === 'true' || loginError || adminLoginError || registered) {
+      loginModalInstance.show();
+    }
+
+    // Handle login form submission with client-side validation
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
       loginForm.addEventListener('submit', function(event) {
-        // You can add additional client-side validation here if needed
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
+        const loginTypeAdmin = document.getElementById('loginTypeAdmin').checked;
+        const errorAlert = document.getElementById('loginErrorAlert');
+        const adminErrorAlert = document.getElementById('adminLoginErrorAlert');
+
+        errorAlert.classList.add('d-none');
+        adminErrorAlert.classList.add('d-none');
+
+        if (!username || !password) {
+          event.preventDefault();
+          errorAlert.textContent = 'All fields are required.';
+          errorAlert.classList.remove('d-none');
+          return false;
+        }
+
+        return true; // Proceed with form submission
       });
     }
   }
 
   if (userRegisterModal) {
     userRegisterModalInstance = new bootstrap.Modal(userRegisterModal);
-
-    // Check if we should show user register modal
-    <#if showUserRegisterModal?? && showUserRegisterModal>
-      userRegisterModalInstance.show();
-    </#if>
 
     // Handle user registration form validation
     const userRegisterForm = document.getElementById('userRegisterForm');
@@ -305,12 +350,6 @@ document.addEventListener('DOMContentLoaded', function() {
   if (providerRegisterModal) {
     providerRegisterModalInstance = new bootstrap.Modal(providerRegisterModal);
 
-    // Check if we should show provider register modal
-    <#if showProviderRegisterModal?? && showProviderRegisterModal>
-      providerRegisterModalInstance.show();
-    </#if>
-
-    // Handle provider registration form validation
     const providerRegisterForm = document.getElementById('providerRegisterForm');
     if (providerRegisterForm) {
       providerRegisterForm.addEventListener('submit', function(event) {
@@ -318,10 +357,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const confirmPassword = document.getElementById('providerRegisterConfirmPassword').value;
         const errorAlert = document.getElementById('providerRegisterErrorAlert');
 
-        // Reset error message
         errorAlert.classList.add('d-none');
 
-        // Validate password length
         if (password.length < 8) {
           event.preventDefault();
           errorAlert.textContent = 'Password must be at least 8 characters long.';
@@ -329,7 +366,6 @@ document.addEventListener('DOMContentLoaded', function() {
           return false;
         }
 
-        // Validate password match
         if (password !== confirmPassword) {
           event.preventDefault();
           errorAlert.textContent = 'Passwords do not match.';
@@ -337,7 +373,6 @@ document.addEventListener('DOMContentLoaded', function() {
           return false;
         }
 
-        // All validations passed
         return true;
       });
     }
@@ -377,87 +412,64 @@ document.addEventListener('DOMContentLoaded', function() {
   loginLinks.forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
-      if (loginModalInstance) loginModalInstance.show();
+      if (loginModalInstance) {
+        // Select regular user login by default
+        document.getElementById('loginTypeUser').checked = true;
+        loginModalInstance.show();
+      }
     });
   });
 
-  // Clean URL parameters after processing to prevent modal from showing on refresh
-  function cleanUrlParameters() {
-    if (window.location.search) {
-      const url = new URL(window.location.href);
-
-      // Check if we're showing modals
-      const showLoginModal = url.searchParams.get('showLoginModal');
-      const loginError = url.searchParams.get('loginError');
-      const registered = url.searchParams.get('registered');
-
-      if (showLoginModal || loginError || registered) {
-        // Remove parameters and replace current history state
-        url.searchParams.delete('showLoginModal');
-        url.searchParams.delete('loginError');
-        url.searchParams.delete('registered');
-
-        window.history.replaceState({}, document.title, url.toString());
+  // Update admin login link to show login modal with admin option pre-selected
+  const adminLoginLinks = document.querySelectorAll('a[href="/admin/login"], a[href="/admin"]');
+  adminLoginLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (loginModalInstance) {
+        document.getElementById('loginTypeAdmin').checked = true;
+        loginModalInstance.show();
       }
+    });
+  });
+
+  // Clean URL parameters to prevent the modal from reopening
+  function cleanUrlParameters() {
+    const url = new URL(window.location.href);
+    const paramsToRemove = ['showLoginModal', 'loginError', 'registered', 'adminLoginError'];
+
+    let shouldUpdate = false;
+    paramsToRemove.forEach(param => {
+      if (url.searchParams.has(param)) {
+        url.searchParams.delete(param);
+        shouldUpdate = true;
+      }
+    });
+
+    if (shouldUpdate) {
+      window.history.replaceState({}, document.title, url.toString());
     }
   }
 
-  // Call this function after modals are shown
   cleanUrlParameters();
 
-  // Ensure modals can be properly closed
+  // Clear form data and errors when modals are closed
   if (loginModal) {
-    // Direct event handler for the login modal close button
-    const loginModalCloseBtn = loginModal.querySelector('.btn-close');
-    if (loginModalCloseBtn) {
-      loginModalCloseBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        // Get or create the modal instance and force hide it
-        if (loginModalInstance) {
-          loginModalInstance.hide();
-        } else {
-          const newModalInstance = new bootstrap.Modal(loginModal);
-          newModalInstance.hide();
-        }
-      });
-    }
-  }
-
-  if (loginModal) {
-    // Listen for the hidden.bs.modal event which fires after the modal is completely hidden
     loginModal.addEventListener('hidden.bs.modal', function() {
-      // Clear any error messages
       const loginErrorAlert = document.getElementById('loginErrorAlert');
-      if (loginErrorAlert) {
-        loginErrorAlert.classList.add('d-none');
-      }
+      const adminLoginErrorAlert = document.getElementById('adminLoginErrorAlert');
+      const registrationSuccessAlert = document.getElementById('registrationSuccessAlert');
 
-      // Optionally, also clear the form fields
+      if (loginErrorAlert) loginErrorAlert.classList.add('d-none');
+      if (adminLoginErrorAlert) adminLoginErrorAlert.classList.add('d-none');
+      if (registrationSuccessAlert) registrationSuccessAlert.classList.add('d-none');
+
       const usernameField = document.getElementById('loginUsername');
       const passwordField = document.getElementById('loginPassword');
+      const loginTypeUser = document.getElementById('loginTypeUser');
 
       if (usernameField) usernameField.value = '';
       if (passwordField) passwordField.value = '';
-    });
-  }
-
-  if (userRegisterModal) {
-    userRegisterModal.addEventListener('hide.bs.modal', function() {
-      // Clean up any form fields or error messages if needed
-      const errorAlert = document.getElementById('userRegisterErrorAlert');
-      if (errorAlert) {
-        errorAlert.classList.add('d-none');
-      }
-    });
-  }
-
-  if (providerRegisterModal) {
-    providerRegisterModal.addEventListener('hide.bs.modal', function() {
-      // Clean up any form fields or error messages if needed
-      const errorAlert = document.getElementById('providerRegisterErrorAlert');
-      if (errorAlert) {
-        errorAlert.classList.add('d-none');
-      }
+      if (loginTypeUser) loginTypeUser.checked = true;
     });
   }
 });

@@ -1,14 +1,16 @@
 package com.aniwatch.aniwatch;
 
 import com.aniwatch.aniwatch.user.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +20,12 @@ public class LoginController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @GetMapping("/login")
     public String loginPage(
@@ -30,14 +38,54 @@ public class LoginController {
                 (registered != null ? "&registered=true" : "");
     }
 
+    @PostMapping("/login")
+    public String processLogin(
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            // Check if adminLoginError parameter should be passed
+            String loginType = request.getParameter("loginType");
+            String username = request.getParameter("username");
+
+            if ("admin".equals(loginType)) {
+                // Check if user exists and has admin role
+                User user = userRepository.findByUsername(username).orElse(null);
+
+                if (user == null || !user.getRoles().contains("ADMIN")) {
+                    redirectAttributes.addFlashAttribute("adminLoginError", true);
+                    return "redirect:/?showLoginModal=true&adminLoginError=true";
+                }
+            }
+
+            // Spring Security will process the login
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("loginError", true);
+            return "redirect:/?showLoginModal=true&loginError=true";
+        }
+    }
+
     // Redirects to home upon error
     @GetMapping("/login-error")
     public String loginError() {
-        return "redirect:/?error=true";
+        return "redirect:/?showLoginModal=true&loginError=true";
     }
 
     @GetMapping("/login-success")
     public String loginSuccess() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth != null && auth.isAuthenticated()) {
+            boolean isAdmin = auth.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+            if (isAdmin) {
+                return "redirect:/admin";
+            }
+        }
+
         return "redirect:/home";
     }
 

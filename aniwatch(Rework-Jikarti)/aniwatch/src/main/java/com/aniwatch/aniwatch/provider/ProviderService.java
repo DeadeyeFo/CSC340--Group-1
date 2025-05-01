@@ -102,9 +102,23 @@ public class ProviderService {
         if (providerProfileImage != null && !providerProfileImage.isEmpty()) {
             String imagePath = saveProfileImage(providerProfileImage);
             provider.setProviderProfileImage(imagePath);
+
+            // Update avatar in all watchlists created by this provider
+            updateWatchlistAvatars(providerId, imagePath);
         }
 
         return providerRepository.save(provider);
+    }
+
+    // Add this new method
+    private void updateWatchlistAvatars(Long providerId, String newAvatarPath) {
+        // You'll need to autowire WatchlistService or WatchlistRepository here
+        List<Watchlist> providerWatchlists = watchlistService.getWatchlistsByProviderId(providerId);
+
+        for (Watchlist watchlist : providerWatchlists) {
+            watchlist.setAvatar(newAvatarPath);
+            watchlistService.updateWatchlist(watchlist);
+        }
     }
 
     public int countProviderComments(Long providerId) {

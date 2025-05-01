@@ -142,61 +142,69 @@
 
     /* Profile Header */
     .profile-header {
-      position: relative;
-      background: linear-gradient(rgba(26, 30, 37, 0.7), rgba(44, 62, 80, 0.7)), url('${(user.profileImage)!'/pics/default-profile.jpg'}');
-      background-size: cover;
-      background-position: center;
-      border-radius: 15px;
-      padding: 40px 0;
-      margin-bottom: 40px;
-      text-align: center;
-      overflow: hidden;
+          position: relative;
+          overflow: hidden;
+          border-radius: 15px;
+          padding: 40px 0;
+          margin-bottom: 40px;
+          text-align: center;
     }
 
-    /* Add a stronger overlay to ensure text remains readable against any background */
-    .profile-header:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, rgba(26, 30, 37, 0.8) 0%, rgba(44, 62, 80, 0.8) 100%);
-      z-index: 0;
+    .profile-header::before {
+          content: '';
+          position: absolute;
+          top: -10px;
+          left: -10px;
+          right: -10px;
+          bottom: -10px;
+          background-image: url('${(user.profileImage)!'/pics/default-profile.jpg'}');
+          background-size: cover;
+          background-position: center;
+          filter: blur(15px);
+          z-index: 0;
     }
 
-    /* Optional: Add a blur effect to the background for a more modern look */
-    .profile-header {
-      backdrop-filter: blur(5px);
-    }
+    .profile-header::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg,
+                        rgba(26, 30, 37, 0.65) 0%,
+                        rgba(44, 62, 80, 0.65) 100%);
+          z-index: 1;
+        }
 
-    .profile-content {
-      position: relative;
-      z-index: 1;
-    }
+        /* Content container */
+        .profile-content {
+          position: relative;
+          z-index: 2;
+        }
 
-    .profile-img {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 5px solid var(--primary-color);
-      margin-bottom: 20px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
+        .profile-img {
+          width: 180px;
+          height: 180px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 5px solid var(--primary-color);
+          margin-bottom: 20px;
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+          transition: transform 0.3s, box-shadow 0.3s;
+        }
 
-    .profile-img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-    }
+        .profile-img:hover {
+          transform: scale(1.05);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
 
-    .profile-username {
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 15px;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    }
+        .profile-username {
+          font-size: 32px;
+          font-weight: 700;
+          margin-bottom: 15px;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
 
     /* Status Badges */
     .status-badge {
@@ -227,6 +235,64 @@
     .member-badge {
       background: linear-gradient(135deg, #9b59b6, #8e44ad);
       color: white;
+    }
+
+    /* Admin Badge Styling */
+    .admin-badge {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .admin-badge::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      animation: shine 2s infinite;
+    }
+
+    .admin-badge::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.5);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes shine {
+      0% {
+        transform: scale(1);
+        opacity: 0.5;
+      }
+      50% {
+        transform: scale(1.5);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 0.5;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        opacity: 0.3;
+      }
+      50% {
+        opacity: 0.8;
+      }
+      100% {
+        opacity: 0.3;
+      }
     }
 
     /* Bio Section */
@@ -716,342 +782,224 @@
       }
     }
 
-        .settings-modal .modal-content {
-                    background: linear-gradient(135deg, #1a1e25 0%, #2c3e50 100%);
-                    border-radius: 12px;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-                  }
+    /* Settings Modal Styles */
+    .settings-modal .modal-content {
+      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      color: #ecf0f1;
+      opacity: 1;
+      backdrop-filter: none;
+    }
 
-                  .settings-modal .modal-header {
-                    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                    padding: 20px 25px;
-                  }
+    .settings-modal .modal-header {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 20px 25px;
+    }
 
-                  .settings-modal .modal-title {
-                    font-size: 22px;
-                    font-weight: 600;
-                    color: #ecf0f1;
-                  }
+    .settings-modal .modal-body {
+      padding: 25px;
+    }
 
-                  .settings-modal .btn-close {
-                    color: #ecf0f1;
-                    opacity: 0.8;
-                    filter: invert(1) brightness(1.8);
-                    transition: opacity 0.3s;
-                  }
+    .settings-modal .modal-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 20px 25px;
+    }
 
-                  .settings-modal .btn-close:hover {
-                    opacity: 1;
-                  }
+    .settings-modal .modal-title {
+      font-weight: 600;
+      color: #3498db;
+    }
 
-                  .settings-modal .modal-body {
-                    padding: 25px;
-                  }
+    .settings-modal .btn-close {
+      color: #ecf0f1;
+      filter: invert(1) brightness(200%);
+    }
 
-                  /* Form styling */
-                  .settings-modal .form-label {
-                    color: #ecf0f1;
-                    font-weight: 500;
-                    margin-bottom: 10px;
-                    font-size: 16px;
-                  }
+    /* Profile Image Section */
+    .profile-image-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-                  .settings-modal .form-control {
-                    background-color: rgba(52, 73, 94, 0.5);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 8px;
-                    color: #ecf0f1;
-                    padding: 12px 15px;
-                    transition: all 0.3s;
-                  }
+    .image-preview-wrapper {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #3498db;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
 
-                  .settings-modal .form-control:focus {
-                    background-color: rgba(52, 73, 94, 0.7);
-                    border-color: #3498db;
-                    box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
-                  }
+    .image-preview-wrapper:hover .profile-image-overlay {
+      opacity: 1;
+    }
 
-                  .settings-modal .form-control:disabled {
-                    background-color: rgba(44, 62, 80, 0.7);
-                    opacity: 0.7;
-                  }
+    .profile-preview-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
 
-                  .settings-modal textarea.form-control {
-                    min-height: 100px;
-                  }
+    .image-preview-wrapper:hover .profile-preview-img {
+      transform: scale(1.05);
+    }
 
-                  /* Custom file input */
-                  .settings-modal .file-input-container {
-                    position: relative;
-                    margin-bottom: 20px;
-                  }
+    .profile-image-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(52, 152, 219, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
 
-                  .settings-modal .file-input-label {
-                    display: block;
-                    background-color: rgba(52, 73, 94, 0.5);
-                    border: 1px dashed rgba(255, 255, 255, 0.3);
-                    border-radius: 8px;
-                    padding: 15px;
-                    text-align: center;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                  }
+    .profile-image-overlay i {
+      font-size: 40px;
+      color: white;
+    }
 
-                  .settings-modal .file-input-label:hover {
-                    background-color: rgba(52, 73, 94, 0.7);
-                    border-color: #3498db;
-                  }
+    .upload-btn {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      border: none;
+      transition: all 0.3s ease;
+      padding: 8px 15px;
+    }
 
-                  .settings-modal .file-input-label i {
-                    font-size: 24px;
-                    color: #3498db;
-                    margin-bottom: 10px;
-                  }
+    .upload-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
 
-                  .settings-modal .file-input {
-                    position: absolute;
-                    width: 0.1px;
-                    height: 0.1px;
-                    opacity: 0;
-                    overflow: hidden;
-                    z-index: -1;
-                  }
+    .selected-file {
+      font-size: 14px;
+      color: #bdc3c7;
+      font-style: italic;
+      word-break: break-all;
+      max-width: 100%;
+    }
 
-                  .settings-modal .file-name {
-                    margin-top: 8px;
-                    font-size: 14px;
-                    color: #bdc3c7;
-                  }
+    /* Form Fields */
+    .form-control {
+      background-color: rgba(26, 30, 37, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #ecf0f1;
+      border-radius: 8px;
+      padding: 12px 15px;
+      transition: all 0.3s;
+    }
 
-                  .stylish-file-input {
-                    position: relative;
-                    margin-bottom: 20px;
-                  }
+    .form-control:focus {
+      background-color: rgba(26, 30, 37, 0.9);
+      border-color: #3498db;
+      box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+      color: #ecf0f1;
+    }
 
-                  /* Style the file input wrapper */
-                  .file-input-wrapper {
-                    position: relative;
-                    overflow: hidden;
-                    display: block;
-                    background: linear-gradient(135deg, rgba(52, 73, 94, 0.5) 0%, rgba(44, 62, 80, 0.7) 100%);
-                    border: 1px dashed rgba(255, 255, 255, 0.3);
-                    border-radius: 8px;
-                    padding: 15px;
-                    text-align: center;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                    height: 120px; /* Fixed height for better appearance */
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                  }
+    .form-control:disabled {
+      background-color: rgba(44, 62, 80, 0.5);
+      cursor: not-allowed;
+    }
 
-                  .file-input-wrapper:hover {
-                    background: linear-gradient(135deg, rgba(52, 73, 94, 0.7) 0%, rgba(44, 62, 80, 0.9) 100%);
-                    border-color: #3498db;
-                    transform: translateY(-2px);
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-                  }
+    .form-control::placeholder {
+      color: #95a5a6;
+      opacity: 1;
+    }
 
-                  /* Style the icon and text */
-                  .file-input-icon {
-                    font-size: 24px;
-                    color: #3498db;
-                    margin-bottom: 10px;
-                    display: block;
-                  }
+    /* For older browsers */
+    .form-control::-webkit-input-placeholder {
+      color: #95a5a6;
+      opacity: 1;
+    }
 
-                  .file-input-text {
-                    color: #ecf0f1;
-                    font-size: 14px;
-                    margin-bottom: 5px;
-                    position: relative;
-                    z-index: 1; /* Ensure text stays above the input */
-                    pointer-events: none; /* Prevent the text from interfering with clicks */
-                  }
+    .form-control::-moz-placeholder {
+      color: #95a5a6;
+      opacity: 1;
+    }
 
-                  /* The actual file input that remains functional */
-                  .stylish-file-input input[type="file"] {
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    width: 100%;
-                    height: 100%;
-                    opacity: 0; /* Make the input invisible but still functional */
-                    cursor: pointer;
-                    z-index: 2; /* Make sure it's above the text and icon */
-                  }
+    .form-control:-ms-input-placeholder {
+      color: #95a5a6;
+      opacity: 1;
+    }
 
-                  /* Filename display */
-                  .selected-filename {
-                    margin-top: 10px;
-                    padding: 8px 12px;
-                    background-color: rgba(52, 73, 94, 0.3);
-                    border-radius: 4px;
-                    color: #bdc3c7;
-                    font-size: 14px;
-                    text-align: center;
-                    transition: all 0.3s;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                    max-width: 100%;
-                  }
+    .form-text {
+      color: #bdc3c7;
+    }
 
-                  /* Current image preview */
-                  .current-image-container {
-                    display: flex;
-                    align-items: center;
-                    margin-top: 15px;
-                    padding: 12px;
-                    background-color: rgba(30, 39, 46, 0.6);
-                    border-radius: 8px;
-                    transition: all 0.3s;
-                  }
+    /* Privacy Section */
+    .privacy-settings-section {
+      background: linear-gradient(135deg, rgba(26, 30, 37, 0.5) 0%, rgba(44, 62, 80, 0.5) 100%);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 20px;
+    }
 
-                  .current-image-container:hover {
-                    background-color: rgba(30, 39, 46, 0.8);
-                  }
+    .privacy-header {
+      color: #3498db;
+    }
 
-                  .current-image {
-                    width: 60px;
-                    height: 60px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                    border: 2px solid #3498db;
-                  }
+    .form-check-input {
+      background-color: rgba(44, 62, 80, 0.7);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
 
-                  .current-image-text {
-                    margin-left: 15px;
-                    color: #bdc3c7;
-                    font-size: 14px;
-                  }
+    .form-check-input:checked {
+      background-color: #3498db;
+      border-color: #3498db;
+    }
 
+    /* Buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      border: none;
+      transition: all 0.3s;
+    }
 
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #2980b9, #2573a7);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    }
 
-                  /* Current profile image */
-                  .settings-modal .current-image-container {
-                    display: flex;
-                    align-items: center;
-                    margin-top: 15px;
-                    padding: 10px;
-                    background-color: rgba(30, 39, 46, 0.6);
-                    border-radius: 8px;
-                  }
+    .btn-secondary {
+      background: rgba(44, 62, 80, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-                  .settings-modal .current-image {
-                    width: 60px;
-                    height: 60px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                    border: 2px solid #3498db;
-                  }
+    .btn-secondary:hover {
+      background: rgba(52, 73, 94, 0.8);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
 
-                  .settings-modal .current-image-text {
-                    margin-left: 15px;
-                    color: #bdc3c7;
-                    font-size: 14px;
-                  }
+    /* Responsive Adjustments */
+    @media (max-width: 767px) {
+      .image-preview-wrapper {
+        width: 120px;
+        height: 120px;
+      }
 
-                  /* Switch styling for privacy toggles */
-                  .settings-modal .privacy-container {
-                    background-color: rgba(30, 39, 46, 0.6);
-                    border-radius: 8px;
-                    padding: 20px;
-                    margin-top: 25px;
-                  }
+      .profile-image-section {
+        margin-bottom: 25px;
+      }
+    }
 
-                  .settings-modal .privacy-header {
-                    display: flex;
-                    align-items: center;
-                    margin-bottom: 15px;
-                  }
+    .text-muted {
+      color: white!important;
+    }
 
-                  .settings-modal .privacy-header i {
-                    color: #3498db;
-                    font-size: 20px;
-                    margin-right: 10px;
-                  }
-
-                  .settings-modal .privacy-title {
-                    color: #ecf0f1;
-                    font-weight: 600;
-                    margin: 0;
-                    font-size: 18px;
-                  }
-
-                  .settings-modal .form-switch {
-                    display: flex;
-                    align-items: center;
-                    padding-left: 0;
-                    margin-bottom: 15px;
-                  }
-
-                  .settings-modal .form-check-input {
-                    height: 22px;
-                    width: 40px;
-                    margin-left: 0;
-                    margin-right: 12px;
-                    background-color: rgba(52, 73, 94, 0.5);
-                    border-color: rgba(255, 255, 255, 0.2);
-                  }
-
-                  .settings-modal .form-check-input:checked {
-                    background-color: #3498db;
-                    border-color: #2980b9;
-                  }
-
-                  .settings-modal .form-check-label {
-                    color: #ecf0f1;
-                    font-size: 15px;
-                    font-weight: 400;
-                  }
-
-                  /* Footer and buttons */
-                  .settings-modal .modal-footer {
-                    border-top: 1px solid rgba(255, 255, 255, 0.1);
-                    padding: 15px 25px;
-                    justify-content: space-between;
-                  }
-
-                  .settings-modal .btn {
-                    padding: 10px 20px;
-                    border-radius: 6px;
-                    font-weight: 500;
-                    transition: all 0.3s;
-                  }
-
-                  .settings-modal .btn-secondary {
-                    background-color: rgba(52, 73, 94, 0.7);
-                    border: none;
-                  }
-
-                  .settings-modal .btn-secondary:hover {
-                    background-color: rgba(52, 73, 94, 0.9);
-                  }
-
-                  .settings-modal .btn-primary {
-                    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-                    border: none;
-                  }
-
-                  .settings-modal .btn-primary:hover {
-                    background: linear-gradient(135deg, #2980b9 0%, #2573a7 100%);
-                    transform: translateY(-2px);
-                    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-                  }
-
-                  .settings-modal .help-text {
-                    color: #bdc3c7;
-                    font-size: 14px;
-                    margin-top: 5px;
-                  }
-
-                  .text-muted {
-                    color: white!important;
-                  }
   </style>
 </head>
 
@@ -1095,7 +1043,7 @@
       <!-- Profile Header -->
       <div class="profile-header">
         <div class="profile-content">
-          <img id="profileImage" src="${(user.profileImage)!'/pics2/default-profile.jpg'}" alt="${user.username!''}" class="profile-img">
+          <img id="profileImage" src="${(user.profileImage)!'/pics/default-profile.jpg'}" alt="${user.username!''}" class="profile-img">
           <h1 class="profile-username">${user.username!''}</h1>
 
           <div class="d-flex justify-content-center align-items-center">
@@ -1103,9 +1051,15 @@
               <i class="fas fa-check-circle"></i> Verified
             </div>
 
-            <div class="status-badge member-badge ms-3">
-              <i class="fas fa-user-shield"></i> Member
-            </div>
+            <#if user.roles?? && user.roles?seq_contains("ADMIN")>
+              <div class="status-badge admin-badge ms-3">
+                <i class="fas fa-crown"></i> Admin
+              </div>
+            <#else>
+              <div class="status-badge member-badge ms-3">
+                <i class="fas fa-user-shield"></i> Member
+              </div>
+            </#if>
           </div>
 
           <p class="mt-3 mb-0 text-muted">
@@ -1122,7 +1076,7 @@
       <!-- Bio Section -->
       <div class="bio-section">
         <h2 class="section-title">Bio</h2>
-        <p>${user.bio!'No bio available yet.'}</p>
+        <p><#if user.bio?has_content>${user.bio}<#else>No bio available yet.</#if></p>
       </div>
 
       <!-- Statistics Section -->
@@ -1164,10 +1118,10 @@
         </div>
 
         <#if !(isOwnProfile?? && isOwnProfile) && !(user.publicSubscribedWatchlists?? && user.publicSubscribedWatchlists)>
-          <div class="private-content-card">
+          <div class="private-content-card mb-4">
             <i class="fas fa-lock"></i>
             <h5>Subscribed watchlists are private</h5>
-            <p>The user has chosen to keep their subscribed watchlists private.</p>
+            <p>${user.username!''} has chosen to keep their subscribed watchlists private.</p>
           </div>
         <#elseif !subscribedWatchlists?? || subscribedWatchlists?size == 0>
           <div class="empty-content-card">
@@ -1176,7 +1130,7 @@
           </div>
         <#else>
           <!-- Subscribed Watchlist Slider -->
-          <div class="swiper mySwiper2">
+          <div class="swiper mySwiper3">
             <div class="swiper-wrapper">
               <!-- Loop through subscribed watchlists -->
               <#list subscribedWatchlists as watchlist>
@@ -1250,7 +1204,7 @@
   <!-- User Settings Modal -->
   <#if isOwnProfile?? && isOwnProfile>
     <div class="modal fade settings-modal" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="settingsModalLabel">
@@ -1258,84 +1212,95 @@
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
+
           <div class="modal-body">
-            <form action="/user-profile/update" method="post" enctype="multipart/form-data">
+            <form action="/user-profile/update" method="post" enctype="multipart/form-data" id="profileSettingsForm">
               <!-- Include CSRF token if available -->
               <#if _csrf??>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
               </#if>
 
-              <div class="mb-4">
-                <label for="username" class="form-label">Username</label>
-                <div class="input-group">
-                  <span class="input-group-text bg-transparent border-0">
-                    <i class="fas fa-user text-primary"></i>
-                  </span>
-                  <input type="text" class="form-control" id="username" value="${user.username!''}" disabled>
-                </div>
-                <div class="help-text">Username cannot be changed</div>
-              </div>
+              <div class="row">
+                <!-- Left Column - Profile Picture -->
+                <div class="col-md-4 text-center mb-4 mb-md-0">
+                  <div class="profile-image-section">
+                    <div class="current-image-container mb-3">
+                      <div class="image-preview-wrapper">
+                        <img src="${(user.profileImage)!'/pics/default-profile.jpg'}" alt="Profile" id="profilePreview" class="profile-preview-img">
+                        <div class="profile-image-overlay">
+                          <i class="fas fa-camera"></i>
+                        </div>
+                      </div>
+                    </div>
 
-              <div class="mb-4">
-                <label for="bio" class="form-label">Bio</label>
-                <div class="input-group">
-                  <span class="input-group-text bg-transparent border-0">
-                    <i class="fas fa-edit text-primary"></i>
-                  </span>
-                  <textarea class="form-control" id="bio" name="bio" rows="3" placeholder="Tell others about yourself...">${user.bio!''}</textarea>
-                </div>
-              </div>
+                    <div class="file-upload-container">
+                      <button type="button" class="btn btn-primary btn-sm upload-btn" onclick="document.getElementById('profileImageInput').click();">
+                        <i class="fas fa-upload me-1"></i> Upload Photo
+                      </button>
+                      <input type="file" class="d-none" id="profileImageInput" name="profileImage" accept="image/*" onchange="previewImage(this)">
+                      <div class="selected-file mt-2" id="selectedFileName">No file selected</div>
+                    </div>
 
-              <div class="mb-4">
-                <label for="profileImage" class="form-label">Profile Picture</label>
-
-                <div class="stylish-file-input">
-                  <!-- The wrapper provides the styling -->
-                  <div class="file-input-wrapper">
-                    <!-- The file input remains in the DOM but is visually hidden with opacity -->
-                    <input type="file" class="form-control" id="profileImage" name="profileImage" accept="image/*">
-                    <!-- Visual elements shown to the user -->
-                    <i class="fas fa-cloud-upload-alt file-input-icon"></i>
-                    <div class="file-input-text">Drop your image here, or click to browse</div>
+                    <div class="file-requirements mt-2">
+                      <small class="text-muted">Recommended: Square image, max 10MB</small>
+                    </div>
                   </div>
-
-                  <!-- Element to display the selected filename -->
-                  <div id="filename-display" class="selected-filename">No file selected</div>
                 </div>
 
-                <#if user.profileImage?? && user.profileImage?has_content>
-                  <div class="current-image-container">
-                    <img src="${user.profileImage}" alt="Current Profile" class="current-image">
-                    <div class="current-image-text">Current profile image</div>
+                <!-- Right Column - User Details -->
+                <div class="col-md-8">
+                  <div class="profile-details-section">
+                    <!-- Username Field -->
+                    <div class="form-group mb-4">
+                      <label for="username" class="form-label fw-bold">
+                        <i class="fas fa-user text-primary me-2"></i>Username
+                      </label>
+                      <input type="text" class="form-control" id="username" name="username" value="${user.username!''}" disabled>
+                      <small class="form-text text-muted">Username cannot be changed</small>
+                    </div>
+
+                    <!-- Bio Field -->
+                    <div class="form-group mb-4">
+                      <label for="bio" class="form-label fw-bold">
+                        <i class="fas fa-edit text-primary me-2"></i>Bio
+                      </label>
+                      <textarea class="form-control" id="bio" name="bio" rows="4" placeholder="Tell others about yourself...">${user.bio!''}</textarea>
+                    </div>
+
+                    <!-- Privacy Settings -->
+                    <div class="privacy-settings-section">
+                      <div class="privacy-header d-flex align-items-center mb-3">
+                        <i class="fas fa-lock text-primary me-2"></i>
+                        <h6 class="mb-0 fw-bold">Privacy Settings</h6>
+                      </div>
+
+                      <div class="privacy-options">
+                        <div class="form-check form-switch mb-3">
+                          <input class="form-check-input" type="checkbox" id="publicSubscribedWatchlists" name="publicSubscribedWatchlists" ${user.publicSubscribedWatchlists?string('checked', '')}>
+                          <label class="form-check-label" for="publicSubscribedWatchlists">
+                            Show my subscribed watchlists to everyone
+                          </label>
+                        </div>
+
+                        <div class="privacy-notice mt-2">
+                          <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Unchecking this will make your watchlist data private.
+                          </small>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </#if>
-              </div>
-
-              <div class="privacy-container">
-                <div class="privacy-header">
-                  <i class="fas fa-lock"></i>
-                  <h6 class="privacy-title">Privacy Settings</h6>
-                </div>
-
-                <div class="form-switch">
-                  <input class="form-check-input" type="checkbox" id="publicSubscribedWatchlists" name="publicSubscribedWatchlists" ${user.publicSubscribedWatchlists?string('checked', '')}>
-                  <label class="form-check-label" for="publicSubscribedWatchlists">
-                    Show my subscribed watchlists to everyone
-                  </label>
-                </div>
-
-                <div class="help-text">
-                  <i class="fas fa-info-circle me-1"></i>
-                  Unchecking this will hide your watchlists from other users
                 </div>
               </div>
 
-              <div class="modal-footer">
+              <div class="modal-footer mt-4">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                  <i class="fas fa-times me-1"></i>Cancel
+                  <i class="fas fa-times me-2"></i>Cancel
                 </button>
-                <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-save me-1"></i>Save Changes
+                <button type="submit" class="btn btn-primary" id="saveChangesBtn">
+                  <i class="fas fa-save me-2"></i>Save Changes
+                  <span class="spinner-border spinner-border-sm d-none" id="saveSpinner"></span>
                 </button>
               </div>
             </form>
@@ -1372,7 +1337,70 @@
   <script src="/js/main.js"></script>
 
   <script>
+    function previewImage(input) {
+      console.log("previewImage function called");
+      const preview = document.getElementById('profilePreview');
+      const fileNameDisplay = document.getElementById('selectedFileName');
+
+      console.log("Preview element:", preview);
+      console.log("Filename display element:", fileNameDisplay);
+
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        console.log("File selected:", file.name);
+
+        // Update file name display
+        if (fileNameDisplay) {
+          fileNameDisplay.textContent = file.name.length > 25 ?
+            file.name.substring(0, 22) + '...' : file.name;
+          console.log("Updated filename display to:", fileNameDisplay.textContent);
+        } else {
+          console.error("Could not find selectedFileName element");
+        }
+
+        // Update image preview
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          preview.src = e.target.result;
+          console.log("Image preview updated");
+        }
+        reader.readAsDataURL(file);
+      } else {
+        console.log("No file selected");
+        if (fileNameDisplay) {
+          fileNameDisplay.textContent = 'No file selected';
+        }
+      }
+    }
+
+    // Document ready function
     document.addEventListener('DOMContentLoaded', function() {
+      // Add click handler for the profile image to trigger file input
+      const imageWrapper = document.querySelector('.image-preview-wrapper');
+      const fileInput = document.getElementById('profileImageInput');
+
+      if (imageWrapper && fileInput) {
+        console.log("Adding click event to image wrapper");
+        imageWrapper.addEventListener('click', function() {
+          console.log("Image wrapper clicked");
+          fileInput.click();
+        });
+      }
+
+      // Show loading spinner when form is submitted
+      const form = document.getElementById('profileSettingsForm');
+      const saveBtn = document.getElementById('saveChangesBtn');
+      const spinner = document.getElementById('saveSpinner');
+
+      if (form && saveBtn && spinner) {
+        console.log("Adding submit event to form");
+        form.addEventListener('submit', function() {
+          console.log("Form submitted");
+          saveBtn.disabled = true;
+          spinner.classList.remove('d-none');
+          saveBtn.querySelector('i').classList.add('d-none');
+        });
+      }
 
       // Handle unsubscribe buttons
       const unsubscribeButtons = document.querySelectorAll('.unsubscribe-btn');
@@ -1416,7 +1444,6 @@
               const bsToast = new bootstrap.Toast(successToast);
               bsToast.show();
 
-              // Remove the toast after it's hidden
               successToast.addEventListener('hidden.bs.toast', function() {
                 successToast.remove();
               });

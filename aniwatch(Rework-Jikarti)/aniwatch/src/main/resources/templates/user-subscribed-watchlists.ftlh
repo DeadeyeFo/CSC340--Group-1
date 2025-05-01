@@ -589,7 +589,7 @@
             </select>
           </div>
           <div class="col-md-2">
-            <a href="/watchlists/watchlist-list" class="btn btn-primary w-100">
+            <a href="/watchlists/watchlist-list" class="btn btn-primary w-100" style="padding: 12px;">
               <i class="fas fa-search"></i> Browse
             </a>
           </div>
@@ -602,9 +602,6 @@
           <i class="fas fa-list-alt"></i>
           <h4>No Subscribed Watchlists Yet</h4>
           <p>Explore the watchlist library and subscribe to watchlists that interest you.</p>
-          <a href="/watchlists/watchlist-list" class="btn btn-primary">
-            <i class="fas fa-search"></i> Explore Watchlists
-          </a>
         </div>
       <#else>
         <div class="watchlist-grid" id="watchlistContainer">
@@ -698,10 +695,8 @@
       const searchInput = document.getElementById('searchInput');
       const sortSelect = document.getElementById('sortSelect');
 
-      // Store original order of items for reset
       const originalOrder = Array.from(watchlistItems).map(item => item);
 
-      // Function to check if any items are visible
       function checkIfAnyVisible() {
         const visibleItems = document.querySelectorAll('.watchlist-item:not([style*="display: none"])');
         if (visibleItems.length === 0 && noResultsElement) {
@@ -711,13 +706,12 @@
         }
       }
 
-      // Function to reset display to original state
+      // Function to reset display to original order
       function resetDisplay() {
         watchlistItems.forEach(item => {
           item.style.display = '';
         });
 
-        // Restore original order
         if (watchlistContainer) {
           originalOrder.forEach(item => {
             watchlistContainer.appendChild(item);
@@ -752,7 +746,6 @@
         checkIfAnyVisible();
       }
 
-      // Function to sort watchlists
       function sortWatchlists() {
         if (!watchlistContainer) return;
 
@@ -779,7 +772,6 @@
           return 0;
         });
 
-        // Clear and re-append the sorted items
         watchlistsArray.forEach(item => {
           watchlistContainer.appendChild(item);
         });
@@ -789,12 +781,10 @@
       if (searchInput) {
         searchInput.addEventListener('input', function() {
           searchWatchlists();
-          // Apply current sort after search
           sortWatchlists();
         });
       }
 
-      // Event listener for sort select
       if (sortSelect) {
         sortSelect.addEventListener('change', sortWatchlists);
       }
@@ -838,7 +828,6 @@
           const bsModal = new bootstrap.Modal(confirmModal);
           bsModal.show();
 
-          // Handle confirm button click
           document.getElementById('confirmUnsubscribeBtn').addEventListener('click', function() {
             fetch(`/api/subscriptions/unsubscribe/${watchlistId}`, {
               method: 'POST'
@@ -848,12 +837,10 @@
                 // Close the modal
                 bsModal.hide();
 
-                // Remove the modal from DOM after hiding
                 confirmModal.addEventListener('hidden.bs.modal', function() {
                   confirmModal.remove();
                 });
 
-                // Remove the watchlist card with animation
                 const watchlistItem = button.closest('.watchlist-item');
                 watchlistItem.style.transition = 'opacity 0.3s, transform 0.3s';
                 watchlistItem.style.opacity = '0';
@@ -862,12 +849,10 @@
                 setTimeout(() => {
                   watchlistItem.remove();
 
-                  // Show success toast
                   showToast('success', 'Successfully unsubscribed from watchlist');
 
                   // Check if any watchlists remain
                   if (document.querySelectorAll('.watchlist-item').length === 0) {
-                    // Show empty state if no watchlists remain
                     const emptyState = document.createElement('div');
                     emptyState.className = 'empty-state';
                     emptyState.innerHTML = `
@@ -877,12 +862,12 @@
                       <a href="/watchlists/watchlist-list" class="btn btn-primary mt-3">Browse Watchlists</a>
                     `;
 
-                    // Replace container with empty state
+                    // Replaces container with empty state
                     if (watchlistContainer) {
                       watchlistContainer.parentNode.replaceChild(emptyState, watchlistContainer);
                     }
 
-                    // Update subscription count if available
+                    // Update subscription count
                     const subscriptionCountSpan = document.querySelector('.subscription-count');
                     if (subscriptionCountSpan) {
                       let count = parseInt(subscriptionCountSpan.textContent);
@@ -902,22 +887,18 @@
             .catch(error => {
               console.error('Error:', error);
 
-              // Close the modal
               bsModal.hide();
 
-              // Remove the modal from DOM after hiding
               confirmModal.addEventListener('hidden.bs.modal', function() {
                 confirmModal.remove();
               });
 
-              // Show error toast
               showToast('error', 'Failed to unsubscribe. Please try again.');
             });
           });
         });
       });
 
-      // Toast notification function
       function showToast(type, message) {
         const toastEl = document.createElement('div');
         toastEl.classList.add('toast', 'align-items-center', 'position-fixed', 'top-0', 'end-0', 'mt-3', 'me-3', 'border-0');
@@ -952,7 +933,6 @@
 
         toast.show();
 
-        // Remove the toast from DOM after hiding
         toastEl.addEventListener('hidden.bs.toast', function() {
           toastEl.remove();
         });

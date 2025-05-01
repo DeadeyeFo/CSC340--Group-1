@@ -5,16 +5,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2f0ca81a-6487-4c9c-96c2-9bcc8bf63f46" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/project-root/Popular-Winter-Anime/One-Piece.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-root/Popular-Winter-Anime/Solo-Leveling.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-root/Popular-Winter-Anime/The-Apothecary-Diaries.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-root/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/project-root/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-root/public/css/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/project-root/public/css/profile.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-root/public/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/project-root/public/css/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-root/public/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-root/public/js/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-root/views/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/project-root/views/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-root/views/provider/create-service.html" beforeDir="false" afterPath="$PROJECT_DIR$/project-root/views/provider/create-service.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-root/views/provider/manage-profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/project-root/views/provider/manage-profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/anime/Anime.java" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/anime/Anime.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/anime/AnimeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/anime/AnimeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/anime/AnimeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/anime/AnimeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/anime/AnimeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/anime/AnimeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/comment/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/comment/CommentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/comment/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/comment/CommentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/comment/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/comment/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/provider/ProviderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/provider/ProviderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/security/AniwatchSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/security/AniwatchSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/user/UserProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/user/UserProfileController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/user/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/user/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/watchlist/WatchlistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/watchlist/WatchlistController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/watchlist/WatchlistService.java" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/java/com/aniwatch/aniwatch/watchlist/WatchlistService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/static/js/admin.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/static/js/comment.js" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/static/js/comment.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/static/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/static/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/static/pics/default-watchlist.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/browse-anime.ftlh" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/browse-anime.ftlh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/create-watchlist.ftlh" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/create-watchlist.ftlh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/edit-watchlist.ftlh" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/edit-watchlist.ftlh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/fragments/auth-modals.ftlh" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/fragments/auth-modals.ftlh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/fragments/watchlist-rating-modal.ftlh" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/fragments/watchlist-rating-modal.ftlh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/home.ftlh" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/home.ftlh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/provider-profile.ftlh" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/provider-profile.ftlh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/provider-subscribed-watchlists.ftlh" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/provider-subscribed-watchlists.ftlh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/provider-watchlist-all.ftlh" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/provider-watchlist-all.ftlh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/user-profile.ftlh" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/user-profile.ftlh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/user-subscribed-watchlists.ftlh" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/user-subscribed-watchlists.ftlh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/watchlist-list.ftlh" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/watchlist-list.ftlh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/watchlist.ftlh" beforeDir="false" afterPath="$PROJECT_DIR$/aniwatch(Rework-Jikarti)/aniwatch/src/main/resources/templates/watchlist.ftlh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,12 +61,12 @@
     &quot;assignee&quot;: &quot;Joshua-Wusu&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/DeadeyeFo/CSC340--Group-1",
-    "accountId": "cd2740d7-fe18-4459-b74c-8f813d8b3d62"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/DeadeyeFo/CSC340--Group-1&quot;,
+    &quot;accountId&quot;: &quot;cd2740d7-fe18-4459-b74c-8f813d8b3d62&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -56,10 +80,10 @@
     "DefaultHtmlFileTemplate": "HTML File",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "provider",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/joshw/Downloads/sp25-crud-api-jpa-main/sp25-crud-api-jpa-main"
+    "last_opened_file_path": "C:/Users/joshw/OneDrive/Desktop/CSC/CSC340--Group-1"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

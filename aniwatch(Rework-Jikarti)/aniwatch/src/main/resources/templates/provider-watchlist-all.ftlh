@@ -249,59 +249,44 @@
 
     /* Watchlist Cards */
     .watchlist-card {
-      background: linear-gradient(135deg, rgba(44, 62, 80, 0.7) 0%, rgba(52, 73, 94, 0.7) 100%);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      height: 100%;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-      margin-bottom: 20px;
-    }
+          background: linear-gradient(135deg, rgba(44, 62, 80, 0.7) 0%, rgba(52, 73, 94, 0.7) 100%);
+          border-radius: 12px;
+          overflow: hidden;
+          transition: all 0.3s ease;
+          height: 100%;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
 
-    .watchlist-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-      border-color: rgba(52, 152, 219, 0.3);
-    }
+        .watchlist-card:hover {
+          transform: translateY(-10px);
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+          border-color: rgba(52, 152, 219, 0.3);
+        }
 
-    .watchlist-thumbnail {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      transition: all 0.5s;
-    }
+        .watchlist-thumbnail {
+          width: 100%;
+          height: 180px;
+          object-fit: cover;
+          transition: all 0.5s;
+        }
 
-    .watchlist-card:hover .watchlist-thumbnail {
-      transform: scale(1.05);
-    }
+        .watchlist-card:hover .watchlist-thumbnail {
+          transform: scale(1.05);
+        }
 
-    .watchlist-card-body {
-      padding: 20px;
-      background: rgba(26, 30, 37, 0.9);
-    }
+        .watchlist-card-body {
+          padding: 20px;
+          background: rgba(26, 30, 37, 0.9);
+        }
 
-    .watchlist-card-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 15px;
-      color: var(--text-light);
-      text-align: center;
-      padding: 8px;
-      background: rgba(44, 62, 80, 0.5);
-      border-radius: 6px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+        .provider-info {
+          display: flex;
+          align-items: center;
+          margin-bottom: 15px;
+        }
 
-    .provider-info {
-      display: flex;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-
-    .provider-info a {
+        .provider-info a {
           color: var(--text-light);
           text-decoration: none;
           font-weight: 600;
@@ -312,92 +297,110 @@
           color: var(--primary-color);
         }
 
-    .profile-image {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--primary-color);
-      margin-right: 10px;
-    }
+        .watchlist-card-title {
+          font-size: 18px;
+          font-weight: 600;
+          margin-bottom: 10px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          color: var(--text-light);
+          padding: 5px 10px;
+          background: rgba(52, 73, 94, 0.5);
+          border-radius: 5px;
+          text-align: center;
+        }
 
-    .watchlist-card-text {
-      font-size: 14px;
-      color: var(--text-muted);
-    }
+        .profile-image {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid var(--primary-color);
+          margin-right: 10px;
+        }
 
-    .watchlist-metadata {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      margin-bottom: 15px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 10px 0;
-    }
+        .watchlist-card-text {
+          font-size: 14px;
+          color: var(--text-muted);
+          margin-bottom: 0px;
+        }
 
-    .views-counter {
-      font-size: 14px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-    }
+        .watchlist-metadata {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 15px;
+          padding: 8px 0;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    .views-counter i {
-      margin-right: 5px;
-      color: var(--primary-color);
-    }
+        .views-counter {
+          font-size: 14px;
+          color: var(--text-muted);
+          display: flex;
+          align-items: center;
+        }
 
-    .rating-container {
-      display: flex;
-      align-items: center;
-    }
+        .views-counter i {
+          margin-right: 5px;
+          color: var(--primary-color);
+        }
 
-    .rating-container .text-warning {
-      color: var(--warning) !important;
-      margin-right: 5px;
-    }
+        .rating-container {
+          display: flex;
+          align-items: center;
+        }
 
-    .btn-group {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+        .rating-container .text-warning {
+          color: var(--warning) !important;
+          margin-right: 5px;
+        }
 
-    .btn-outline-light {
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      color: var(--text-light);
-      background: rgba(255, 255, 255, 0.05);
-    }
+        .btn-group {
+          display: flex;
+          gap: 5px;
+        }
 
-    .btn-outline-light:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      border-color: var(--text-light);
-    }
+        .btn {
+          padding: 8px 16px;
+          font-weight: 500;
+          border-radius: 6px;
+          transition: all 0.3s;
+        }
 
-    .btn-outline-primary {
-      border: 1px solid rgba(52, 152, 219, 0.5);
-      color: var(--primary-color);
-      background: rgba(52, 152, 219, 0.05);
-    }
+        .btn-outline-light {
+          border: 1px solid rgba(255, 255, 255, 0.5);
+          color: var(--text-light);
+        }
 
-    .btn-outline-primary:hover {
-      background-color: rgba(52, 152, 219, 0.1);
-      border-color: var(--primary-color);
-      color: var(--primary-color);
-    }
+        .btn-outline-light:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+          border-color: var(--text-light);
+        }
 
-    .btn-outline-danger {
-      border: 1px solid rgba(231, 76, 60, 0.5);
-      color: var(--danger);
-      background: rgba(231, 76, 60, 0.05);
-    }
+        .btn-primary {
+          background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+          border: none;
+        }
 
-    .btn-outline-danger:hover {
-      background-color: rgba(231, 76, 60, 0.1);
-      border-color: var(--danger);
-      color: var(--danger);
-    }
+        .btn-primary:hover {
+          background: linear-gradient(135deg, #2980b9 0%, #2573a7 100%);
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-danger {
+          background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+          border: none;
+        }
+
+        .btn-danger:hover {
+          background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
 
     /* Empty State */
     .empty-state {
@@ -615,13 +618,13 @@
           </div>
           <#if isOwnProfile?? && isOwnProfile>
             <div class="col-md-2">
-              <a href="/watchlists/new" class="btn btn-success w-100">
+              <a href="/watchlists/new" class="btn btn-success w-100" style="padding: 12px;>
                 <i class="fas fa-plus"></i> New
               </a>
             </div>
           <#else>
             <div class="col-md-2">
-              <a href="/watchlists/watchlist-list" class="btn btn-success w-100">
+              <a href="/watchlists/watchlist-list" class="btn btn-success w-100" style="padding: 12px;">
                 <i class="fas fa-search"></i> Browse
               </a>
             </div>
@@ -637,11 +640,6 @@
               <i class="fas fa-list-alt fa-3x"></i>
               <h4>No active watchlists found</h4>
               <p>You haven't created any watchlists yet.</p>
-              <#if isOwnProfile?? && isOwnProfile>
-                <a href="/watchlists/new" class="btn btn-primary">
-                  <i class="fas fa-plus"></i> Create Your First Watchlist
-                </a>
-              </#if>
             </div>
           </div>
         <#else>
@@ -805,7 +803,7 @@
           })
           .then(response => {
             if (response.ok) {
-              // Find the watchlist item
+              // Find the watchlist item, no pasrse so freemarker to ignores
               <#noparse>
               const itemToRemove = document.querySelector(`.delete-btn[data-watchlist-id="${selectedWatchlistId}"]`).closest('.watchlist-item');
               </#noparse>
@@ -837,7 +835,6 @@
               const bsToast = new bootstrap.Toast(successToast);
               bsToast.show();
 
-              // Remove the toast after it's hidden
               successToast.addEventListener('hidden.bs.toast', function() {
                 successToast.remove();
               });
@@ -865,7 +862,6 @@
           .catch(error => {
             console.error('Error:', error);
 
-            // Show error message with toast
             const errorToast = document.createElement('div');
             errorToast.classList.add('toast', 'align-items-center', 'text-bg-danger', 'border-0', 'position-fixed', 'top-0', 'end-0', 'mt-3', 'me-3');
             errorToast.setAttribute('role', 'alert');
@@ -884,7 +880,6 @@
             const bsToast = new bootstrap.Toast(errorToast);
             bsToast.show();
 
-            // Remove the toast after it's hidden
             errorToast.addEventListener('hidden.bs.toast', function() {
               errorToast.remove();
             });

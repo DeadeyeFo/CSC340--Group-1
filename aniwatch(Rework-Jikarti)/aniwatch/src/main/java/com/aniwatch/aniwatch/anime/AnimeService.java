@@ -1,10 +1,13 @@
 package com.aniwatch.aniwatch.anime;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -44,7 +47,7 @@ public class AnimeService {
             // Parse the "data" array
             JsonNode data = objectMapper.readTree(json).path("data");
 
-            // Map each node to an Anime (but don’t save), limiting to `limit`
+            // Map each node to an Anime (but don't save), limiting to `limit`
             return StreamSupport.stream(data.spliterator(), false)
                     .limit(limit)
                     .map(this::mapNodeToAnime)
@@ -77,30 +80,46 @@ public class AnimeService {
     }
 
     /**
-     * Fetches up to 20 anime from Jikan, saves each into the DB, and returns the
-     * list.
+     * Fetches up to 20 anime from Jikan, saves each into the DB if it doesn't already exist,
+     * and returns the list.
      */
     public List<Anime> fetchAndSaveTopAnime() {
         try {
             String json = restTemplate.getForObject(JIKAN_API, String.class);
             JsonNode data = objectMapper.readTree(json).path("data");
 
-            List<Anime> animeList =
-                    // stream over the first 20 entries
-                    toList(data).stream()
-                            .limit(20)
-                            .map(this::toAnimeEntity)
-                            .collect(Collectors.toList());
+            List<Anime> animeList = toList(data).stream()
+                    .limit(20)
+                    .map(this::toAnimeEntity)
+                    .collect(Collectors.toList());
 
-            // saveAll as a batch
-            animeRepository.saveAll(animeList);
-            return animeList;
+            // Collect the modified list with saved entities
+            List<Anime> savedList = animeList.stream()
+                    .map(this::saveIfNotExists)
+                    .collect(Collectors.toList());
+
+            return savedList;
 
         } catch (JsonProcessingException e) {
-            // TODO: replace with a proper logger
             System.err.println("Failed parsing Jikan response: " + e.getMessage());
             return List.of();
         }
+    }
+
+    /**
+     * Save the anime if it doesn't already exist in the database
+     */
+    private Anime saveIfNotExists(Anime anime) {
+        // Try to find an existing anime with the same externalId
+        List<Anime> existingAnime = animeRepository.findByExternalId(anime.getExternalId());
+
+        if (!existingAnime.isEmpty()) {
+            // If it exists, return the existing entity
+            return existingAnime.get(0);
+        }
+
+        // Otherwise, save and return the new entity
+        return animeRepository.save(anime);
     }
 
     public Anime getAnimeById(Long id) {
@@ -127,5 +146,67 @@ public class AnimeService {
     private List<JsonNode> toList(JsonNode arrayNode) {
         return StreamSupport.stream(arrayNode.spliterator(), false)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns all anime stored in the database, ordered by title
+     */
+    public List<Anime> getAllAnime() {
+        try {
+            return animeRepository.findAll(Sort.by(Sort.Direction.ASC, "title"));
+        } catch (Exception e) {
+            System.err.println("Error retrieving all anime: " + e.getMessage());
+            return List.of(); // Return empty list on error
+        }
+    }
+
+    /**
+     * Returns a paginated list of all anime
+     */
+    public List<Anime> getAnimeWithPagination(int page, int size) {
+        try {
+            // Create a pageRequest with pagination and sorting
+            PageRequest pageRequest = PageRequest.of(
+                    page,
+                    size,
+                    Sort.by(Sort.Direction.ASC, "title")
+            );
+
+            // Return the page content as a list
+            return animeRepository.findAll(pageRequest).getContent();
+        } catch (Exception e) {
+            System.err.println("Error retrieving paginated anime: " + e.getMessage());
+            return List.of(); // Return empty list on error
+        }
+    }
+
+    /**
+     * Returns a count of all anime in the database
+     */
+    public long getAnimeCount() {
+        try {
+            return animeRepository.count();
+        } catch (Exception e) {
+            System.err.println("Error counting anime: " + e.getMessage());
+            return 0;
+        }
+    }
+
+    /**
+     * Search anime by title or alternate title
+     */
+    public List<Anime> searchAnime(String searchTerm) {
+        if (searchTerm == null || searchTerm.trim().isEmpty()) {
+            return getAllAnime();
+        }
+
+        try {
+            String termLike = "%" + searchTerm.trim().toLowerCase() + "%";
+            return animeRepository.findByTitleContainingIgnoreCaseOrAlternateTitleContainingIgnoreCase(
+                    searchTerm, searchTerm);
+        } catch (Exception e) {
+            System.err.println("Error searching anime: " + e.getMessage());
+            return List.of();
+        }
     }
 }

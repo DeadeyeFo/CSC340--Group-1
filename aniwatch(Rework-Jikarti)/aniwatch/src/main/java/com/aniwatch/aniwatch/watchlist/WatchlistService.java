@@ -1,14 +1,10 @@
 package com.aniwatch.aniwatch.watchlist;
 
-
-
+import com.aniwatch.aniwatch.anime.Anime;
+import com.aniwatch.aniwatch.anime.AnimeRepository;
 import com.aniwatch.aniwatch.comment.CommentRepository;
 import com.aniwatch.aniwatch.subscription.*;
-
-
-
 import com.aniwatch.aniwatch.user.*;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class WatchlistService {
@@ -28,6 +25,12 @@ public class WatchlistService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AnimeRepository animeRepository;
+
+    @Autowired
+    private WatchlistAnimeRepository watchlistAnimeRepository;
 
     private UserService userService;
 
@@ -98,6 +101,7 @@ public class WatchlistService {
         return watchlistRepository.save(watchlist);
     }
 
+    @Transactional
     public void deleteWatchlist(Long watchlistId) {
         Watchlist watchlist = getWatchlistByWatchlistId(watchlistId);
 
@@ -105,9 +109,10 @@ public class WatchlistService {
             throw new RuntimeException("Watchlist not found with ID: " + watchlistId);
         }
 
-        // Delete related records first (comments, subscriptions, etc.)
+        // Delete related records first (comments, subscriptions, anime associations, etc..)
         commentRepository.deleteByWatchlist_WatchlistId(watchlistId);
         subscriptionRepository.deleteByWatchlistId(watchlistId);
+        watchlistAnimeRepository.deleteByIdWatchlistId(watchlistId);
 
         // Finally, delete the watchlist itself
         watchlistRepository.deleteById(watchlistId);
@@ -199,5 +204,96 @@ public class WatchlistService {
 
         // Check if the watchlist belongs to this provider
         return watchlist.getProviderId().equals(providerId);
+    }
+
+    /**
+     * Add anime to a given watchlist
+     */
+    @Transactional
+    public void addAnimeToWatchlist(Long watchlistId, List<Long> animeIds) {
+        // Verify watchlist exists
+        Watchlist watchlist = getWatchlistByWatchlistId(watchlistId);
+
+        // Get current count to set display order
+        int currentCount = (int) watchlistAnimeRepository.countByIdWatchlistId(watchlistId);
+
+        for (int i = 0; i < animeIds.size(); i++) {
+            Long animeId = animeIds.get(i);
+
+            // Check if anime exists
+            if (!animeRepository.existsById(animeId)) {
+                continue; // Skip if the anime doesn't exist
+            }
+
+            // Create watchlist-anime association if it doesn't exist
+            if (!watchlistAnimeRepository.existsByIdWatchlistIdAndIdAnimeId(watchlistId, animeId)) {
+                WatchlistAnime watchlistAnime = new WatchlistAnime(watchlistId, animeId);
+                watchlistAnime.setAddedAt(LocalDateTime.now());
+                watchlistAnime.setDisplayOrder(currentCount + i);
+                watchlistAnimeRepository.save(watchlistAnime);
+            }
+        }
+    }
+
+    /**
+     * Remove anime from a given watchlist
+     */
+    @Transactional
+    public void removeAnimeFromWatchlist(Long watchlistId, Long animeId) {
+        watchlistAnimeRepository.deleteByIdWatchlistIdAndIdAnimeId(watchlistId, animeId);
+    }
+
+    /**
+     * Remove all anime from a given watchlist
+     */
+    @Transactional
+    public void removeAllAnimeFromWatchlist(Long watchlistId) {
+        watchlistAnimeRepository.deleteByIdWatchlistId(watchlistId);
+    }
+
+    /**
+     * Get all anime in a given watchlist
+     */
+    public List<Anime> getAnimeInWatchlist(Long watchlistId) {
+        List<Long> animeIds = watchlistAnimeRepository.findAnimeIdsByWatchlistId(watchlistId);
+
+        if (animeIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return animeRepository.findAllById(animeIds);
+    }
+
+    /**
+     * This checks if an anime is in a given watchlist
+     */
+    public boolean isAnimeInWatchlist(Long watchlistId, Long animeId) {
+        return watchlistAnimeRepository.existsByIdWatchlistIdAndIdAnimeId(watchlistId, animeId);
+    }
+
+    /**
+     * Get the number of anime in a given watchlist
+     */
+    public long getAnimeCountInWatchlist(Long watchlistId) {
+        return watchlistAnimeRepository.countByIdWatchlistId(watchlistId);
+    }
+
+    /**
+     * This updates the display order of anime in a given watchlist
+     */
+    @Transactional
+    public void updateAnimeOrder(Long watchlistId, List<Long> orderedAnimeIds) {
+        for (int i = 0; i < orderedAnimeIds.size(); i++) {
+            Long animeId = orderedAnimeIds.get(i);
+
+            WatchlistAnime.WatchlistAnimeId id = new WatchlistAnime.WatchlistAnimeId(watchlistId, animeId);
+            Optional<WatchlistAnime> watchlistAnimeOpt = watchlistAnimeRepository.findById(id);
+
+            if (watchlistAnimeOpt.isPresent()) {
+                WatchlistAnime watchlistAnime = watchlistAnimeOpt.get();
+                watchlistAnime.setDisplayOrder(i);
+                watchlistAnimeRepository.save(watchlistAnime);
+            }
+        }
     }
 }

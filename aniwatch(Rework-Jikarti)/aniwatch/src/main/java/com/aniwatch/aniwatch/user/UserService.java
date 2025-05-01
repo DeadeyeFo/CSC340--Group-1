@@ -16,10 +16,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -38,6 +35,48 @@ public class UserService {
 
     @Autowired
     private ProviderService providerService;
+
+    @Transactional
+    public User createAdminUser(String username, String password) {
+        // Check if the username already exists
+        Optional<User> existingUser = userRepository.findByUsername(username);
+
+        if (existingUser.isPresent()) {
+            User user = existingUser.get();
+            // Add ADMIN role if it doesn't exist
+            Set<String> roles = user.getRoles();
+            if (roles == null) {
+                roles = new HashSet<>();
+            }
+
+            if (!roles.contains("ADMIN")) {
+                roles.add("ADMIN");
+                user.setRoles(roles);
+                return userRepository.save(user);
+            }
+            return user;
+        } else {
+            // Create a new admin user
+            User adminUser = new User();
+            adminUser.setUsername(username);
+            adminUser.setPassword(passwordEncoder.encode(password));
+            adminUser.setEnabled(true);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            adminUser.setJoinDate(LocalDateTime.now().format(formatter));
+
+            adminUser.setProfileImage("/pics/default-profile.jpg");
+
+            Set<String> roles = new HashSet<>();
+            roles.add("ADMIN");
+            roles.add("USER"); // Also give them normal user privileges
+            adminUser.setRoles(roles);
+
+            User savedUser = userRepository.save(adminUser);
+            System.out.println("Admin user created: " + savedUser.getId() + " - " + savedUser.getUsername());
+            return savedUser;
+        }
+    }
 
     @Transactional
     public User registerProviderUser(String username, String password, Long providerId) {
@@ -203,6 +242,10 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
 
         return commentRepository.countByUsername(user.getUsername());
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     public ProviderStats calculateProviderStats(Long providerId) {

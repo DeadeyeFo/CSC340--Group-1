@@ -223,6 +223,7 @@
       margin-bottom: 30px;
       position: relative;
       display: flex;
+      justify-content: space-between;
       align-items: center;
     }
 
@@ -245,6 +246,26 @@
       background: linear-gradient(to bottom, #3498db, #9b59b6);
       border-radius: 2px;
     }
+
+    .view-all-link {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 16px;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+      }
+
+      .view-all-link i {
+        margin-left: 5px;
+        font-size: 12px;
+      }
+
+      .view-all-link:hover {
+        color: var(--primary-dark);
+        transform: translateX(3px);
+      }
 
     /* Anime Cards */
     .anime-card {
@@ -512,6 +533,9 @@
         <!-- Anime Suggestions Section -->
         <div class="section-heading">
           <h2>Your Anime Suggestions</h2>
+          <a href="/browse-anime/view-all" class="view-all-link">
+            View All <i class="fas fa-chevron-right"></i>
+          </a>
         </div>
 
         <div class="swiper mySwiper">
@@ -604,12 +628,10 @@
 
     <script>
       document.addEventListener('DOMContentLoaded', function () {
-        // Search functionality
         const searchInput = document.getElementById('searchInput');
         if (searchInput) {
           searchInput.addEventListener('input', function () {
-            // Add search functionality here
-            // This would typically filter anime cards based on search input
+            // No search implementation yet
           });
         }
       });

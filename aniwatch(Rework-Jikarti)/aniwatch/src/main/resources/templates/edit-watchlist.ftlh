@@ -365,6 +365,140 @@
       font-style: italic;
     }
 
+    /* Anime Selection Section */
+    .anime-selection-section {
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    .anime-selection-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .selected-anime-container {
+      background: linear-gradient(135deg, rgba(26, 30, 37, 0.6) 0%, rgba(44, 62, 80, 0.6) 100%);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .selected-anime-count {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-light);
+      font-weight: 500;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .count-badge {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      border-radius: 50px;
+      padding: 5px 12px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .selected-anime-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+    }
+
+    .selected-anime-item {
+      background: rgba(44, 62, 80, 0.7);
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s;
+      height: 220px;
+    }
+
+    .selected-anime-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+      border-color: var(--primary-color);
+    }
+
+    .selected-anime-img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+    }
+
+    .selected-anime-title {
+      padding: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .remove-anime-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: rgba(231, 76, 60, 0.9);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+
+    .remove-anime-btn:hover {
+      background: rgba(231, 76, 60, 1);
+      transform: scale(1.1);
+    }
+
+    .add-anime-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+
+    .add-anime-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+      color: white;
+    }
+
+    .empty-selection {
+      text-align: center;
+      padding: 30px;
+      color: var(--text-muted);
+    }
+
+    .empty-selection i {
+      font-size: 40px;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+      opacity: 0.7;
+    }
+
     /* Action Buttons */
     .action-buttons {
       margin-top: 30px;
@@ -504,6 +638,12 @@
         transform: rotate(90deg);
         margin: 10px 0;
       }
+
+      .anime-selection-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
     }
 
     @media (max-width: 767px) {
@@ -530,6 +670,17 @@
 
       .btn {
         width: 100%;
+      }
+
+      .selected-anime-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      }
+
+      .back-link {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+        justify-content: center;
       }
     }
   </style>
@@ -634,6 +785,46 @@
             </div>
           </div>
 
+          <!-- Anime Selection Section -->
+          <div class="anime-selection-section">
+            <div class="anime-selection-header">
+              <label class="form-label mb-0">
+                <i class="fas fa-tv"></i> Anime Selection
+              </label>
+            </div>
+
+            <div class="selected-anime-container">
+              <div class="selected-anime-count">
+                <span>Selected:</span>
+                <span class="count-badge" id="selectedCount">0/24</span>
+              </div>
+
+              <div class="empty-selection" id="emptySelection" style="${(watchlistAnime?? && watchlistAnime?size gt 0)?string('display:none;','')}">
+                <i class="fas fa-film"></i>
+                <p>No anime's in this watchlist yet.</p>
+              </div>
+
+              <!-- Grid of selected anime -->
+              <div class="selected-anime-grid" id="selectedAnimeGrid">
+                <!-- Selected anime will be dynamically added here via JavaScript -->
+                <#if watchlistAnime?? && watchlistAnime?size gt 0>
+                  <#list watchlistAnime as anime>
+                    <div class="selected-anime-item" data-id="${anime.id}">
+                      <img src="${anime.imageUrl!'/pics/default-anime.jpg'}" alt="${anime.title}" class="selected-anime-img">
+                      <div class="selected-anime-title">${anime.title}</div>
+                      <button type="button" class="remove-anime-btn" aria-label="Remove" onclick="removeAnime(${anime.id})">
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </#list>
+                </#if>
+              </div>
+
+              <!-- Hidden input to store selected anime IDs -->
+              <input type="hidden" name="selectedAnimeIds" id="selectedAnimeIds" value="${selectedAnimeIdsString!}">
+            </div>
+          </div>
+
           <input type="hidden" name="providerId" value="${providerId}">
           <input type="hidden" name="providerUsername" value="${username}">
 
@@ -672,69 +863,342 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Add animation to elements
-      function animateElements() {
-        const elements = document.querySelectorAll('.form-section, .page-header');
+  <#noparse>
+  // Define previewImage function in global scope
+  function previewImage(input) {
+    const preview = document.getElementById('thumbnailPreview');
+    const placeholder = document.getElementById('thumbnailPlaceholder');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
 
-        elements.forEach(element => {
-          element.style.opacity = '0';
-          element.style.transform = 'translateY(20px)';
-          element.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+    if (input.files && input.files[0]) {
+      const fileName = input.files[0].name;
+      fileNameDisplay.textContent = fileName.length > 25 ? fileName.substring(0, 22) + '...' : fileName;
 
-          setTimeout(() => {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-          }, 100);
-        });
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+        preview.classList.remove('d-none');
+        placeholder.classList.add('d-none');
       }
+      reader.readAsDataURL(input.files[0]);
+    } else {
+      fileNameDisplay.textContent = 'No file chosen';
+      preview.classList.add('d-none');
+      placeholder.classList.remove('d-none');
+    }
+  }
 
-      // Run animations
-      animateElements();
+  document.addEventListener('DOMContentLoaded', function() {
+    // First, check for anime items and hide empty state if needed
+    const animeItems = document.querySelectorAll('.selected-anime-item');
+    if (animeItems && animeItems.length > 0) {
+      const emptySelection = document.getElementById('emptySelection');
+      const selectedAnimeGrid = document.getElementById('selectedAnimeGrid');
+      const countBadge = document.getElementById('selectedCount');
 
-      // Loading overlay function
-      function showLoading() {
-        document.getElementById('loadingOverlay').classList.remove('d-none');
+      // Hide empty state, show grid
+      if (emptySelection) emptySelection.style.display = 'none';
+      if (selectedAnimeGrid) selectedAnimeGrid.style.display = 'grid';
+
+      // Update count badge
+      if (countBadge) countBadge.textContent = `${animeItems.length}/24`;
+    }
+
+    // Define storage keys
+    const STORAGE_KEYS = {
+      CREATE_WATCHLIST: {
+        ANIME_LIST: 'create_watchlist_anime_list',
+        TEMP_DATA: 'create_watchlist_temp_data'
+      },
+      EDIT_WATCHLIST: {
+        ANIME_LIST: 'edit_watchlist_anime_list',
+        TEMP_DATA: 'edit_watchlist_temp_data'
+      },
+      SELECT_ANIME: {
+        ORIGIN: 'select_anime_origin',
+        WATCHLIST_ID: 'select_anime_watchlist_id'
       }
+    };
 
-      // Form submission with loading indicator
-      const editForm = document.getElementById('editWatchlistForm');
-      const updateButton = document.getElementById('updateButton');
+    // Get watchlist ID from the form action URL
+    const form = document.getElementById('editWatchlistForm');
+    const watchlistId = form ? form.action.split('/').pop() : null;
 
-      if (editForm) {
-        editForm.addEventListener('submit', function(event) {
-          // Show loading indicator
+    // Clear any CREATE mode storage to avoid conflicts
+    localStorage.removeItem(STORAGE_KEYS.CREATE_WATCHLIST.ANIME_LIST);
+    localStorage.removeItem(STORAGE_KEYS.CREATE_WATCHLIST.TEMP_DATA);
+
+    // Set origin for select-anime
+    localStorage.setItem(STORAGE_KEYS.SELECT_ANIME.ORIGIN, 'edit');
+    if (watchlistId) {
+      localStorage.setItem(STORAGE_KEYS.SELECT_ANIME.WATCHLIST_ID, watchlistId);
+    }
+
+    // Initialize selected anime from existing data
+    initSelectedAnime();
+
+    // Add animation to elements
+    function animateElements() {
+      const elements = document.querySelectorAll('.form-section, .page-header');
+
+      elements.forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(20px)';
+        element.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+
+        setTimeout(() => {
+          element.style.opacity = '1';
+          element.style.transform = 'translateY(0)';
+        }, 100);
+      });
+    }
+
+    // Run animations
+    animateElements();
+
+    // Loading overlay function
+    function showLoading() {
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      if (loadingOverlay) {
+        loadingOverlay.classList.remove('d-none');
+      }
+    }
+
+    // Form submission with loading indicator
+    const updateButton = document.getElementById('updateButton');
+
+    if (form) {
+      form.addEventListener('submit', function(event) {
+        // Show loading indicator
+        if (updateButton) {
           updateButton.disabled = true;
-          updateButton.querySelector('.button-text').classList.add('d-none');
-          updateButton.querySelector('.loading-icon').classList.remove('d-none');
-          showLoading();
+          const buttonText = updateButton.querySelector('.button-text');
+          const loadingIcon = updateButton.querySelector('.loading-icon');
+          if (buttonText) buttonText.classList.add('d-none');
+          if (loadingIcon) loadingIcon.classList.remove('d-none');
+        }
+        showLoading();
+
+        // Clear localStorage when form is submitted
+        localStorage.removeItem(STORAGE_KEYS.EDIT_WATCHLIST.ANIME_LIST);
+        localStorage.removeItem(STORAGE_KEYS.EDIT_WATCHLIST.TEMP_DATA);
+        localStorage.removeItem(STORAGE_KEYS.SELECT_ANIME.ORIGIN);
+        localStorage.removeItem(STORAGE_KEYS.SELECT_ANIME.WATCHLIST_ID);
+      });
+    }
+
+    // Anime Selection Management
+    function initSelectedAnime() {
+      const selectedAnimeGrid = document.getElementById('selectedAnimeGrid');
+      const emptySelection = document.getElementById('emptySelection');
+      const selectedAnimeIds = document.getElementById('selectedAnimeIds');
+      const countBadge = document.getElementById('selectedCount');
+
+      if (!selectedAnimeGrid || !emptySelection || !selectedAnimeIds || !countBadge) {
+        return;
+      }
+
+      // Get the current list of anime from the grid
+      let AnimeList = [];
+      const animeItems = selectedAnimeGrid.querySelectorAll('.selected-anime-item');
+
+      if (animeItems && animeItems.length > 0) {
+        // Hide empty state, show grid
+        emptySelection.style.display = 'none';
+        selectedAnimeGrid.style.display = 'grid';
+
+        // Create list of selected anime
+        animeItems.forEach(item => {
+          const animeId = parseInt(item.dataset.id);
+          const animeTitle = item.querySelector('.selected-anime-title').textContent;
+          const animeImage = item.querySelector('.selected-anime-img').src;
+
+          AnimeList.push({
+            id: animeId,
+            title: animeTitle,
+            imageUrl: animeImage
+          });
         });
+
+        // Save to localStorage for anime selection page to use
+        localStorage.setItem(STORAGE_KEYS.EDIT_WATCHLIST.ANIME_LIST, JSON.stringify(AnimeList));
+
+        // Update count badge
+        countBadge.textContent = `${AnimeList.length}/24`;
+
+        // Also update the hidden input with anime IDs
+        selectedAnimeIds.value = AnimeList.map(anime => anime.id).join(',');
+      } else {
+        // Show empty state if no anime
+        emptySelection.style.display = 'block';
+        selectedAnimeGrid.style.display = 'none';
+        countBadge.textContent = '0/24';
+
+        // Initialize empty list in localStorage
+        localStorage.setItem(STORAGE_KEYS.EDIT_WATCHLIST.ANIME_LIST, JSON.stringify([]));
+      }
+    }
+
+    // Function to remove anime from the grid
+    window.removeAnime = function(animeId) {
+      const selectedAnimeGrid = document.getElementById('selectedAnimeGrid');
+      const emptySelection = document.getElementById('emptySelection');
+      const selectedAnimeIds = document.getElementById('selectedAnimeIds');
+      const countBadge = document.getElementById('selectedCount');
+
+      // Remove the anime item from grid
+      const animeItem = selectedAnimeGrid.querySelector(`.selected-anime-item[data-id="${animeId}"]`);
+      if (animeItem) {
+        animeItem.remove();
+      }
+
+      // Get the current IDs string from the hidden input
+      let currentIds = selectedAnimeIds.value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+
+      // Remove the ID of the deleted anime
+      currentIds = currentIds.filter(id => id !== animeId);
+
+      // Update the hidden input
+      selectedAnimeIds.value = currentIds.join(',');
+
+      // Get the current list of anime items
+      const animeItems = selectedAnimeGrid.querySelectorAll('.selected-anime-item');
+
+      // Update count badge
+      countBadge.textContent = `${animeItems.length}/24`;
+
+      // Update localStorage for consistency with select-anime page
+      let AnimeList = [];
+      animeItems.forEach(item => {
+        const id = parseInt(item.dataset.id);
+        const title = item.querySelector('.selected-anime-title').textContent;
+        const imageUrl = item.querySelector('.selected-anime-img').src;
+
+        AnimeList.push({ id, title, imageUrl });
+      });
+
+      localStorage.setItem(STORAGE_KEYS.EDIT_WATCHLIST.ANIME_LIST, JSON.stringify(AnimeList));
+
+      // Show empty state if no anime left
+      if (animeItems.length === 0) {
+        emptySelection.style.display = 'block';
+        selectedAnimeGrid.style.display = 'none';
+      }
+    }
+
+    // When returning from anime selection page, this will update the grid
+    window.addEventListener('pageshow', function() {
+      const storedAnimeList = localStorage.getItem(STORAGE_KEYS.EDIT_WATCHLIST.ANIME_LIST);
+      const tempData = localStorage.getItem(STORAGE_KEYS.EDIT_WATCHLIST.TEMP_DATA);
+
+      if (storedAnimeList) {
+        try {
+          const animeList = JSON.parse(storedAnimeList);
+          const selectedAnimeGrid = document.getElementById('selectedAnimeGrid');
+          const emptySelection = document.getElementById('emptySelection');
+          const selectedAnimeIds = document.getElementById('selectedAnimeIds');
+          const countBadge = document.getElementById('selectedCount');
+
+          if (!selectedAnimeGrid || !emptySelection || !selectedAnimeIds || !countBadge) {
+            return;
+          }
+
+          // First, clear the current grid
+          selectedAnimeGrid.innerHTML = '';
+
+          if (animeList.length > 0) {
+            // Hide empty state, show grid
+            emptySelection.style.display = 'none';
+            selectedAnimeGrid.style.display = 'grid';
+
+            // Update count badge
+            countBadge.textContent = `${animeList.length}/24`;
+
+            // Populate grid with selected anime
+            animeList.forEach(anime => {
+              addAnimeToGrid(anime);
+            });
+
+            // Update hidden input with anime IDs
+            selectedAnimeIds.value = animeList.map(anime => anime.id).join(',');
+          } else {
+            // Show empty state
+            emptySelection.style.display = 'block';
+            selectedAnimeGrid.style.display = 'none';
+            countBadge.textContent = '0/24';
+            selectedAnimeIds.value = '';
+          }
+        } catch (error) {
+          console.error('Error parsing stored anime list:', error);
+        }
+      }
+
+      // Restore form data if available
+      if (tempData) {
+        try {
+          const data = JSON.parse(tempData);
+
+          if (data.title) {
+            document.getElementById('title').value = data.title;
+          }
+
+          if (data.description) {
+            document.getElementById('description').value = data.description;
+          }
+
+          // Clear temporary data
+          localStorage.removeItem(STORAGE_KEYS.EDIT_WATCHLIST.TEMP_DATA);
+        } catch (error) {
+          console.error('Error parsing temp watchlist data:', error);
+        }
       }
     });
 
-    // Image preview functionality
-    function previewImage(input) {
-      const preview = document.getElementById('thumbnailPreview');
-      const placeholder = document.getElementById('thumbnailPlaceholder');
-      const fileNameDisplay = document.getElementById('fileNameDisplay');
+    // Function to add anime to the grid
+    function addAnimeToGrid(anime) {
+      const selectedAnimeGrid = document.getElementById('selectedAnimeGrid');
+      if (!selectedAnimeGrid) return;
 
-      if (input.files && input.files[0]) {
-        const fileName = input.files[0].name;
-        fileNameDisplay.textContent = fileName.length > 25 ? fileName.substring(0, 22) + '...' : fileName;
+      // Create anime item element
+      const animeItem = document.createElement('div');
+      animeItem.className = 'selected-anime-item';
+      animeItem.dataset.id = anime.id;
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          preview.src = e.target.result;
-          preview.classList.remove('d-none');
-          placeholder.classList.add('d-none');
-        }
-        reader.readAsDataURL(input.files[0]);
-      } else {
-        fileNameDisplay.textContent = 'No file chosen';
-        preview.classList.add('d-none');
-        placeholder.classList.remove('d-none');
-      }
+      // Create anime content
+      animeItem.innerHTML = `
+        <img src="${anime.imageUrl || '/pics/default-anime.jpg'}" alt="${anime.title}" class="selected-anime-img">
+        <div class="selected-anime-title">${anime.title}</div>
+        <button type="button" class="remove-anime-btn" aria-label="Remove" onclick="removeAnime(${anime.id})">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+
+      // Add to grid
+      selectedAnimeGrid.appendChild(animeItem);
     }
+
+    // Clear localStorage when Update button is clicked
+    if (updateButton) {
+      updateButton.addEventListener('click', function() {
+        localStorage.removeItem(STORAGE_KEYS.EDIT_WATCHLIST.ANIME_LIST);
+        localStorage.removeItem(STORAGE_KEYS.EDIT_WATCHLIST.TEMP_DATA);
+        localStorage.removeItem(STORAGE_KEYS.SELECT_ANIME.ORIGIN);
+        localStorage.removeItem(STORAGE_KEYS.SELECT_ANIME.WATCHLIST_ID);
+      });
+    }
+
+    // Clear localStorage when Cancel button is clicked
+    const cancelButton = document.querySelector('.btn-secondary');
+    if (cancelButton) {
+      cancelButton.addEventListener('click', function() {
+        localStorage.removeItem(STORAGE_KEYS.EDIT_WATCHLIST.ANIME_LIST);
+        localStorage.removeItem(STORAGE_KEYS.EDIT_WATCHLIST.TEMP_DATA);
+        localStorage.removeItem(STORAGE_KEYS.SELECT_ANIME.ORIGIN);
+        localStorage.removeItem(STORAGE_KEYS.SELECT_ANIME.WATCHLIST_ID);
+      });
+    }
+  });
+  </#noparse>
   </script>
 </body>
 </html>

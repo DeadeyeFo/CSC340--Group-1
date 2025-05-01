@@ -150,8 +150,8 @@ public class UserProfileController {
             }
 
             // Determine visibility of watchlists
-            boolean canViewActiveWatchlists = provider.isPublicActiveWatchlists() || isAuthenticated || isOwnProfile;
-            boolean canViewSubscribedWatchlists = provider.isPublicSubscribedWatchlists() || isAuthenticated || isOwnProfile;
+            boolean canViewActiveWatchlists = provider.isPublicActiveWatchlists() || isOwnProfile;
+            boolean canViewSubscribedWatchlists = provider.isPublicSubscribedWatchlists() || isOwnProfile;
 
             model.addAttribute("canViewActiveWatchlists", canViewActiveWatchlists);
             model.addAttribute("canViewSubscribedWatchlists", canViewSubscribedWatchlists);
@@ -298,6 +298,11 @@ public class UserProfileController {
                 model.addAttribute("error", "This user's subscribed watchlists are private");
                 return "error";
             }
+        }
+
+        User user = userService.findByUsername(username).orElse(null);
+        if (user != null) {
+            model.addAttribute("userId", user.getId());
         }
 
         model.addAttribute("user", viewedUser);
