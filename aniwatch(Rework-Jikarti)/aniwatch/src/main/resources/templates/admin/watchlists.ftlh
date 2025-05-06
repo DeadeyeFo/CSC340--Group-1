@@ -101,11 +101,29 @@
                                     <a href="/watchlists/${watchlist.watchlistId}" class="btn btn-outline-primary action-btn" title="View Watchlist">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <button type="button" class="btn btn-outline-danger action-btn delete-btn"
-                                            title="Delete Watchlist" data-id="${watchlist.watchlistId}"
-                                            data-title="${watchlist.title}">
-                                        <i class="fas fa-trash"></i>
+                                    <form
+                                    method="post"
+                                    action="/admin/watchlist/${watchlist.watchlistId}/delete"
+                                    onsubmit="return confirm('Are you sure you want to delete &quot;${watchlist.title}&quot;?');"
+                                    style="display:inline"
+                                  >
+                                    <#-- Spring Security’s CSRF token (auto‐exposed into _csrf) -->
+                                    <#if _csrf??>
+                                      <input
+                                        type="hidden"
+                                        name="${_csrf.parameterName}"
+                                        value="${_csrf.token}"
+                                      >
+                                    </#if>
+                                  
+                                    <button
+                                      type="submit"
+                                      class="btn btn-outline-danger action-btn"
+                                      title="Delete Watchlist"
+                                    >
+                                      <i class="fas fa-trash"></i>
                                     </button>
+                                  </form>
                                 </div>
                             </td>
                         </tr>

@@ -131,7 +131,9 @@ public class SystemStatsController {
 
     @PostMapping("/watchlist/{id}/delete")
     public String deleteWatchlist(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        
         try {
+            System.out.println("🗑️  Admin deleteWatchlist called with id=" + id);
             watchlistService.deleteWatchlist(id);
             redirectAttributes.addFlashAttribute("success", "Watchlist deleted successfully");
         } catch (Exception e) {

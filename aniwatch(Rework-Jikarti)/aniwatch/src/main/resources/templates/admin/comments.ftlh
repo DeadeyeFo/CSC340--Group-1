@@ -245,10 +245,22 @@
                                         title="View Comment">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <button type="button" class="btn btn-outline-danger action-btn delete-comment-btn"
-                                        title="Delete Comment">
-                                    <i class="fas fa-trash"></i>
+                                <form
+                                method="post"
+                                action="/admin/comments/delete"
+                                onsubmit="return confirm('Delete comment #${comment.commentId}?');"
+                                style="display:inline"
+                              >
+                                <#-- CSRF token -->
+                                <#if _csrf??>
+                                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                </#if>
+                                <input type="hidden" name="commentId" value="${comment.commentId}"/>
+                                <button type="submit" class="btn btn-outline-danger action-btn" title="Delete Comment">
+                                  <i class="fas fa-trash"></i>
                                 </button>
+                              </form>
+                              
                             </div>
                         </td>
                     </tr>
