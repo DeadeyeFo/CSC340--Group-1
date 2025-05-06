@@ -241,10 +241,11 @@
                         </td>
                         <td class="text-end">
                             <div class="d-flex justify-content-end gap-2">
-                                <button type="button" class="btn btn-outline-primary action-btn view-comment-btn"
-                                        title="View Comment">
-                                    <i class="fas fa-eye"></i>
-                                </button>
+                                <a href="/watchlists/${comment.watchlist.watchlistId}"
+                                class="btn btn-outline-primary action-btn"
+                                title="Go to Watchlist">
+                               <i class="fas fa-eye"></i>
+                             </a>
                                 <form
                                 method="post"
                                 action="/admin/comments/delete"
@@ -284,6 +285,7 @@
                     <span aria-hidden="true">«</span>
                 </a>
             </li>
+            
 
             <#assign pageStart = 0>
             <#assign pageEnd = totalPages - 1>
